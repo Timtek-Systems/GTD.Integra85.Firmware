@@ -77,13 +77,22 @@
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="Integra85Firmware.ino">
       <FileType>CppCode</FileType>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Integra85_hardware.h" />
+    <ClInclude Include="CounterTimer1StepGenerator.h" />
+    <ClInclude Include="Integra85.h" />
+    <ClInclude Include="IStepGenerator.h" />
+    <ClInclude Include="IStepSequencer.h" />
+    <ClInclude Include="Motor.h" />
     <ClInclude Include="__vm\.Integra85Firmware.vsarduino.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CounterTimer1StepGenerator.cpp" />
+    <ClCompile Include="Motor.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

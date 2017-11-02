@@ -8,6 +8,97 @@
     <VCCodeModel>
       <VCCodeMacros />
     </VCCodeModel>
-    <BreakPoints />
+    <BreakPoints>
+      <BreakPoint Index="1" Name="CounterTimer1.cpp, line 33" Id="98fcaac9-2a1f-41e3-bb20-f197d98240db" Enabled="1" Message="{counts}" MessageTextType="2" PreProcessedMessage="{0}" Condition="" ConditionType="1" CurrentHits="0" File="c:\users\tim\source\repos\integra85firmware\integra85firmware\countertimer1.cpp" FileLine="33" FileColumn="1" FunctionName="setIrqFrequency(float frequency)" FunctionLineOffset="3" FunctionColumnOffset="1" HitCountTarget="1" HitCountType="1" Language="C++" LocationType="3" Tag="&lt;vmbp Id='98fcaac9-2a1f-41e3-bb20-f197d98240db'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="1">
+        <Source>26		TCCR1A = 0x00;				// Generate no outputs 
+27		TCCR1B = 0x09;				// No prescale, CTC mode, compare with OCR1A
+28		}
+29	
+30	void CounterTimer1Class::setIrqFrequency(float frequency)
+31		{
+32		auto counts = computeCountsFromFrequency(frequency);
+--&gt;33		OCR1A = counts;
+34		}
+35	
+36	uint16_t CounterTimer1Class::computeCountsFromFrequency(float frequency)
+37		{
+38		if (frequency &gt; Fmax) frequency = Fmax;
+39		if (frequency &lt; Fmin) frequency = Fmin;
+40		uint16_t counts = Fmax / frequency;
+41		return counts;
+42		}
+</Source>
+        <MessageVariables>
+          <MessageVariable Name="counts" Index="1" />
+        </MessageVariables>
+      </BreakPoint>
+      <BreakPoint Index="2" Name="CounterTimer1.cpp, line 41" Id="b25ec867-3e13-447d-873a-b5dc62484550" Enabled="1" Message="{counts}" MessageTextType="2" PreProcessedMessage="{0}" Condition="" ConditionType="1" CurrentHits="0" File="c:\users\tim\source\repos\integra85firmware\integra85firmware\countertimer1.cpp" FileLine="41" FileColumn="1" FunctionName="computeCountsFromFrequency(float frequency)" FunctionLineOffset="5" FunctionColumnOffset="1" HitCountTarget="1" HitCountType="1" Language="C++" LocationType="3" Tag="&lt;vmbp Id='b25ec867-3e13-447d-873a-b5dc62484550'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="1">
+        <Source>34		}
+35	
+36	uint16_t CounterTimer1Class::computeCountsFromFrequency(float frequency)
+37		{
+38		if (frequency &gt; Fmax) frequency = Fmax;
+39		if (frequency &lt; Fmin) frequency = Fmin;
+40		uint16_t counts = Fmax / frequency;
+--&gt;41		return counts;
+42		}
+43	
+44	
+45	CounterTimer1Class CounterTimer1;
+46	
+</Source>
+        <MessageVariables>
+          <MessageVariable Name="counts" Index="1" />
+        </MessageVariables>
+      </BreakPoint>
+      <BreakPoint Index="3" Name="CounterTimer1.cpp, line 24" Id="305e6a7b-c84c-4ac6-9317-7a96b3556b5b" Enabled="1" Message="{frequency}" MessageTextType="2" PreProcessedMessage="{0}" Condition="" ConditionType="1" CurrentHits="0" File="c:\users\tim\source\repos\integra85firmware\integra85firmware\countertimer1.cpp" FileLine="24" FileColumn="1" FunctionName="startWithIrqFrequency(float frequency)" FunctionLineOffset="2" FunctionColumnOffset="1" HitCountTarget="1" HitCountType="1" Language="C++" LocationType="3" Tag="&lt;vmbp Id='305e6a7b-c84c-4ac6-9317-7a96b3556b5b'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="1">
+        <Source>17		OCR1A = 0xFF;
+18		OCR1B = 0xFF;
+19		TCCR1A = 0x00;				// Generate no outputs 
+20		}
+21	
+22	void CounterTimer1Class::startWithIrqFrequency(float frequency) 
+23		{
+--&gt;24		setIrqFrequency(frequency);
+25		BitSet(TIMSK1, OCIE1A);		// Enable OCR1A interrupt
+26		TCCR1A = 0x00;				// Generate no outputs 
+27		TCCR1B = 0x09;				// No prescale, CTC mode, compare with OCR1A
+28		}
+29	
+30	void CounterTimer1Class::setIrqFrequency(float frequency)
+31		{
+32		auto counts = computeCountsFromFrequency(frequency);
+33		OCR1A = counts;
+</Source>
+        <MessageVariables>
+          <MessageVariable Name="frequency" Index="1" />
+        </MessageVariables>
+      </BreakPoint>
+      <BreakPoint Index="4" Name="Integra85Firmware.ino, line 35" Id="a4f7c6a0-3bc3-4a4b-b1f5-583850e9181b" Enabled="1" Message="{irqFrequency}{stepsPerSecond}{interruptsPerSecond}" MessageTextType="2" PreProcessedMessage="{0}{1}{2}" Condition="" ConditionType="1" CurrentHits="0" File="c:\users\tim\source\repos\integra85firmware\integra85firmware\integra85firmware.ino" FileLine="35" FileColumn="1" FunctionName="StartMotor2(float stepsPerSecond)" FunctionLineOffset="5" FunctionColumnOffset="1" HitCountTarget="1" HitCountType="1" Language="C++" LocationType="3" Tag="&lt;vmbp Id='a4f7c6a0-3bc3-4a4b-b1f5-583850e9181b'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="1">
+        <Source>28	
+29	
+30	void StartMotor2(float stepsPerSecond)
+31		{
+32		float interruptsPerSecond = stepsPerSecond * 2.0;
+33		float irqFrequency = 1.0 / interruptsPerSecond;
+34		digitalWrite(M2_ENABLE_PIN, LOW);
+--&gt;35		CounterTimer1.startWithIrqFrequency(irqFrequency);
+36		}
+37	
+38	void StopMotor2()
+39		{
+40		CounterTimer1.stopAndClear();
+41		digitalWrite(M2_ENABLE_PIN, HIGH);
+42		}
+43	
+44	
+</Source>
+        <MessageVariables>
+          <MessageVariable Name="irqFrequency" Index="1" />
+          <MessageVariable Name="stepsPerSecond" Index="2" />
+          <MessageVariable Name="interruptsPerSecond" Index="3" />
+        </MessageVariables>
+      </BreakPoint>
+    </BreakPoints>
   </Program>
 </VisualMicro>

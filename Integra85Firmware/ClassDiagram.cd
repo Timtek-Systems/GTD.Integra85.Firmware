@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CounterTimer1StepGenerator">
+    <Position X="4" Y="5.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAQEAAAAAAQABAQAAAAAAIAACAAAAAAA=</HashCode>
+      <FileName>CounterTimer1StepGenerator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IStepGenerator">
+    <Position X="4.5" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAEAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>IStepGenerator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IStepSequencer">
+    <Position X="8.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>IStepSequencer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Motor">
+    <Position X="8.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAIAgAAAAAAAQDAAAAAAgAIAAAAAAEIAA=</HashCode>
+      <FileName>Motor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

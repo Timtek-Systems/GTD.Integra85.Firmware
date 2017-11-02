@@ -13,3 +13,7 @@
 //Software serial
 #define SW_RX						(2)
 #define SW_TX						(3)
+
+#define BitClear(target,position)	target &= ~(bit(position))
+#define BitSet(target,position)		target |= bit(position)
+#define BitToggle(target,position)	target ^= bit(position)
