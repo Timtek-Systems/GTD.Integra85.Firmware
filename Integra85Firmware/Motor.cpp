@@ -2,6 +2,7 @@
 // 
 // 
 
+#include <Arduino.h>
 #include "Motor.h"
 #include "IStepSequencer.h"
 #include "IStepGenerator.h"
@@ -29,4 +30,18 @@ Motor::Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, IStepGene
 			{
 			digitalWrite(stepPin, state ? HIGH : LOW);
 			currentPosition += direction;
+			}
+
+		void Motor::MoveAtVelocity(float stepsPerSecond)
+			{
+			direction = stepsPerSecond < 0 ? -1 : +1;
+			auto absoluteStepsPerSecond = abs(stepsPerSecond);
+			EnergizeMotor();
+			stepGenerator->Start(absoluteStepsPerSecond, this);
+			}
+
+		void Motor::EnergizeMotor() 
+			{
+			digitalWrite(directionPin, direction >= 0 ? HIGH : LOW);
+			digitalWrite(enablePin, LOW);
 			}

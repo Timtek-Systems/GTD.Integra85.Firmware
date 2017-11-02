@@ -18,6 +18,8 @@ class Motor : public IStepSequencer
 		Motor();
 		Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, IStepGenerator *stepper);
 		virtual void Step(bool state) final;
+		void MoveAtVelocity(float stepsPerSecond);
+		void EnergizeMotor();
 
 	private:
 		uint8_t stepPin, enablePin, directionPin;

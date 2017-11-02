@@ -17,17 +17,17 @@ void CounterTimer1StepGenerator::Stop()
 
 void CounterTimer1StepGenerator::Start(float stepsPerSecond, IStepSequencer *sequencer)
 	{
-	SetStepRate(stepsPerSecond);
 	activeSequencer = sequencer;
-	attachInterrupt(TIMER1_COMPA_vect_num, TimerCompareInterruptService, 0);
-	BitSet(TIMSK1, OCIE1A);		// Enable OCR1A interrupt
+	SetStepRate(stepsPerSecond);
+	TCNT1 = 0;
 	TCCR1A = 0x00;				// Generate no outputs 
 	TCCR1B = 0x09;				// No prescale, CTC mode, compare with OCR1A
+	BitSet(TIMSK1, OCIE1A);		// Enable OCR1A interrupt
 	}
 
 void CounterTimer1StepGenerator::SetStepRate(float stepsPerSecond)
 	{
-	auto counts = ComputeCountsFromStepsPerSecond(stepsPerSecond);
+	uint16_t counts = ComputeCountsFromStepsPerSecond(stepsPerSecond);
 	OCR1A = counts;
 	}
 
@@ -59,9 +59,9 @@ uint16_t CounterTimer1StepGenerator::ComputeCountsFromStepsPerSecond(float steps
 	return counts;
 	}
 
-ISR(TIMER0_COMPA_vect) 
+IStepSequencer *CounterTimer1StepGenerator::activeSequencer = NULL;
+
+ISR(TIMER1_COMPA_vect)
 	{
 	CounterTimer1StepGenerator::TimerCompareInterruptService();
 	}
-
-static IStepSequencer *CounterTimer1StepGenerator::activeSequencer = NULL;
