@@ -17,3 +17,8 @@
 #define BitClear(target,position)	target &= ~(bit(position))
 #define BitSet(target,position)		target |= bit(position)
 #define BitToggle(target,position)	target ^= bit(position)
+
+template <typename T> int sgn(T val) 
+	{
+	return (T(0) < val) - (val < T(0));
+	}

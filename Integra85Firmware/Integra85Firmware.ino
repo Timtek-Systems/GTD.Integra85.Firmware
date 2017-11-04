@@ -11,12 +11,13 @@ void setup()
 	auto stepGenerator = new CounterTimer1StepGenerator();
 	rotatorMotor = Motor(M2_STEP_PIN, M2_ENABLE_PIN, M2_DIRECTION_PIN, stepGenerator);
 	sei();
-	//rotatorMotor.MoveAtVelocity(16000);
+	rotatorMotor.MoveToPosition(100000);
 	}
 
 
 void loop() 
 	{
+	rotatorMotor.ComputeAcceleratedVelocity();
 	}
 
 
