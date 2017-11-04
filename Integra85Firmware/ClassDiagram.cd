@@ -6,6 +6,9 @@
       <HashCode>AAAAAAAAACAAAQEAAAAAAQABAQAAAAAAIAACAAAAAAA=</HashCode>
       <FileName>CounterTimer1StepGenerator.h</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="activeSequencer" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="IStepGenerator">
     <Position X="4.5" Y="2.25" Width="1.75" />
@@ -22,9 +25,9 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Motor">
-    <Position X="8.5" Y="5" Width="1.5" />
+    <Position X="8.5" Y="5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAIAAAAAIAgAAAAAAAQDAAAAAAgAIAAAAAAEIAA=</HashCode>
+      <HashCode>IAAEEAKAAAAAIIwgAACgADQDAAQASAwAIAFAAAAEKAA=</HashCode>
       <FileName>Motor.h</FileName>
     </TypeIdentifier>
   </Class>
