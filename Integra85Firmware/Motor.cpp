@@ -37,8 +37,8 @@ Motor::Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, IStepGene
 	currentVelocity = 0;
 	maxPosition = 200000;
 	maxSpeed = 16000;	// Dictated by physical constraints
-	minSpeed = 1000;		// Below this speed there is a risk of timer overflow
-	rampTime = 10.0;
+	minSpeed = 256;		// Below this speed there is a risk of timer overflow
+	rampTime = 0.5;
 	InitializeHardware();
 	}
 
@@ -185,10 +185,9 @@ void Motor::ComputeAcceleratedVelocity()
 	{
 	float accelerationCurve = AcceleratedVelocity();
 	float decelerationCurve = DeceleratedVelocity();
-	float theoreticalVelocity = (abs(accelerationCurve) > abs(decelerationCurve)) ? decelerationCurve : accelerationCurve;
-	float theoreticalSpeed = abs(theoreticalVelocity);
-	float constrainedSpeed = constrain(theoreticalSpeed, minSpeed, maxSpeed);
+	float computedSpeed = min(abs(accelerationCurve), abs(decelerationCurve));
+	float constrainedSpeed = constrain(computedSpeed, minSpeed, maxSpeed);
 	currentVelocity = constrainedSpeed * direction;
-	stepGenerator->SetStepRate(currentVelocity);
+	stepGenerator->SetStepRate(constrainedSpeed);	// Step rate must be positive
 	int thing = 0;
 	}

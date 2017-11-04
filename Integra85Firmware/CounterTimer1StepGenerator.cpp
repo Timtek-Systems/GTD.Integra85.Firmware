@@ -19,6 +19,7 @@ void CounterTimer1StepGenerator::Start(float stepsPerSecond, IStepSequencer *seq
 	{
 	activeSequencer = sequencer;
 	SetStepRate(stepsPerSecond);
+	OCR1A = nextCompareValue;
 	TCNT1 = 0;
 	TCCR1A = 0x00;				// Generate no outputs 
 	TCCR1B = 0x09;				// No prescale, CTC mode, compare with OCR1A
@@ -28,15 +29,16 @@ void CounterTimer1StepGenerator::Start(float stepsPerSecond, IStepSequencer *seq
 void CounterTimer1StepGenerator::SetStepRate(float stepsPerSecond)
 	{
 	uint16_t counts = ComputeCountsFromStepsPerSecond(stepsPerSecond);
-	OCR1A = counts;
+	//OCR1A = counts;
+	nextCompareValue = counts;
 	}
 
 void CounterTimer1StepGenerator::TimerCompareInterruptService()
 	{
 	static bool stepState = false;
 	stepState = !stepState;
-	activeSequencer->Step(stepState);
-	// Call the active motor class and tell it to make a step
+	activeSequencer->Step(stepState); // Instruct the active sequencer to make a step
+	OCR1A = nextCompareValue;	// load the next compare value, which could have been recomputed externally.
 	}
 
 void CounterTimer1StepGenerator::Initialize()
@@ -60,6 +62,7 @@ uint16_t CounterTimer1StepGenerator::ComputeCountsFromStepsPerSecond(float steps
 	}
 
 IStepSequencer *CounterTimer1StepGenerator::activeSequencer = NULL;
+uint16_t CounterTimer1StepGenerator::nextCompareValue = 65535;
 
 ISR(TIMER1_COMPA_vect)
 	{

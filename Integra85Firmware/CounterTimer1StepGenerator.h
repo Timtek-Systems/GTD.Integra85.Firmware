@@ -30,6 +30,7 @@ class CounterTimer1StepGenerator : public IStepGenerator
 
 	private:
 		static IStepSequencer *activeSequencer;
+		static uint16_t nextCompareValue;
 	};
 
 #endif
