@@ -11,8 +11,8 @@
 #define M2_DIRECTION_PIN			(4)
 #define M2_ENABLE_PIN				(12)
 //Software serial
-#define SW_RX						(2)
-#define SW_TX						(3)
+#define BluetoothRxPin				(2)
+#define BluetoothTxPin						(3)
 
 #define BitClear(target,position)	target &= ~(bit(position))
 #define BitSet(target,position)		target |= bit(position)

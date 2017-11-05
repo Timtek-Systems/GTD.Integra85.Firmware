@@ -10,6 +10,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 		Documents\Atmel-42735-8-bit-AVR-Microcontroller-ATmega328-328P_Datasheet.pdf = Documents\Atmel-42735-8-bit-AVR-Microcontroller-ATmega328-328P_Datasheet.pdf
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Git", "Git", "{66AF83BD-E5C7-46AD-9E50-CD03F53DDC97}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

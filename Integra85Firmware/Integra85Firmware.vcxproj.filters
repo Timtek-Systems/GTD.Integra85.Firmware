@@ -43,12 +43,24 @@
     <ClInclude Include="IStepSequencer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MovingAverage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ForceSensitiveResistor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Motor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CounterTimer1StepGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MovingAverage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ForceSensitiveResistor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
