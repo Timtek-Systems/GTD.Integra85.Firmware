@@ -57,7 +57,7 @@ void Motor::Step(bool state)
 	else
 		{
 		// Check hard limits on falling edge
-		if (currentPosition == targetPosition || currentPosition >= maxPosition || currentPosition <= 0)
+		if (currentPosition == targetPosition || currentPosition >= maxPosition || currentPosition == 0)
 			{
 			HardStop();
 			}
@@ -102,27 +102,43 @@ void Motor::SetRampTime(float seconds)
 */
 void Motor::MoveToPosition(uint32_t position)
 	{
-	uint32_t deltaPosition = position - currentPosition;
+	int32_t deltaPosition = position - currentPosition;
 	targetPosition = position;
 	direction = sgn(deltaPosition);
 	targetVelocity = maxSpeed * direction;
 	currentAcceleration = AccelerationFromRampTime() * direction;
-	startTime = millis();
 	EnergizeMotor();
+	startTime = millis();
 
 	if (abs(currentVelocity) < minSpeed)
 		{
 		// Starting from rest
 		startVelocity = minSpeed * direction;
 		currentVelocity = startVelocity;
-		stepGenerator->Start(abs(startVelocity), this);
+		stepGenerator->Start(minSpeed, this);
 		}
 	else
 		{
 		// Starting with the motor already in motion
 		startVelocity = currentVelocity;
-		stepGenerator->SetStepRate(startVelocity);
+		stepGenerator->SetStepRate(abs(startVelocity));
 		}
+	}
+
+/*
+	Gets the current motor velocity in steps per second.
+*/
+const float Motor::CurrentVelocity()
+	{
+	return currentVelocity;
+	}
+
+/*
+	Gets the current motor position in steps.
+*/
+const uint32_t Motor::CurrentPosition()
+	{
+	return currentPosition;
 	}
 
 /*
@@ -151,7 +167,7 @@ float Motor::AcceleratedVelocity()
 	Computes the maximum velocity that will still allow the motor to decelerate to minSpeed
 	before reaching the target position. We do this by computing what the velocity would have been
 	if we had started at the target position and accelerated back for n steps, then changing the sign of
-	that velocity to match the current dorection of travel.
+	that velocity to match the current direction of travel.
 	v² = u² + 2as
 	u² = minSpeed, a = |acceleration|, s = steps still to go
 	|v| = √(2as + u²) (positive root)
@@ -160,9 +176,10 @@ float Motor::DeceleratedVelocity()
 	{
 	uint32_t stepsRemaining = abs(targetPosition - currentPosition);
 	float uSquared = minSpeed * minSpeed;
-	float vSquared = uSquared + abs(2 * currentAcceleration * stepsRemaining);
+	float vSquared = uSquared + 2 * abs(currentAcceleration) * stepsRemaining;
 	float speed = sqrtf(vSquared);
 	float velocity = speed * direction;
+	int i = 0;
 	return velocity;
 	}
 
@@ -189,5 +206,4 @@ void Motor::ComputeAcceleratedVelocity()
 	float constrainedSpeed = constrain(computedSpeed, minSpeed, maxSpeed);
 	currentVelocity = constrainedSpeed * direction;
 	stepGenerator->SetStepRate(constrainedSpeed);	// Step rate must be positive
-	int thing = 0;
 	}
