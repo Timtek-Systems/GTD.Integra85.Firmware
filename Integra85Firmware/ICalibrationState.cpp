@@ -1,7 +1,2 @@
-// 
-// 
-// 
-
 #include "ICalibrationState.h"
-
 

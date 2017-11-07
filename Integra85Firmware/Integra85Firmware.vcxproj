@@ -87,9 +87,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CalibrationStateMachine.h" />
     <ClInclude Include="CounterTimer1StepGenerator.h" />
     <ClInclude Include="ForceSensitiveResistor.h" />
+    <ClInclude Include="ICalibrationState.h" />
+    <ClInclude Include="IdleCalibrationState.h" />
     <ClInclude Include="Integra85.h" />
+    <ClInclude Include="ISingleton.h" />
     <ClInclude Include="IStepGenerator.h" />
     <ClInclude Include="IStepSequencer.h" />
     <ClInclude Include="Motor.h" />
@@ -97,8 +101,11 @@
     <ClInclude Include="__vm\.Integra85Firmware.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CalibrationStateMachine.cpp" />
     <ClCompile Include="CounterTimer1StepGenerator.cpp" />
     <ClCompile Include="ForceSensitiveResistor.cpp" />
+    <ClCompile Include="ICalibrationState.cpp" />
+    <ClCompile Include="IdleCalibrationState.cpp" />
     <ClCompile Include="Motor.cpp" />
     <ClCompile Include="MovingAverage.cpp" />
   </ItemGroup>

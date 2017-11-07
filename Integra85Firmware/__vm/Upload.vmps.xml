@@ -84,6 +84,29 @@
           <MessageVariable Name="velocity" Index="5" />
         </MessageVariables>
       </BreakPoint>
+      <BreakPoint Index="4" Name="Integra85Firmware.ino, line 29" Id="fefe9723-66a4-489b-bcd9-3acea865ed56" Enabled="1" Message="{touchSensor.Value()}" MessageTextType="2" PreProcessedMessage="{0}" Condition="" ConditionType="1" CurrentHits="0" File="c:\users\tim\source\repos\integra85firmware\integra85firmware\integra85firmware.ino" FileLine="29" FileColumn="1" FunctionName="loop()" FunctionLineOffset="2" FunctionColumnOffset="1" HitCountTarget="500" HitCountType="4" Language="C++" LocationType="3" Tag="&lt;vmbp Id='fefe9723-66a4-489b-bcd9-3acea865ed56'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="0">
+        <Source>22		sei();
+23		}
+24	
+25	int counter = 0;
+26	
+27	void loop() 
+28		{
+--&gt;29		touchSensor.Loop();
+30		if (rotatorMotor.CurrentVelocity() != 0)
+31			rotatorMotor.ComputeAcceleratedVelocity();
+32		else
+33			{
+34			delay(2000);
+35			counter++;
+36			if (counter &lt; 5)
+37				{
+38				if (rotatorMotor.CurrentPosition() == 0)
+</Source>
+        <MessageVariables>
+          <MessageVariable Name="touchSensor.Value()" Index="1" />
+        </MessageVariables>
+      </BreakPoint>
     </BreakPoints>
   </Program>
 </VisualMicro>

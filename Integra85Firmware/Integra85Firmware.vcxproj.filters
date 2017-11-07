@@ -49,6 +49,18 @@
     <ClInclude Include="ForceSensitiveResistor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ICalibrationState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CalibrationStateMachine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IdleCalibrationState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ISingleton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Motor.cpp">
@@ -61,6 +73,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ForceSensitiveResistor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CalibrationStateMachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IdleCalibrationState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ICalibrationState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

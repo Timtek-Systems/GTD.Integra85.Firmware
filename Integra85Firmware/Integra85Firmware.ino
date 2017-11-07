@@ -1,3 +1,6 @@
+#include "ISingleton.h"
+#include "IdleCalibrationState.h"
+#include "CalibrationStateMachine.h"
 #include "ForceSensitiveResistor.h"
 #include "ICalibrationState.h"
 #include <SoftwareSerial.h>
@@ -10,6 +13,7 @@ auto focuserMotor = Motor(M1_STEP_PIN, M1_ENABLE_PIN, M1_DIRECTION_PIN, stepGene
 auto rotatorMotor = Motor(M2_STEP_PIN, M2_ENABLE_PIN, M2_DIRECTION_PIN, stepGenerator);
 auto touchSensor = ForceSensitiveResistor(TOUCH_SENSOR_CHANNEL);
 auto bluetooth = SoftwareSerial(BluetoothRxPin, BluetoothTxPin);
+auto calibrationStateMachine = CalibrationStateMachine(&focuserMotor, &touchSensor);
 
 void setup() 
 	{
@@ -27,6 +31,9 @@ int counter = 0;
 void loop() 
 	{
 	touchSensor.Loop();
+	calibrationStateMachine.Loop();
+
+#pragma region Throw-away code
 	if (rotatorMotor.CurrentVelocity() != 0)
 		rotatorMotor.ComputeAcceleratedVelocity();
 	else
@@ -41,6 +48,7 @@ void loop()
 				rotatorMotor.MoveToPosition(0);
 			}
 		}
+#pragma endregion
 	}
 
 

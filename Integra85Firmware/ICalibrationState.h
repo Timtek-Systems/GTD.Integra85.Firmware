@@ -9,6 +9,11 @@
 	#include "WProgram.h"
 #endif
 
+class ICalibrationState
+	{
+	public:
+		virtual void Loop() = 0;
+	};
 
 #endif
 
