@@ -1,12 +1,9 @@
-#include "ISingleton.h"
-#include "IdleCalibrationState.h"
-#include "CalibrationStateMachine.h"
-#include "ForceSensitiveResistor.h"
-#include "ICalibrationState.h"
 #include <SoftwareSerial.h>
+#include "Integra85.h"
+#include "ForceSensitiveResistor.h"
 #include "Motor.h"
 #include "CounterTimer1StepGenerator.h"
-#include "Integra85.h"
+#include "CalibrationStateMachine.h"
 
 auto stepGenerator = new CounterTimer1StepGenerator();
 auto focuserMotor = Motor(M1_STEP_PIN, M1_ENABLE_PIN, M1_DIRECTION_PIN, stepGenerator);
@@ -24,6 +21,7 @@ void setup()
 	focuserMotor.SetRampTime(0.5);
 	rotatorMotor.SetRampTime(0.5);
 	sei();
+	calibrationStateMachine.ChangeState(FindHomeCalibrationState::GetInstance());
 	}
 
 int counter = 0;
@@ -32,22 +30,27 @@ void loop()
 	{
 	touchSensor.Loop();
 	calibrationStateMachine.Loop();
-
-#pragma region Throw-away code
+	if (focuserMotor.CurrentVelocity() != 0)
+		focuserMotor.ComputeAcceleratedVelocity();
 	if (rotatorMotor.CurrentVelocity() != 0)
 		rotatorMotor.ComputeAcceleratedVelocity();
-	else
-		{
-		delay(2000);
-		counter++;
-		if (counter < 5)
-			{
-			if (rotatorMotor.CurrentPosition() == 0)
-				rotatorMotor.MoveToPosition(200000);
-			else
-				rotatorMotor.MoveToPosition(0);
-			}
-		}
+
+
+#pragma region Throw-away code
+	//if (rotatorMotor.CurrentVelocity() != 0)
+	//	rotatorMotor.ComputeAcceleratedVelocity();
+	//else
+	//	{
+	//	delay(2000);
+	//	counter++;
+	//	if (counter < 5)
+	//		{
+	//		if (rotatorMotor.CurrentPosition() == 0)
+	//			rotatorMotor.MoveToPosition(200000);
+	//		else
+	//			rotatorMotor.MoveToPosition(0);
+	//		}
+	//	}
 #pragma endregion
 	}
 

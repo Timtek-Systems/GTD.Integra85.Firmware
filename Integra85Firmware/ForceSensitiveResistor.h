@@ -19,7 +19,7 @@ class ForceSensitiveResistor
 	public:
 		ForceSensitiveResistor(uint8_t analogPin);
 		void Loop();
-		int Value();
+		int MovingAverage();
 	};
 
 #endif

@@ -81,7 +81,8 @@
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <None Include="Calibration State Machine.cd" />
+    <None Include="Step Generator and Sequencer.cd" />
     <None Include="Integra85Firmware.ino">
       <FileType>CppCode</FileType>
     </None>
@@ -90,8 +91,6 @@
     <ClInclude Include="CalibrationStateMachine.h" />
     <ClInclude Include="CounterTimer1StepGenerator.h" />
     <ClInclude Include="ForceSensitiveResistor.h" />
-    <ClInclude Include="ICalibrationState.h" />
-    <ClInclude Include="IdleCalibrationState.h" />
     <ClInclude Include="Integra85.h" />
     <ClInclude Include="ISingleton.h" />
     <ClInclude Include="IStepGenerator.h" />
@@ -101,10 +100,17 @@
     <ClInclude Include="__vm\.Integra85Firmware.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BacklOutSlowlyCalibrationState.cpp" />
     <ClCompile Include="CalibrationStateMachine.cpp" />
     <ClCompile Include="CounterTimer1StepGenerator.cpp" />
+    <ClCompile Include="DelayAfterBackOutCalibrationState.cpp" />
+    <ClCompile Include="DelayAfterFindHomeCalibrationState.cpp" />
+    <ClCompile Include="DelayAfterFindSoftLimitCalibrationState.cpp" />
+    <ClCompile Include="DelayBaseCalibrationState.cpp" />
+    <ClCompile Include="FindBacklashCalibrationState.cpp" />
+    <ClCompile Include="FindHomeCalibrationState.cpp" />
+    <ClCompile Include="FindSoftLimitCalibrationState.cpp" />
     <ClCompile Include="ForceSensitiveResistor.cpp" />
-    <ClCompile Include="ICalibrationState.cpp" />
     <ClCompile Include="IdleCalibrationState.cpp" />
     <ClCompile Include="Motor.cpp" />
     <ClCompile Include="MovingAverage.cpp" />

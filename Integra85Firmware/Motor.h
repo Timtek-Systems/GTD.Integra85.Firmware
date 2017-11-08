@@ -25,14 +25,16 @@ class Motor : public IStepSequencer
 		void HardStop();
 		void ComputeAcceleratedVelocity();
 		void MoveToPosition(uint32_t position);
+		void SetCurrentPosition(uint32_t position);
 		const float CurrentVelocity();
 		const uint32_t CurrentPosition();
+		const uint32_t MidpointPosition();
 
 	private:
 		uint8_t stepPin, enablePin, directionPin;
 		IStepGenerator *stepGenerator;
 		int8_t direction = +1;
-		int32_t currentPosition, targetPosition, maxPosition;
+		uint32_t currentPosition, targetPosition, maxPosition, midpointPosition;
 		unsigned long startTime;
 		float rampTime;
 		float startVelocity, currentVelocity, targetVelocity, currentAcceleration;
@@ -41,7 +43,6 @@ class Motor : public IStepSequencer
 		float AcceleratedVelocity();
 		float DeceleratedVelocity();
 		float AccelerationFromRampTime();
-
 	};
 
 #endif

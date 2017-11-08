@@ -20,7 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Integra85Firmware.ino" />
-    <None Include="ClassDiagram.cd">
+    <None Include="Step Generator and Sequencer.cd">
+      <Filter>Diagrams</Filter>
+    </None>
+    <None Include="Calibration State Machine.cd">
       <Filter>Diagrams</Filter>
     </None>
   </ItemGroup>
@@ -49,13 +52,7 @@
     <ClInclude Include="ForceSensitiveResistor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ICalibrationState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CalibrationStateMachine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IdleCalibrationState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ISingleton.h">
@@ -81,7 +78,28 @@
     <ClCompile Include="IdleCalibrationState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ICalibrationState.cpp">
+    <ClCompile Include="FindHomeCalibrationState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BacklOutSlowlyCalibrationState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DelayBaseCalibrationState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DelayAfterFindHomeCalibrationState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DelayAfterBackOutCalibrationState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FindSoftLimitCalibrationState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DelayAfterFindSoftLimitCalibrationState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FindBacklashCalibrationState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

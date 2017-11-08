@@ -2,11 +2,16 @@
 // 
 // 
 
-#include "IdleCalibrationState.h"
+#include "CalibrationStateMachine.h"
 
-void IdleCalibrationState::Loop()
+void IdleCalibrationState::Loop(CalibrationStateMachine& machine)
 	{
 	// Do nothing.
+	}
+
+IdleCalibrationState::IdleCalibrationState()
+	{
+	StateName = "Idle";
 	}
 
 ICalibrationState& IdleCalibrationState::GetInstance()

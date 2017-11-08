@@ -35,7 +35,8 @@ Motor::Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, IStepGene
 	stepGenerator = stepper;
 	currentPosition = 0;
 	currentVelocity = 0;
-	maxPosition = 200000;
+	maxPosition = MOTOR_STEP_LIMIT * MICROSTEPS_PER_STEP;
+	midpointPosition = maxPosition / 2;
 	maxSpeed = 16000;	// Dictated by physical constraints
 	minSpeed = 256;		// Below this speed there is a risk of timer overflow
 	rampTime = 0.5;
@@ -67,17 +68,24 @@ void Motor::Step(bool state)
 // Moves the motor with the specified velocity. Movement continues until stopped or a hard limit is reached.
 void Motor::MoveAtVelocity(float stepsPerSecond)
 	{
-	direction = stepsPerSecond < 0 ? -1 : +1;
 	auto absoluteStepsPerSecond = abs(stepsPerSecond);
+	direction = sgn(stepsPerSecond);
+	targetPosition = direction > 0 ? maxPosition : 0;
+	targetVelocity = stepsPerSecond;
+	currentAcceleration = AccelerationFromRampTime() * direction;
 	EnergizeMotor();
-	stepGenerator->Start(absoluteStepsPerSecond, this);
+	startTime = millis();
+	if (currentVelocity == 0)
+		stepGenerator->Start(absoluteStepsPerSecond, this);
+	else
+		stepGenerator->SetStepRate(absoluteStepsPerSecond);
 	}
 
 // Energizes the motor coils (applies holding torque) and prepares for stepping.
 void Motor::EnergizeMotor()
 	{
 	digitalWrite(stepPin, LOW);		// active high, so ensure we are not commanding a step.
-	digitalWrite(directionPin, direction >= 0 ? HIGH : LOW);
+	digitalWrite(directionPin, direction >= 0 ? LOW : HIGH);
 	digitalWrite(enablePin, LOW);	// Active low, so energize the coils.
 	}
 
@@ -126,6 +134,14 @@ void Motor::MoveToPosition(uint32_t position)
 	}
 
 /*
+	Sets the motor's current step position. This does not cause any movement.
+*/
+void Motor::SetCurrentPosition(uint32_t position)
+	{
+	currentPosition = position;
+	}
+
+/*
 	Gets the current motor velocity in steps per second.
 */
 const float Motor::CurrentVelocity()
@@ -139,6 +155,11 @@ const float Motor::CurrentVelocity()
 const uint32_t Motor::CurrentPosition()
 	{
 	return currentPosition;
+	}
+
+const uint32_t Motor::MidpointPosition()
+	{
+	return midpointPosition;
 	}
 
 /*
