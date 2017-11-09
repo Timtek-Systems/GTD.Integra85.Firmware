@@ -40,6 +40,7 @@ void FindSoftLimitCalibrationState::OnEnter(CalibrationStateMachine & machine)
 	machine.backlashMeasurement = 0;
 	machine.calibrationDistanceMovingIn = 0;
 	machine.calibrationDistanceMovingOut = 0;
+	machine.stepper->SetCurrentPosition(machine.stepper->MidpointPosition());
 	machine.stepper->MoveAtVelocity(-2880);
 	}
 

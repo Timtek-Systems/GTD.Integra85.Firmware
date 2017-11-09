@@ -18,6 +18,7 @@ void CounterTimer1StepGenerator::Stop()
 void CounterTimer1StepGenerator::Start(float stepsPerSecond, IStepSequencer *sequencer)
 	{
 	activeSequencer = sequencer;
+	stepState = false;
 	SetStepRate(stepsPerSecond);
 	OCR1A = nextCompareValue;
 	TCNT1 = 0;
@@ -35,7 +36,6 @@ void CounterTimer1StepGenerator::SetStepRate(float stepsPerSecond)
 
 void CounterTimer1StepGenerator::TimerCompareInterruptService()
 	{
-	static bool stepState = false;
 	stepState = !stepState;
 	activeSequencer->Step(stepState); // Instruct the active sequencer to make a step
 	OCR1A = nextCompareValue;	// load the next compare value, which could have been recomputed externally.
@@ -49,6 +49,7 @@ void CounterTimer1StepGenerator::Initialize()
 	OCR1A = 0xFF;
 	OCR1B = 0xFF;
 	TCCR1A = 0x00;				// Generate no outputs 
+	stepState = false;			// Ensure that we start on a rising edge.
 	}
 
 uint16_t CounterTimer1StepGenerator::ComputeCountsFromStepsPerSecond(float stepsPerSecond)
@@ -63,6 +64,8 @@ uint16_t CounterTimer1StepGenerator::ComputeCountsFromStepsPerSecond(float steps
 
 IStepSequencer *CounterTimer1StepGenerator::activeSequencer = NULL;
 uint16_t CounterTimer1StepGenerator::nextCompareValue = 65535;
+bool CounterTimer1StepGenerator::stepState = false;
+
 
 ISR(TIMER1_COMPA_vect)
 	{
