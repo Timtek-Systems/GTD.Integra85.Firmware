@@ -55,7 +55,7 @@
           <MessageVariable Name="focuserMotor.CurrentPosition()" Index="1" />
         </MessageVariables>
       </BreakPoint>
-      <BreakPoint Index="3" Name="CalibrationStateMachine.cpp, line 32" Id="7e39628b-5259-4c89-af51-0fd337aee872" Enabled="1" Message="{backlash}" MessageTextType="2" PreProcessedMessage="{0}" Condition="" ConditionType="1" CurrentHits="0" File="c:\users\tim\source\repos\integra85firmware\integra85firmware\calibrationstatemachine.cpp" FileLine="32" FileColumn="1" FunctionName="CalibrationComplete()" FunctionLineOffset="2" FunctionColumnOffset="1" HitCountTarget="1" HitCountType="1" Language="C++" LocationType="3" Tag="&lt;vmbp Id='7e39628b-5259-4c89-af51-0fd337aee872'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="1">
+      <BreakPoint Index="3" Name="CalibrationStateMachine.cpp, line 32" Id="7e39628b-5259-4c89-af51-0fd337aee872" Enabled="1" Message="{backlash}" MessageTextType="2" PreProcessedMessage="{0}" Condition="" ConditionType="1" CurrentHits="0" File="c:\users\tim\source\repos\integra85firmware\integra85firmware\calibrationstatemachine.cpp" FileLine="32" FileColumn="1" FunctionName="CalibrationComplete()" FunctionLineOffset="2" FunctionColumnOffset="1" HitCountTarget="1" HitCountType="1" Language="C++" LocationType="3" Tag="&lt;vmbp Id='7e39628b-5259-4c89-af51-0fd337aee872'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="0">
         <Source>25		currentState-&gt;OnExit(*this);
 26		newState.OnEnter(*this);
 27		currentState = &amp;newState;

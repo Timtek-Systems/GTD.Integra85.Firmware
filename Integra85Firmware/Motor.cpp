@@ -27,7 +27,7 @@ void Motor::InitializeHardware()
 Motor::Motor() {}
 
 // Creates a new motor instance with the specified I/O pins and step generator.
-Motor::Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, IStepGenerator *stepper)
+Motor::Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, uint32_t limitOfTravel, IStepGenerator *stepper)
 	{
 	this->stepPin = stepPin;
 	this->enablePin = enablePin;
@@ -35,7 +35,7 @@ Motor::Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, IStepGene
 	stepGenerator = stepper;
 	currentPosition = 0;
 	currentVelocity = 0;
-	maxPosition = 3200000;
+	maxPosition = limitOfTravel;
 	midpointPosition = maxPosition / 2;
 	maxSpeed = 16000;	// Dictated by physical constraints
 	minSpeed = 245;		// Below this speed there is a risk of timer overflow
