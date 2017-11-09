@@ -35,10 +35,10 @@ Motor::Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, IStepGene
 	stepGenerator = stepper;
 	currentPosition = 0;
 	currentVelocity = 0;
-	maxPosition = MOTOR_STEP_LIMIT * MICROSTEPS_PER_STEP;
+	maxPosition = 3200000;
 	midpointPosition = maxPosition / 2;
 	maxSpeed = 16000;	// Dictated by physical constraints
-	minSpeed = 256;		// Below this speed there is a risk of timer overflow
+	minSpeed = 245;		// Below this speed there is a risk of timer overflow
 	rampTime = 0.5;
 	InitializeHardware();
 	}

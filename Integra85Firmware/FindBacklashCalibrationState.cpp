@@ -30,8 +30,7 @@ void FindBacklashCalibrationState::Loop(CalibrationStateMachine & machine)
 		machine.stepper->HardStop();
 		machine.calibrationDistanceMovingOut = softLimitPosition;
 		machine.stepper->SetCurrentPosition(0);	// We are now at the "hard stop" position.
-		machine.ChangeState(IdleCalibrationState::GetInstance());
-		machine.CalibrationComplete();
+		machine.ChangeState(FindMidpointCalibrationState::GetInstance());
 		}
 	}
 

@@ -102,5 +102,8 @@
     <ClCompile Include="FindBacklashCalibrationState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FindMidpointCalibrationState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

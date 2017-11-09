@@ -32,6 +32,7 @@ class CalibrationStateMachine
 		friend class BackOutCalibrationState;
 		friend class FindSoftLimitCalibrationState;
 		friend class FindBacklashCalibrationState;
+		friend class FindMidpointCalibrationState;
 	};
 
 class ICalibrationState
@@ -140,6 +141,17 @@ class FindBacklashCalibrationState : public ICalibrationState
 	private:
 		uint32_t softLimitPosition;
 		FindBacklashCalibrationState();
+	};
+
+class FindMidpointCalibrationState : public ICalibrationState
+	{
+	public:
+		static ICalibrationState & GetInstance();
+		// Inherited via ICalibrationState
+		virtual void Loop(CalibrationStateMachine & machine) final;
+		virtual void OnEnter(CalibrationStateMachine& machine) final;
+	private:
+		FindMidpointCalibrationState();
 	};
 
 

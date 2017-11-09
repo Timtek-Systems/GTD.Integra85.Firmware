@@ -109,6 +109,7 @@
     <ClCompile Include="DelayBaseCalibrationState.cpp" />
     <ClCompile Include="FindBacklashCalibrationState.cpp" />
     <ClCompile Include="FindHomeCalibrationState.cpp" />
+    <ClCompile Include="FindMidpointCalibrationState.cpp" />
     <ClCompile Include="FindSoftLimitCalibrationState.cpp" />
     <ClCompile Include="ForceSensitiveResistor.cpp" />
     <ClCompile Include="IdleCalibrationState.cpp" />
