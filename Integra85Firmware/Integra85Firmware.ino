@@ -4,6 +4,12 @@
 #include "Motor.h"
 #include "CounterTimer1StepGenerator.h"
 #include "CalibrationStateMachine.h"
+#include "CommandProcessor.h"
+
+/*
+	Composition root - most of the system's runtime objects should be created here.
+	Avoid using new and delete to dynamically allocate and free memory.
+*/
 
 auto stepGenerator = new CounterTimer1StepGenerator();
 auto focuserMotor = Motor(M1_STEP_PIN, M1_ENABLE_PIN, M1_DIRECTION_PIN, M1_MAX_POSITION, stepGenerator );
@@ -11,9 +17,11 @@ auto rotatorMotor = Motor(M2_STEP_PIN, M2_ENABLE_PIN, M2_DIRECTION_PIN, M2_MAX_P
 auto touchSensor = ForceSensitiveResistor(TOUCH_SENSOR_CHANNEL);
 auto bluetooth = SoftwareSerial(BluetoothRxPin, BluetoothTxPin);
 auto calibrationStateMachine = CalibrationStateMachine(&focuserMotor, &touchSensor);
+auto dispatcher = CommandDispatcher();
 
 void setup() 
 	{
+	RegisterCommandTargets();
 	Serial.begin(115200);
 	bluetooth.begin(9600);
 	focuserMotor.ReleaseMotor();
@@ -52,6 +60,12 @@ void loop()
 	//		}
 	//	}
 #pragma endregion
+	}
+
+void RegisterCommandTargets()
+	{
+	auto focuser = FocuserCommandTarget('1', focuserMotor);
+	dispatcher.RegisterCommandTarget(focuser);
 	}
 
 
