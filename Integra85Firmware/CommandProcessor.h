@@ -14,10 +14,12 @@ typedef char * Response;
 class ICommandProcessor
 	{
 	public:
-		char DeviceAddress();
+		char DeviceAddress() { return deviceAddress; }
+		char Verb() { return commandVerb; };
 		virtual Response Execute(Command& command) = 0;
 	protected:
 		char deviceAddress;
+		char commandVerb;
 	};
 
 class ICommandTarget
@@ -26,6 +28,14 @@ class ICommandTarget
 		virtual std::vector<ICommandProcessor *>& GetCommandProcessors() = 0;
 	protected:
 		std::vector<ICommandProcessor *> commandProcessors;
+		char deviceAddress;
+	};
+
+class InvalidCommandProcessor : public ICommandProcessor
+	{
+	public:
+		InvalidCommandProcessor() {};
+		virtual Response Execute(Command& command) final { return ""; };
 	};
 
 class CommandDispatcher
@@ -36,16 +46,7 @@ class CommandDispatcher
 		static void RegisterCommandTarget(ICommandTarget& target);
 	private:
 		static std::vector<ICommandProcessor *> processors;
-	};
-
-class FocuserCommandTarget : public ICommandTarget
-	{
-	public:
-		FocuserCommandTarget(char address, Motor& motor);
-		// Inherited via ICommandTarget
-		virtual std::vector<ICommandProcessor *>& GetCommandProcessors() override;
-	private:
-		char deviceAddress;
+		static InvalidCommandProcessor invalidCommand;
 	};
 
 class MoveToPositionCommandProcessor : public ICommandProcessor
@@ -55,4 +56,24 @@ class MoveToPositionCommandProcessor : public ICommandProcessor
 		virtual Response Execute(Command& command) override;
 	private:
 		Motor motor;
+	};
+
+class FocuserCommandTarget : public ICommandTarget
+	{
+	public:
+		FocuserCommandTarget(char address, Motor& motor);
+		// Inherited via ICommandTarget
+		virtual std::vector<ICommandProcessor *>& GetCommandProcessors() override;
+	private:
+		MoveToPositionCommandProcessor *moveToPosition;
+	};
+
+class RotatorCommandTarget : public ICommandTarget
+	{
+	public:
+		RotatorCommandTarget(char address, Motor& motor);
+		// Inherited via ICommandTarget
+		virtual std::vector<ICommandProcessor *>& GetCommandProcessors() override;
+	private:
+		char deviceAddress;
 	};

@@ -18,6 +18,9 @@ auto touchSensor = ForceSensitiveResistor(TOUCH_SENSOR_CHANNEL);
 auto bluetooth = SoftwareSerial(BluetoothRxPin, BluetoothTxPin);
 auto calibrationStateMachine = CalibrationStateMachine(&focuserMotor, &touchSensor);
 auto dispatcher = CommandDispatcher();
+auto focuser = FocuserCommandTarget('1', focuserMotor);
+//auto rotator = RotatorCommandTarget('2', rotatorMotor);
+Command command;
 
 void setup() 
 	{
@@ -29,7 +32,12 @@ void setup()
 	focuserMotor.SetRampTime(0.5);
 	rotatorMotor.SetRampTime(0.5);
 	sei();
-	calibrationStateMachine.ChangeState(FindHomeCalibrationState::GetInstance());
+	//calibrationStateMachine.ChangeState(FindHomeCalibrationState::GetInstance());
+	focuserMotor.SetCurrentPosition(MOTOR_STEP_MIDPOINT);
+	command.Position = M1_MAX_POSITION;
+	command.TargetDevice = '1';
+	command.Verb = 'M';
+	dispatcher.Dispatch(command);
 	}
 
 int counter = 0;
@@ -64,7 +72,6 @@ void loop()
 
 void RegisterCommandTargets()
 	{
-	auto focuser = FocuserCommandTarget('1', focuserMotor);
 	dispatcher.RegisterCommandTarget(focuser);
 	}
 

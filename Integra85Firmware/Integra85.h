@@ -28,6 +28,10 @@
 #define MOTOR_STEP_LIMIT			(200000)
 #define MOTOR_STEP_MIDPOINT			(MOTOR_STEP_LIMIT / 2)
 
+// Error codes
+
+#define ERROR_NO_COMMAND_PROCESSOR	(1); 
+
 #define BitClear(target,position)	target &= ~(bit(position))
 #define BitSet(target,position)		target |= bit(position)
 #define BitToggle(target,position)	target ^= bit(position)

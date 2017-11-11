@@ -2,6 +2,7 @@
 #include "CommandProcessor.h"
 
 std::vector<ICommandProcessor *> CommandDispatcher::processors;
+InvalidCommandProcessor CommandDispatcher::invalidCommand = InvalidCommandProcessor();
 
 void CommandDispatcher::RegisterCommandTarget(ICommandTarget& target)
 	{
@@ -15,15 +16,24 @@ void CommandDispatcher::RegisterCommandTarget(ICommandTarget& target)
 
 Response CommandDispatcher::Dispatch(Command & command)
 	{
-	return "dummy response";
+	auto &processor = GetCommandProcessorForCommand(command);
+	if (&processor == &invalidCommand)
+		return "Bad command";
+	auto response = processor.Execute(command);
+	return response;
 	}
 
 ICommandProcessor& CommandDispatcher::GetCommandProcessorForCommand(Command & command)
 	{
 	for (std::vector<ICommandProcessor*>::iterator item = processors.begin(); item != processors.end(); ++item)
 		{
-		// ToDo: work in progress
+		auto processor = *item;
+		if (processor->DeviceAddress() != command.TargetDevice)
+			continue;
+		if (processor->Verb() == command.Verb)
+			return *processor;
 		}
+	return ;
 	}
 
 /***

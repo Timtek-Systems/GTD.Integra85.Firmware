@@ -1,46 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="ICommandProcessor">
-    <Position X="3.75" Y="2.75" Width="1.75" />
+    <Position X="4.5" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
       <FileName>CommandProcessor.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ICommandTarget">
-    <Position X="1" Y="0.5" Width="2" />
+    <Position X="8.25" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>CommandProcessor.h</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="commandProcessors" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="CommandDispatcher">
+    <Position X="0.5" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAgAAAAAAAAAQAAAAAAAAAIA=</HashCode>
+      <FileName>CommandProcessor.h</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="processors" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="RotatorCommandTarget">
+    <Position X="11" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAgAAAAAAAAAABAA=</HashCode>
       <FileName>CommandProcessor.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CommandDispatcher">
-    <Position X="6.25" Y="0.5" Width="2.75" />
+  <Class Name="MoveToPositionCommandProcessor">
+    <Position X="4" Y="3.25" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAIA=</HashCode>
+      <HashCode>AgAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>CommandProcessor.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FocuserCommandTarget">
-    <Position X="1" Y="2.75" Width="2" />
+    <Position X="8.25" Y="2.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAABAA=</HashCode>
       <FileName>CommandProcessor.h</FileName>
     </TypeIdentifier>
   </Class>
   <Struct Name="Command">
-    <Position X="6.25" Y="3" Width="1.5" />
+    <Position X="0.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AIAAAAAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>CommandProcessor.h</FileName>
     </TypeIdentifier>
   </Struct>
-  <Struct Name="Response">
-    <Position X="8.25" Y="3" Width="1.5" />
+  <Typedef Name="Response" Collapsed="true">
+    <Position X="0.5" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>CommandProcessor.h</FileName>
     </TypeIdentifier>
-  </Struct>
+  </Typedef>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
