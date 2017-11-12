@@ -19,8 +19,7 @@ Response CommandDispatcher::Dispatch(Command & command)
 	auto &processor = GetCommandProcessorForCommand(command);
 	if (&processor == &invalidCommand)
 		return "Bad command";
-	auto response = processor.Execute(command);
-	return response;
+	return processor.Execute(command);;
 	}
 
 ICommandProcessor& CommandDispatcher::GetCommandProcessorForCommand(Command & command)
@@ -28,6 +27,10 @@ ICommandProcessor& CommandDispatcher::GetCommandProcessorForCommand(Command & co
 	for (std::vector<ICommandProcessor*>::iterator item = processors.begin(); item != processors.end(); ++item)
 		{
 		auto processor = *item;
+		Serial.print("Processor: DeviceAddress=");
+		Serial.print(processor->DeviceAddress());
+		Serial.print(", Verb=");
+		Serial.println(processor->Verb());
 		if (processor->DeviceAddress() != command.TargetDevice)
 			continue;
 		if (processor->Verb() == command.Verb)

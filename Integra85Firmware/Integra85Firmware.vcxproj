@@ -126,7 +126,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties debug.view.DigitalPins="" />
+      <UserProperties debug.view.FreeMemory="1" debug.view.DigitalPins="" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

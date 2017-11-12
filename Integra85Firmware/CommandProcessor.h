@@ -52,6 +52,7 @@ class CommandDispatcher
 class MoveToPositionCommandProcessor : public ICommandProcessor
 	{
 	public:
+		MoveToPositionCommandProcessor() {};
 		MoveToPositionCommandProcessor(char deviceAddress, Motor& motor);
 		virtual Response Execute(Command& command) override;
 	private:
@@ -65,7 +66,7 @@ class FocuserCommandTarget : public ICommandTarget
 		// Inherited via ICommandTarget
 		virtual std::vector<ICommandProcessor *>& GetCommandProcessors() override;
 	private:
-		MoveToPositionCommandProcessor *moveToPosition;
+		static MoveToPositionCommandProcessor moveToPosition;
 	};
 
 class RotatorCommandTarget : public ICommandTarget

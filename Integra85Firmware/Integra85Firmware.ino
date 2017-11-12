@@ -32,12 +32,13 @@ void setup()
 	focuserMotor.SetRampTime(0.5);
 	rotatorMotor.SetRampTime(0.5);
 	sei();
-	//calibrationStateMachine.ChangeState(FindHomeCalibrationState::GetInstance());
-	focuserMotor.SetCurrentPosition(MOTOR_STEP_MIDPOINT);
-	command.Position = M1_MAX_POSITION;
-	command.TargetDevice = '1';
-	command.Verb = 'M';
-	dispatcher.Dispatch(command);
+	calibrationStateMachine.ChangeState(FindHomeCalibrationState::GetInstance());
+	//focuserMotor.SetCurrentPosition(MOTOR_STEP_MIDPOINT);
+	//command.Position = M1_MAX_POSITION;
+	//command.TargetDevice = '1';
+	//command.Verb = 'M';
+	//auto response = dispatcher.Dispatch(command);
+	//auto length = strlen(response);
 	}
 
 int counter = 0;
@@ -50,24 +51,6 @@ void loop()
 		focuserMotor.ComputeAcceleratedVelocity();
 	if (rotatorMotor.CurrentVelocity() != 0)
 		rotatorMotor.ComputeAcceleratedVelocity();
-
-
-#pragma region Throw-away code
-	//if (rotatorMotor.CurrentVelocity() != 0)
-	//	rotatorMotor.ComputeAcceleratedVelocity();
-	//else
-	//	{
-	//	delay(2000);
-	//	counter++;
-	//	if (counter < 5)
-	//		{
-	//		if (rotatorMotor.CurrentPosition() == 0)
-	//			rotatorMotor.MoveToPosition(200000);
-	//		else
-	//			rotatorMotor.MoveToPosition(0);
-	//		}
-	//	}
-#pragma endregion
 	}
 
 void RegisterCommandTargets()
