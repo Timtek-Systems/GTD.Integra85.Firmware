@@ -2,6 +2,7 @@
 #include <ArduinoSTL.h>
 #include "Integra85.h"
 #include "Motor.h"
+#include "CalibrationStateMachine.h"
 
 struct Command
 	{
@@ -12,7 +13,7 @@ struct Command
 
 struct Response
 	{
-	char *Message;
+	String Message;
 	static Response BadCommand() 
 		{
 		return Response{ "Bad command" };
@@ -24,6 +25,12 @@ struct Response
 	static Response Fail() 
 		{
 		return Response{ "0" };
+		}
+	static Response FromSuccessfulCommand(Command& command)
+		{
+		auto message = command.Verb;
+		message.concat('#');
+		return Response{ message };
 		}
 	};
 
@@ -95,10 +102,20 @@ class SetRampTimeCommandProcessor : public ICommandProcessor
 		Motor *motor;
 	};
 
+class CalibrateStartCommandProcessor : public ICommandProcessor
+	{
+	public:
+		CalibrateStartCommandProcessor(char targetDevice, Motor & motor, CalibrationStateMachine & stateMachine);
+		virtual Response Execute(Command& command) override;
+	private:
+		Motor *motor;
+		CalibrationStateMachine *calibrator;
+	};
+
 class FocuserCommandTarget : public ICommandTarget
 	{
 	public:
-		FocuserCommandTarget(char address, Motor& motor);
+		FocuserCommandTarget(char address, Motor& motor, CalibrationStateMachine& calibrator);
 		// Inherited via ICommandTarget
 		virtual std::vector<ICommandProcessor *>& GetCommandProcessors() override;
 	};

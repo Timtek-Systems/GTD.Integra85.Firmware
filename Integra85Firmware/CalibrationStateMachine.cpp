@@ -16,6 +16,11 @@ void CalibrationStateMachine::Loop()
 	currentState->Loop(*this);
 	}
 
+void CalibrationStateMachine::StartCalibration()
+	{
+	currentState->StartCalibration(*this);
+	}
+
 void CalibrationStateMachine::ChangeState(ICalibrationState& newState)
 	{
 	Serial.print("Changing state: ");

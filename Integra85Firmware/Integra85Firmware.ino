@@ -18,7 +18,7 @@ auto touchSensor = ForceSensitiveResistor(TOUCH_SENSOR_CHANNEL);
 auto bluetooth = SoftwareSerial(BluetoothRxPin, BluetoothTxPin);
 auto calibrationStateMachine = CalibrationStateMachine(&focuserMotor, &touchSensor);
 auto dispatcher = CommandDispatcher();
-auto focuser = FocuserCommandTarget('1', focuserMotor);
+auto focuser = FocuserCommandTarget('1', focuserMotor, calibrationStateMachine);
 auto rotator = RotatorCommandTarget('2', rotatorMotor);
 Command command;
 

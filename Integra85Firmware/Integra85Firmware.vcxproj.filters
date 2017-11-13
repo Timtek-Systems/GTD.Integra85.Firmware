@@ -132,5 +132,8 @@
     <ClCompile Include="SetRampTimeCommandProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CalibrateStartCommandProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
