@@ -81,9 +81,10 @@ void HandleSerialCommunications()
 			rxIndex = 0;
 			break;
 		default:	// collect received characters into the command buffer
-			if (rxIndex < RX_BUFFER_SIZE)
+			if (rxIndex < (RX_BUFFER_SIZE-1))	// Allow room for null terminator
 				{
 				rxBuffer[rxIndex++] = rxChar;
+				rxBuffer[rxIndex] = '\0';	// Ensure that the buffer is always null-terminated.
 				}
 			break;
 		}
@@ -100,7 +101,7 @@ Response DispatchCommand(char *buffer, unsigned int charCount)
 	command.StepPosition = 0;
 	if (charCount > 4 && buffer[3] == ',')
 		{
-		auto wholeSteps = std::atoi(buffer + 4);
+		auto wholeSteps = std::strtoul(buffer+4, NULL, 10);
 		auto microSteps = wholeSteps * MICROSTEPS_PER_STEP;
 		command.StepPosition = microSteps;
 		}
