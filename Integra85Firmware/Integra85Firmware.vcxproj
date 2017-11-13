@@ -123,6 +123,7 @@
     <ClCompile Include="MoveInCommandProcessor.cpp" />
     <ClCompile Include="MovingAverage.cpp" />
     <ClCompile Include="RotatorCommandTarget.cpp" />
+    <ClCompile Include="SetRampTimeCommandProcessor.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -129,5 +129,8 @@
     <ClCompile Include="MoveInCommandProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SetRampTimeCommandProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

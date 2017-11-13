@@ -9,8 +9,11 @@ MoveInCommandProcessor::MoveInCommandProcessor(char address, Motor& motor)
 
 Response MoveInCommandProcessor::Execute(Command & command)
 	{
-	auto targetPosition = motor->CurrentPosition() - command.StepPosition;
-	if (targetPosition < 0) return Response::Fail();
+	// Commands are in whole steps, motors operate in microsteps, so we must convert.
+	auto microStepsToMove = command.StepPosition * MICROSTEPS_PER_STEP;
+	auto targetPosition = motor->CurrentPosition() - microStepsToMove;
+	if (targetPosition < 0) 
+		return Response::Fail();
 	motor->MoveToPosition(targetPosition);
 	return Response::Ok();
 	}

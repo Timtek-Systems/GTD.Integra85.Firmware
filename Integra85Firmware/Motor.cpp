@@ -195,16 +195,21 @@ float Motor::AcceleratedVelocity()
 	if we had started at the target position and accelerated back for n steps, then changing the sign of
 	that velocity to match the current direction of travel.
 	v² = u² + 2as
-	u² = minSpeed, a = |acceleration|, s = steps still to go
-	|v| = √(2as + u²) (positive root)
+	u = minSpeed, a = |acceleration|, s = steps still to go
+	|v| = √(u² + 2as) (positive root)
+	maximum velocity = v * direction
 */
 float Motor::DeceleratedVelocity()
 	{
-	uint32_t stepsRemaining = abs(targetPosition - currentPosition);
-	float uSquared = minSpeed * minSpeed;
-	float vSquared = uSquared + 2 * abs(currentAcceleration) * stepsRemaining;
-	float speed = sqrtf(vSquared);
-	float velocity = speed * direction;
+	auto current = (int32_t)currentPosition;
+	auto target = (int32_t)targetPosition;
+	int32_t deltaSteps = target - current;
+	uint32_t stepsToGo = abs(deltaSteps);
+	auto acceleration = fabs(currentAcceleration);
+	auto uSquared = minSpeed * minSpeed;
+	auto vSquared = uSquared + 2.0 * acceleration * stepsToGo;
+	auto speed = sqrt(vSquared);
+	auto velocity = speed * direction;
 	int i = 0;
 	return velocity;
 	}

@@ -1,5 +1,6 @@
 #pragma once
 #include <ArduinoSTL.h>
+#include "Integra85.h"
 #include "Motor.h"
 
 struct Command
@@ -79,6 +80,16 @@ class MoveOutCommandProcessor : public ICommandProcessor
 	public:
 		MoveOutCommandProcessor() {};
 		MoveOutCommandProcessor(char deviceAddress, Motor& motor);
+		virtual Response Execute(Command& command) override;
+	private:
+		Motor *motor;
+	};
+
+class SetRampTimeCommandProcessor : public ICommandProcessor
+	{
+	public:
+		SetRampTimeCommandProcessor() {};
+		SetRampTimeCommandProcessor(char deviceAddress, Motor& motor);
 		virtual Response Execute(Command& command) override;
 	private:
 		Motor *motor;

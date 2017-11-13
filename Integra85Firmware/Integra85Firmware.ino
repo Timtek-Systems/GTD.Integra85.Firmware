@@ -102,8 +102,7 @@ Response DispatchCommand(char *buffer, unsigned int charCount)
 	if (charCount > 4 && buffer[3] == ',')
 		{
 		auto wholeSteps = std::strtoul(buffer+4, NULL, 10);
-		auto microSteps = wholeSteps * MICROSTEPS_PER_STEP;
-		command.StepPosition = microSteps;
+		command.StepPosition = wholeSteps;
 		}
 	auto response = dispatcher.Dispatch(command);
 	return response;
