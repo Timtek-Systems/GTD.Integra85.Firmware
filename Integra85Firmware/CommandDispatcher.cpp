@@ -37,7 +37,7 @@ ICommandProcessor& CommandDispatcher::GetCommandProcessorForCommand(Command & co
 		if (processor->Verb() == command.Verb)
 			return *processor;
 		}
-	return ;
+	return invalidCommand;
 	}
 
 /***

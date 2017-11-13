@@ -4,13 +4,11 @@
 	FocuserCommandTarget::FocuserCommandTarget(char deviceAddress, Motor& motor)
 		{
 		this->deviceAddress = deviceAddress;
-		moveToPosition = MoveToPositionCommandProcessor(deviceAddress, motor);
-		commandProcessors.push_back(&moveToPosition);
+		commandProcessors.push_back(new MoveInCommandProcessor(deviceAddress, motor));
+		commandProcessors.push_back(new MoveOutCommandProcessor(deviceAddress, motor));
 		}
 
 	std::vector<ICommandProcessor *>& FocuserCommandTarget::GetCommandProcessors()
 		{
 		return commandProcessors;
 		}
-
-	MoveToPositionCommandProcessor FocuserCommandTarget::moveToPosition;

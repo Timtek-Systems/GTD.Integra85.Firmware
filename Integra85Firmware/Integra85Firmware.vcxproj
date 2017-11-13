@@ -119,8 +119,10 @@
     <ClCompile Include="IdleCalibrationState.cpp" />
     <ClCompile Include="InvalidCommandProcessor.cpp" />
     <ClCompile Include="Motor.cpp" />
-    <ClCompile Include="MoveToPositionCommandProcessor.cpp" />
+    <ClCompile Include="MoveOutCommandProcessor.cpp" />
+    <ClCompile Include="MoveInCommandProcessor.cpp" />
     <ClCompile Include="MovingAverage.cpp" />
+    <ClCompile Include="RotatorCommandTarget.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -4,9 +4,9 @@
 
 struct Command
 	{
-	char Verb;
+	String Verb;
 	char TargetDevice;
-	uint32_t Position;	// Target step position for a move command
+	uint32_t StepPosition;	// Target step position for a move command
 	};
 
 struct Response
@@ -30,11 +30,11 @@ class ICommandProcessor
 	{
 	public:
 		char DeviceAddress() { return deviceAddress; }
-		char Verb() { return commandVerb; };
+		String Verb() { return commandVerb; };
 		virtual Response Execute(Command& command) = 0;
 	protected:
 		char deviceAddress;
-		char commandVerb;
+		String commandVerb;
 	};
 
 class ICommandTarget
@@ -64,11 +64,21 @@ class CommandDispatcher
 		static InvalidCommandProcessor invalidCommand;
 	};
 
-class MoveToPositionCommandProcessor : public ICommandProcessor
+class MoveInCommandProcessor : public ICommandProcessor
 	{
 	public:
-		MoveToPositionCommandProcessor() {};
-		MoveToPositionCommandProcessor(char deviceAddress, Motor& motor);
+		MoveInCommandProcessor() {};
+		MoveInCommandProcessor(char deviceAddress, Motor& motor);
+		virtual Response Execute(Command& command) override;
+	private:
+		Motor *motor;
+	};
+
+class MoveOutCommandProcessor : public ICommandProcessor
+	{
+	public:
+		MoveOutCommandProcessor() {};
+		MoveOutCommandProcessor(char deviceAddress, Motor& motor);
 		virtual Response Execute(Command& command) override;
 	private:
 		Motor *motor;
@@ -80,8 +90,6 @@ class FocuserCommandTarget : public ICommandTarget
 		FocuserCommandTarget(char address, Motor& motor);
 		// Inherited via ICommandTarget
 		virtual std::vector<ICommandProcessor *>& GetCommandProcessors() override;
-	private:
-		static MoveToPositionCommandProcessor moveToPosition;
 	};
 
 class RotatorCommandTarget : public ICommandTarget
@@ -90,6 +98,5 @@ class RotatorCommandTarget : public ICommandTarget
 		RotatorCommandTarget(char address, Motor& motor);
 		// Inherited via ICommandTarget
 		virtual std::vector<ICommandProcessor *>& GetCommandProcessors() override;
-	private:
-		char deviceAddress;
 	};
+

@@ -29,6 +29,7 @@ class Motor : public IStepSequencer
 		const float CurrentVelocity();
 		const uint32_t CurrentPosition();
 		const uint32_t MidpointPosition();
+		const uint32_t LimitOfTravel();
 
 	private:
 		uint8_t stepPin, enablePin, directionPin;

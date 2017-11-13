@@ -19,7 +19,7 @@ auto bluetooth = SoftwareSerial(BluetoothRxPin, BluetoothTxPin);
 auto calibrationStateMachine = CalibrationStateMachine(&focuserMotor, &touchSensor);
 auto dispatcher = CommandDispatcher();
 auto focuser = FocuserCommandTarget('1', focuserMotor);
-//auto rotator = RotatorCommandTarget('2', rotatorMotor);
+auto rotator = RotatorCommandTarget('2', rotatorMotor);
 Command command;
 
 void setup() 
@@ -32,19 +32,14 @@ void setup()
 	focuserMotor.SetRampTime(0.5);
 	rotatorMotor.SetRampTime(0.5);
 	sei();
-	//calibrationStateMachine.ChangeState(FindHomeCalibrationState::GetInstance());
-	focuserMotor.SetCurrentPosition(MOTOR_STEP_MIDPOINT);
-	command.Position = M1_MAX_POSITION;
-	command.TargetDevice = '1';
-	command.Verb = 'M';
-	auto response = dispatcher.Dispatch(command);
-	auto length = strlen(response.Message);
 	}
 
 int counter = 0;
 
 void loop() 
 	{
+	HandleSerialCommunications();
+	HandleBluetoothCommunications();
 	touchSensor.Loop();
 	calibrationStateMachine.Loop();
 	if (focuserMotor.CurrentVelocity() != 0)
@@ -56,6 +51,66 @@ void loop()
 void RegisterCommandTargets()
 	{
 	dispatcher.RegisterCommandTarget(focuser);
+	dispatcher.RegisterCommandTarget(rotator);
+	}
+
+void HandleSerialCommunications()
+	{
+#define RX_BUFFER_SIZE	(16)
+	static char rxBuffer[RX_BUFFER_SIZE];
+	static unsigned int rxIndex = 0;
+
+	if (Serial.available() <= 0)
+		return;	// No data available.
+	auto rx = Serial.read();
+	if (rx < 0)
+		return;	// No data available.
+	char rxChar = (char)rx;
+	switch (rx)
+		{
+		case '@':	// Start of new command
+			rxIndex = 0;
+			break;
+		case '\n':	// newline - dispatch the command
+		case '\r':	// carriage return - dispatch the command
+			if (rxIndex > 0)
+				{
+				auto response = DispatchCommand(rxBuffer, rxIndex);
+				Serial.println(response.Message);
+				}
+			rxIndex = 0;
+			break;
+		default:	// collect received characters into the command buffer
+			if (rxIndex < RX_BUFFER_SIZE)
+				{
+				rxBuffer[rxIndex++] = rxChar;
+				}
+			break;
+		}
+	}
+
+Response DispatchCommand(char *buffer, unsigned int charCount)
+	{
+	if (charCount < 2)
+		return Response::BadCommand();
+	Command command;
+	command.Verb.concat(buffer[0]);
+	command.Verb.concat(buffer[1]);
+	command.TargetDevice = buffer[2];
+	command.StepPosition = 0;
+	if (charCount > 4 && buffer[3] == ',')
+		{
+		auto wholeSteps = std::atoi(buffer + 4);
+		auto microSteps = wholeSteps * MICROSTEPS_PER_STEP;
+		command.StepPosition = microSteps;
+		}
+	auto response = dispatcher.Dispatch(command);
+	return response;
+	}
+
+void HandleBluetoothCommunications()
+	{
+
 	}
 
 

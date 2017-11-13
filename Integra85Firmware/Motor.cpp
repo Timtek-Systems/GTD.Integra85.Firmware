@@ -162,6 +162,11 @@ const uint32_t Motor::MidpointPosition()
 	return midpointPosition;
 	}
 
+const uint32_t Motor::LimitOfTravel()
+	{
+	return maxPosition;
+	}
+
 /*
 	Computes the linear acceleration required to accelerate from rest to the maximum
 	speed in the ramp time. The returned value is always positive.

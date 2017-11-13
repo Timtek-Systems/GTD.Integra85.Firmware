@@ -5,20 +5,20 @@
 
 
 // Motor Parameters
-#define MOTOR_STEP_LIMIT			(3200000)
 #define MICROSTEPS_PER_STEP			(16) 
-#define MOTOR_STEP_MIDPOINT			(MOTOR_STEP_LIMIT / 2)
 
-//Motor1 pins
+// Motor1/Focuser
 #define M1_STEP_PIN					(7)
 #define M1_DIRECTION_PIN			(6)
 #define M1_ENABLE_PIN				(13)
-#define M1_MAX_POSITION				(MOTOR_STEP_LIMIT)
-//Motor2 pins
+#define M1_MAX_POSITION				(200000 * MICROSTEPS_PER_STEP)
+#define M1_MIDPOINT					(M1_MAX_POSITION / 2)
+// Motor2/Rotator
 #define M2_STEP_PIN					(5)
 #define M2_DIRECTION_PIN			(4)
 #define M2_ENABLE_PIN				(12)
-#define M2_MAX_POSITION				(MOTOR_STEP_LIMIT)
+#define M2_MAX_POSITION				(61802 * MICROSTEPS_PER_STEP)
+#define M2_MIDPOINT					(M2_MAX_POSITION / 2)
 
 //Software serial
 #define BluetoothRxPin				(2)
