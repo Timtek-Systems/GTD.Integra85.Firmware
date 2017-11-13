@@ -1,4 +1,12 @@
-#pragma once
+#ifndef _COMMANDPROCESSOR_h
+#define _COMMANDPROCESSOR_h
+
+#if defined(ARDUINO) && ARDUINO >= 100
+  #include "Arduino.h"
+#else
+  #include "WProgram.h"
+#endif
+
 #include <ArduinoSTL.h>
 #include "Integra85.h"
 #include "Motor.h"
@@ -128,3 +136,4 @@ class RotatorCommandTarget : public ICommandTarget
 		virtual std::vector<ICommandProcessor *>& GetCommandProcessors() override;
 	};
 
+#endif
