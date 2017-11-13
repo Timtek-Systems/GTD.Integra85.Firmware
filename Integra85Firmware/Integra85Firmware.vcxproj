@@ -117,6 +117,7 @@
     <ClCompile Include="FocuserCommandTarget.cpp" />
     <ClCompile Include="ForceSensitiveResistor.cpp" />
     <ClCompile Include="IdleCalibrationState.cpp" />
+    <ClCompile Include="InvalidCommandProcessor.cpp" />
     <ClCompile Include="Motor.cpp" />
     <ClCompile Include="MoveToPositionCommandProcessor.cpp" />
     <ClCompile Include="MovingAverage.cpp" />

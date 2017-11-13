@@ -3,29 +3,23 @@
   <Class Name="ICommandProcessor">
     <Position X="4.5" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <HashCode>AIAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAABAE=</HashCode>
       <FileName>CommandProcessor.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ICommandTarget">
     <Position X="8.25" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAABAA=</HashCode>
       <FileName>CommandProcessor.h</FileName>
     </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Field Name="commandProcessors" />
-    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="CommandDispatcher">
     <Position X="0.5" Y="0.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAgAAAAAAAAAAAAAAAAAAgAAAAAAAAAQAAAAAAAAAIA=</HashCode>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAgAAAAAAAAAQAAAgAAAAAIA=</HashCode>
       <FileName>CommandProcessor.h</FileName>
     </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Field Name="processors" />
-    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="RotatorCommandTarget">
     <Position X="11" Y="2.75" Width="2" />
@@ -44,23 +38,16 @@
   <Class Name="FocuserCommandTarget">
     <Position X="8.25" Y="2.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAABAA=</HashCode>
+      <HashCode>AEAAAAAQAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
       <FileName>CommandProcessor.h</FileName>
     </TypeIdentifier>
   </Class>
   <Struct Name="Command">
-    <Position X="0.5" Y="2.25" Width="1.5" />
+    <Position X="0.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AIAAAAAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>CommandProcessor.h</FileName>
     </TypeIdentifier>
   </Struct>
-  <Typedef Name="Response" Collapsed="true">
-    <Position X="0.5" Y="4" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>CommandProcessor.h</FileName>
-    </TypeIdentifier>
-  </Typedef>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

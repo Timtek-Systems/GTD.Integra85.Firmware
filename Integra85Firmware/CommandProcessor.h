@@ -9,7 +9,22 @@ struct Command
 	uint32_t Position;	// Target step position for a move command
 	};
 
-typedef char * Response;
+struct Response
+	{
+	char *Message;
+	static Response BadCommand() 
+		{
+		return Response{ "Bad command" };
+		}
+	static Response Ok() 
+		{
+		return Response{ "1" };
+		}
+	static Response Fail() 
+		{
+		return Response{ "0" };
+		}
+	};
 
 class ICommandProcessor
 	{
@@ -34,8 +49,8 @@ class ICommandTarget
 class InvalidCommandProcessor : public ICommandProcessor
 	{
 	public:
-		InvalidCommandProcessor() {};
-		virtual Response Execute(Command& command) final { return ""; };
+		InvalidCommandProcessor();
+		virtual Response Execute(Command& command) final;
 	};
 
 class CommandDispatcher
@@ -56,7 +71,7 @@ class MoveToPositionCommandProcessor : public ICommandProcessor
 		MoveToPositionCommandProcessor(char deviceAddress, Motor& motor);
 		virtual Response Execute(Command& command) override;
 	private:
-		Motor motor;
+		Motor *motor;
 	};
 
 class FocuserCommandTarget : public ICommandTarget

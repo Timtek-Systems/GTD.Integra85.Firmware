@@ -18,8 +18,9 @@ Response CommandDispatcher::Dispatch(Command & command)
 	{
 	auto &processor = GetCommandProcessorForCommand(command);
 	if (&processor == &invalidCommand)
-		return "Bad command";
-	return processor.Execute(command);;
+		return Response::BadCommand();
+	auto response = processor.Execute(command);
+	return response;
 	}
 
 ICommandProcessor& CommandDispatcher::GetCommandProcessorForCommand(Command & command)

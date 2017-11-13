@@ -32,13 +32,13 @@ void setup()
 	focuserMotor.SetRampTime(0.5);
 	rotatorMotor.SetRampTime(0.5);
 	sei();
-	calibrationStateMachine.ChangeState(FindHomeCalibrationState::GetInstance());
-	//focuserMotor.SetCurrentPosition(MOTOR_STEP_MIDPOINT);
-	//command.Position = M1_MAX_POSITION;
-	//command.TargetDevice = '1';
-	//command.Verb = 'M';
-	//auto response = dispatcher.Dispatch(command);
-	//auto length = strlen(response);
+	//calibrationStateMachine.ChangeState(FindHomeCalibrationState::GetInstance());
+	focuserMotor.SetCurrentPosition(MOTOR_STEP_MIDPOINT);
+	command.Position = M1_MAX_POSITION;
+	command.TargetDevice = '1';
+	command.Verb = 'M';
+	auto response = dispatcher.Dispatch(command);
+	auto length = strlen(response.Message);
 	}
 
 int counter = 0;
