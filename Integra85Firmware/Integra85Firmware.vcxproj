@@ -47,10 +47,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\Integra85Firmware;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SoftwareSerial\src;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\libraries;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries;$(ProjectDir)..\..\..\..\OneDrive\Documents\Arduino\libraries;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\variants\standard;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include\;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include\avr\;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.8.1\include;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Integra85Firmware;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SoftwareSerial\src;$(ProjectDir)..\..\..\..\OneDrive\Documents\Arduino\libraries\ArduinoSTL\src;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\libraries;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries;$(ProjectDir)..\..\..\..\OneDrive\Documents\Arduino\libraries;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\variants\standard;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include\;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include\avr\;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.8.1\include;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>$(ProjectDir)__vm\.Integra85Firmware.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
-      <PreprocessorDefinitions>__AVR_ATmega328p__;__AVR_ATmega328P__;F_CPU=16000000L;ARDUINO=10805;ARDUINO_AVR_UNO;ARDUINO_ARCH_AVR;__cplusplus=201103L;_VMICRO_INTELLISENSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__AVR_ATmega328p__;__AVR_ATmega328P__;_VMDEBUG=1;F_CPU=16000000L;ARDUINO=10805;ARDUINO_AVR_UNO;ARDUINO_ARCH_AVR;__cplusplus=201103L;_VMICRO_INTELLISENSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -82,6 +82,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="Calibration State Machine.cd" />
+    <None Include="Command Processor.cd" />
     <None Include="Step Generator and Sequencer.cd" />
     <None Include="Integra85Firmware.ino">
       <FileType>CppCode</FileType>
@@ -89,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CalibrationStateMachine.h" />
+    <ClInclude Include="CommandProcessor.h" />
     <ClInclude Include="CounterTimer1StepGenerator.h" />
     <ClInclude Include="ForceSensitiveResistor.h" />
     <ClInclude Include="Integra85.h" />
@@ -101,7 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BacklOutSlowlyCalibrationState.cpp" />
+    <ClCompile Include="CalibrateStartCommandProcessor.cpp" />
     <ClCompile Include="CalibrationStateMachine.cpp" />
+    <ClCompile Include="CommandDispatcher.cpp" />
     <ClCompile Include="CounterTimer1StepGenerator.cpp" />
     <ClCompile Include="DelayAfterBackOutCalibrationState.cpp" />
     <ClCompile Include="DelayAfterFindHomeCalibrationState.cpp" />
@@ -111,17 +115,23 @@
     <ClCompile Include="FindHomeCalibrationState.cpp" />
     <ClCompile Include="FindMidpointCalibrationState.cpp" />
     <ClCompile Include="FindSoftLimitCalibrationState.cpp" />
+    <ClCompile Include="FocuserCommandTarget.cpp" />
     <ClCompile Include="ForceSensitiveResistor.cpp" />
     <ClCompile Include="IdleCalibrationState.cpp" />
+    <ClCompile Include="InvalidCommandProcessor.cpp" />
     <ClCompile Include="Motor.cpp" />
+    <ClCompile Include="MoveOutCommandProcessor.cpp" />
+    <ClCompile Include="MoveInCommandProcessor.cpp" />
     <ClCompile Include="MovingAverage.cpp" />
+    <ClCompile Include="RotatorCommandTarget.cpp" />
+    <ClCompile Include="SetRampTimeCommandProcessor.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties debug.view.DigitalPins="" />
+      <UserProperties debug.view.FreeMemory="" debug.view.DigitalPins="" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

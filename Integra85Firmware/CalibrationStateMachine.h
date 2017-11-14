@@ -20,17 +20,22 @@ class CalibrationStateMachine
 	public:
 		CalibrationStateMachine(Motor *motor, ForceSensitiveResistor *limitSensor);
 		void Loop();
-		void ChangeState(ICalibrationState& newState);
-		void CalibrationComplete();
+		void StartCalibration();
 	private:
 		Motor *stepper;
 		ForceSensitiveResistor *sensor;
 		ICalibrationState *currentState;
 		uint32_t calibrationDistanceMovingIn, calibrationDistanceMovingOut;
 		uint32_t backlashMeasurement;
+		void ChangeState(ICalibrationState& newState);
+		void CalibrationComplete();
+		friend class IdleCalibrationState;
 		friend class FindHomeCalibrationState;
+		friend class DelayAfterFindHomeCalibrationState;
 		friend class BackOutCalibrationState;
+		friend class DelayAfterBackOutCalibrationState;
 		friend class FindSoftLimitCalibrationState;
+		friend class DelayAfterFindSoftLimitCalibrationState;
 		friend class FindBacklashCalibrationState;
 		friend class FindMidpointCalibrationState;
 	};
@@ -43,6 +48,8 @@ class ICalibrationState
 		virtual void OnEnter(CalibrationStateMachine& machine) {};
 		char* StateName = "anon";
 		virtual ~ICalibrationState() {};
+		// State maching input events
+		virtual void StartCalibration(CalibrationStateMachine& machine) {};
 	};
 
 class IdleCalibrationState : public ICalibrationState
@@ -51,6 +58,7 @@ class IdleCalibrationState : public ICalibrationState
 		static ICalibrationState & GetInstance();
 		// Inherited via ICalibrationState
 		virtual void Loop(CalibrationStateMachine & machine) final;
+		virtual void StartCalibration(CalibrationStateMachine & machine) final;
 	private:
 		IdleCalibrationState();
 	};

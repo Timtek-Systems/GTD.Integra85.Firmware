@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27019.1
+VisualStudioVersion = 15.0.27102.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Integra85Firmware", "Integra85Firmware\Integra85Firmware.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{3A70378C-D751-41C3-9C19-E0B88DF20F81}"
 	ProjectSection(SolutionItems) = preProject
 		Documents\Atmel-42735-8-bit-AVR-Microcontroller-ATmega328-328P_Datasheet.pdf = Documents\Atmel-42735-8-bit-AVR-Microcontroller-ATmega328-328P_Datasheet.pdf
+		Documents\Clock Calculator.xlsx = Documents\Clock Calculator.xlsx
+		ReadMe.md = ReadMe.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Git", "Git", "{66AF83BD-E5C7-46AD-9E50-CD03F53DDC97}"

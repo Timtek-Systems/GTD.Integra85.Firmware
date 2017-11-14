@@ -19,3 +19,8 @@ ICalibrationState& IdleCalibrationState::GetInstance()
 	static IdleCalibrationState instance;
 	return instance;
 	}
+
+void IdleCalibrationState::StartCalibration(CalibrationStateMachine& machine)
+	{
+	machine.ChangeState(FindHomeCalibrationState::GetInstance());
+	}
