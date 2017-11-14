@@ -1,5 +1,6 @@
 #if defined(ARDUINO) && ARDUINO >= 100
-  #include "Arduino.h"
+  #include "PersistentSettings.h"
+#include "Arduino.h"
 #else
   #include "WProgram.h"
 #endif
@@ -10,15 +11,17 @@
 #include "CounterTimer1StepGenerator.h"
 #include "CalibrationStateMachine.h"
 #include "CommandProcessor.h"
+#include "PersistentSettings.h"
 
 /*
 	Composition root - most of the system's runtime objects should be created here.
 	Avoid using new and delete to dynamically allocate and free memory.
 */
 
+PersistentSettings settings;
 auto stepGenerator = new CounterTimer1StepGenerator();
-auto focuserMotor = Motor(M1_STEP_PIN, M1_ENABLE_PIN, M1_DIRECTION_PIN, M1_MAX_POSITION, stepGenerator );
-auto rotatorMotor = Motor(M2_STEP_PIN, M2_ENABLE_PIN, M2_DIRECTION_PIN, M2_MAX_POSITION, stepGenerator );
+auto focuserMotor = Motor(M1_STEP_PIN, M1_ENABLE_PIN, M1_DIRECTION_PIN, stepGenerator, settings.focuserSettings );
+auto rotatorMotor = Motor(M2_STEP_PIN, M2_ENABLE_PIN, M2_DIRECTION_PIN, stepGenerator, settings.rotatorSettings );
 auto touchSensor = ForceSensitiveResistor(TOUCH_SENSOR_CHANNEL);
 auto bluetooth = SoftwareSerial(BluetoothRxPin, BluetoothTxPin);
 auto calibrationStateMachine = CalibrationStateMachine(&focuserMotor, &touchSensor);

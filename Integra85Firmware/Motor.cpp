@@ -9,11 +9,7 @@
 	Acceleration - measured in steps per second per second
 */
 
-#include <Arduino.h>
-#include "Integra85.h"
 #include "Motor.h"
-#include "IStepSequencer.h"
-#include "IStepGenerator.h"
 
 // Configures the I/O pins and sets a safe starting state.
 void Motor::InitializeHardware()
@@ -24,23 +20,21 @@ void Motor::InitializeHardware()
 	digitalWrite(enablePin, HIGH);
 	}
 
-Motor::Motor() {}
-
 // Creates a new motor instance with the specified I/O pins and step generator.
-Motor::Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, uint32_t limitOfTravel, IStepGenerator *stepper)
+Motor::Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin)
 	{
 	this->stepPin = stepPin;
 	this->enablePin = enablePin;
 	this->directionPin = directionPin;
-	stepGenerator = stepper;
-	currentPosition = 0;
-	currentVelocity = 0;
-	maxPosition = limitOfTravel;
-	midpointPosition = maxPosition / 2;
-	maxSpeed = 16000;	// Dictated by physical constraints
-	minSpeed = 245;		// Below this speed there is a risk of timer overflow
-	rampTime = 0.5;
 	InitializeHardware();
+	}
+
+Motor::Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, IStepGenerator * stepper, MotorSettings & settings)
+	: Motor(stepPin,enablePin,directionPin)
+	{
+	configuration = &settings;
+	stepGenerator = stepper;
+	currentVelocity = 0;
 	}
 
 /*
@@ -53,12 +47,14 @@ void Motor::Step(bool state)
 	if (state)
 		{
 		// Increment position on leading edge.
-		currentPosition += state ? direction : 0;
+		configuration->currentPosition += state ? direction : 0;
 		}
 	else
 		{
 		// Check hard limits on falling edge
-		if (currentPosition == targetPosition || currentPosition >= maxPosition || currentPosition == 0)
+		if (configuration->currentPosition == targetPosition 
+			|| configuration->currentPosition >= configuration->maxPosition
+			|| configuration->currentPosition == 0)
 			{
 			HardStop();
 			}
@@ -70,7 +66,7 @@ void Motor::MoveAtVelocity(float stepsPerSecond)
 	{
 	auto absoluteStepsPerSecond = abs(stepsPerSecond);
 	direction = sgn(stepsPerSecond);
-	targetPosition = direction > 0 ? maxPosition : 0;
+	targetPosition = direction > 0 ? configuration->maxPosition : 0;
 	targetVelocity = stepsPerSecond;
 	currentAcceleration = AccelerationFromRampTime() * direction;
 	EnergizeMotor();
@@ -96,9 +92,9 @@ void Motor::ReleaseMotor()
 	digitalWrite(stepPin, LOW);		// active high, so ensure we are not commanding a step.
 	}
 
-void Motor::SetRampTime(float seconds)
+void Motor::SetRampTime(uint16_t milliseconds)
 	{
-	rampTime = seconds;
+	configuration->rampTime = (float)milliseconds / 1000.0;
 	}
 
 /*
@@ -110,10 +106,10 @@ void Motor::SetRampTime(float seconds)
 */
 void Motor::MoveToPosition(uint32_t position)
 	{
-	int32_t deltaPosition = position - currentPosition;
+	int32_t deltaPosition = position - configuration->currentPosition;
 	targetPosition = position;
 	direction = sgn(deltaPosition);
-	targetVelocity = maxSpeed * direction;
+	targetVelocity = configuration->maxSpeed * direction;
 	currentAcceleration = AccelerationFromRampTime() * direction;
 	EnergizeMotor();
 	startTime = millis();
@@ -138,7 +134,7 @@ void Motor::MoveToPosition(uint32_t position)
 */
 void Motor::SetCurrentPosition(uint32_t position)
 	{
-	currentPosition = position;
+	configuration->currentPosition = position;
 	}
 
 /*
@@ -154,17 +150,17 @@ const float Motor::CurrentVelocity()
 */
 const uint32_t Motor::CurrentPosition()
 	{
-	return currentPosition;
+	return configuration->currentPosition;
 	}
 
 const uint32_t Motor::MidpointPosition()
 	{
-	return midpointPosition;
+	return configuration->maxPosition / 2;
 	}
 
 const uint32_t Motor::LimitOfTravel()
 	{
-	return maxPosition;
+	return configuration->maxPosition;
 	}
 
 /*
@@ -174,7 +170,7 @@ const uint32_t Motor::LimitOfTravel()
 */
 float Motor::AccelerationFromRampTime()
 	{
-	return maxSpeed / rampTime;
+	return configuration->maxSpeed / configuration->rampTime;
 	}
 
 /*
@@ -201,7 +197,7 @@ float Motor::AcceleratedVelocity()
 */
 float Motor::DeceleratedVelocity()
 	{
-	auto current = (int32_t)currentPosition;
+	auto current = (int32_t)configuration->currentPosition;
 	auto target = (int32_t)targetPosition;
 	int32_t deltaSteps = target - current;
 	uint32_t stepsToGo = abs(deltaSteps);
@@ -210,7 +206,6 @@ float Motor::DeceleratedVelocity()
 	auto vSquared = uSquared + 2.0 * acceleration * stepsToGo;
 	auto speed = sqrt(vSquared);
 	auto velocity = speed * direction;
-	int i = 0;
 	return velocity;
 	}
 
@@ -234,7 +229,7 @@ void Motor::ComputeAcceleratedVelocity()
 	float accelerationCurve = AcceleratedVelocity();
 	float decelerationCurve = DeceleratedVelocity();
 	float computedSpeed = min(abs(accelerationCurve), abs(decelerationCurve));
-	float constrainedSpeed = constrain(computedSpeed, minSpeed, maxSpeed);
+	float constrainedSpeed = constrain(computedSpeed, minSpeed, configuration->maxSpeed);
 	currentVelocity = constrainedSpeed * direction;
 	stepGenerator->SetStepRate(constrainedSpeed);	// Step rate must be positive
 	}

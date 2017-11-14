@@ -13,12 +13,17 @@
 #define M1_ENABLE_PIN				(13)
 #define M1_MAX_POSITION				(200000 * MICROSTEPS_PER_STEP)
 #define M1_MIDPOINT					(M1_MAX_POSITION / 2)
+#define M1_RAMP_TIME				(0.25)
+#define M1_MAX_SPEED				(16000)
+
 // Motor2/Rotator
 #define M2_STEP_PIN					(5)
 #define M2_DIRECTION_PIN			(4)
 #define M2_ENABLE_PIN				(12)
 #define M2_MAX_POSITION				(61802 * MICROSTEPS_PER_STEP)
 #define M2_MIDPOINT					(M2_MAX_POSITION / 2)
+#define M2_RAMP_TIME				(0.25)
+#define M2_MAX_SPEED				(16000)
 
 //Software serial
 #define BluetoothRxPin				(2)

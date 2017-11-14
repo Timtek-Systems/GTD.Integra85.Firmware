@@ -99,6 +99,7 @@
     <ClInclude Include="IStepSequencer.h" />
     <ClInclude Include="Motor.h" />
     <ClInclude Include="MovingAverage.h" />
+    <ClInclude Include="PersistentSettings.h" />
     <ClInclude Include="__vm\.Integra85Firmware.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +124,7 @@
     <ClCompile Include="MoveOutCommandProcessor.cpp" />
     <ClCompile Include="MoveInCommandProcessor.cpp" />
     <ClCompile Include="MovingAverage.cpp" />
+    <ClCompile Include="PersistentSettings.cpp" />
     <ClCompile Include="RotatorCommandTarget.cpp" />
     <ClCompile Include="SetRampTimeCommandProcessor.cpp" />
   </ItemGroup>
