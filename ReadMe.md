@@ -95,5 +95,32 @@ passed to `CommandDispatcher.Dispatch()`. This method is responsible for determi
 address and the command verb within the command. The selected command processor is then invoked
 and ultimately returns a response string, which is passed back to the client application.
 
+## Command Protocol
+
+### General structure
+
+In general, commands have the form <kbd>@</kbd> `Verb` `Device`<kbd>,</kbd> `Parameter`.
+- <kbd>@</kbd> is a literal character that marks the start of a new command and clears the receive buffer.
+- `Verb` is the command verb.
+- `Device` is the target device for the command, generally a motor number `1` (focuser) or `2` (rotator).
+- <kbd>,</kbd> is a literal character that separates the device ID from the parameter.
+- `Parameter` is a positive integer. If omitted, zero is assumed.
+
+<example>Example: `@MI1,1000`.</example>
+
+### Command Protocol Details
+
+<pre>
+Command  | Action            | Example    | Success | Failed  | Notes
+=========|===================|============|=========|=========|=====================================================
+@CS1,0   | Calibration Start | @CS1,0     | CS#     | Invalid | Only valid for motor 1 (focuser). Parameter ignored.
+---------|-------------------|------------|---------|---------|-----------------------------------------------------
+@MIm,S   | Move In S steps   | @MI1,1000  | MI#     |         | Move in or anticlockwise
+@MOm,S   | Move Out S steps  | @MO1,1000  | MO#     |         | Move out or clockwise
+---------|-------------------|------------|---------|---------|-----------------------------------------------------
+@RWm,n   | Set ramp time     | @RW1,5000  | RW#     |         | Sets the acceleration ramp time, in milliseconds. Default 250ms, minimum 100ms.
+</pre>
+
+
 [tigra-home]:    http://tigra-astronomy.com
 [gtd-home]:     www.geminitelescope.com/
