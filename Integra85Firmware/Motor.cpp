@@ -26,14 +26,15 @@ Motor::Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin)
 	this->stepPin = stepPin;
 	this->enablePin = enablePin;
 	this->directionPin = directionPin;
+	minSpeed = MIN_SPEED;
 	InitializeHardware();
 	}
 
-Motor::Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, IStepGenerator * stepper, MotorSettings & settings)
+Motor::Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, IStepGenerator& stepper, MotorSettings& settings)
 	: Motor(stepPin,enablePin,directionPin)
 	{
 	configuration = &settings;
-	stepGenerator = stepper;
+	stepGenerator = &stepper;
 	currentVelocity = 0;
 	}
 
@@ -94,7 +95,7 @@ void Motor::ReleaseMotor()
 
 void Motor::SetRampTime(uint16_t milliseconds)
 	{
-	configuration->rampTime = (float)milliseconds / 1000.0;
+	configuration->rampTimeMilliseconds = milliseconds;
 	}
 
 /*
@@ -170,7 +171,9 @@ const uint32_t Motor::LimitOfTravel()
 */
 float Motor::AccelerationFromRampTime()
 	{
-	return configuration->maxSpeed / configuration->rampTime;
+	float rampTimeSeconds = (float)(configuration->rampTimeMilliseconds) / 1000.0;
+	float acceleration = (float)(configuration->maxSpeed) / rampTimeSeconds;
+	return acceleration;
 	}
 
 /*

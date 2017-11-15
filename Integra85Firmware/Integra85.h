@@ -6,6 +6,7 @@
 
 // Motor Parameters
 #define MICROSTEPS_PER_STEP			(16) 
+#define MIN_SPEED					(250) // Minimum speed that can be timed by the hardware timer
 
 // Motor1/Focuser
 #define M1_STEP_PIN					(7)
@@ -13,7 +14,7 @@
 #define M1_ENABLE_PIN				(13)
 #define M1_MAX_POSITION				(200000 * MICROSTEPS_PER_STEP)
 #define M1_MIDPOINT					(M1_MAX_POSITION / 2)
-#define M1_RAMP_TIME				(0.25)
+#define M1_RAMP_TIME				(250)	// milliseconds
 #define M1_MAX_SPEED				(16000)
 
 // Motor2/Rotator
@@ -22,7 +23,7 @@
 #define M2_ENABLE_PIN				(12)
 #define M2_MAX_POSITION				(61802 * MICROSTEPS_PER_STEP)
 #define M2_MIDPOINT					(M2_MAX_POSITION / 2)
-#define M2_RAMP_TIME				(0.25)
+#define M2_RAMP_TIME				(500)	// milliseconds
 #define M2_MAX_SPEED				(16000)
 
 //Software serial

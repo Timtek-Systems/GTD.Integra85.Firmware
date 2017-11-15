@@ -15,17 +15,17 @@
 
 struct MotorSettings
 	{
-	uint32_t maxPosition;
-	volatile uint32_t currentPosition;
-	float rampTime;
-	float maxSpeed;
+	uint32_t maxPosition;				// limit of travel, in steps
+	volatile uint32_t currentPosition;	// the current position (potentially updated by ISR)
+	uint16_t rampTimeMilliseconds;		// milliseconds to ramp from minSpeed to maxSpeed
+	uint16_t maxSpeed;					// maximum number of steps per second
 	};
 
 class Motor : public IStepSequencer
 	{
 	public:
 		Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin);
-		Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, IStepGenerator *stepper, MotorSettings& settings);
+		Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, IStepGenerator& stepper, MotorSettings& settings);
 		virtual void Step(bool state) final;
 		void MoveAtVelocity(float stepsPerSecond);
 		void EnergizeMotor();

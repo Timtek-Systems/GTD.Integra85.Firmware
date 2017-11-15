@@ -23,15 +23,20 @@ a switch statement, but that wouldn't be the 'Object Oriented Way'.
 ## Memory Management
 
 Dynamic memory allocations have been agressively avoided. As a
-resource-constrained embedded system with just 2K of data memory, there is not
+resource-constrained embedded system with just 2Kb of data memory, there is not
 much space available for a heap and we can't tolerate "Out Of Memory" errors
 at runtime. The system must be stable for days, months or even years at a time
-so the memory management strategy must be deterministic and stable.
+so the memory management strategy must be frugal, deterministic and stable.
 
 Our solution to this is to statically pre-allocate as many objects as possible once,
-in global scope, then never delete them. The .ino file contains these allocations either as
-statically initialized global variables or in the setup() method and this essentially
-forms the Composition Root for the system.
+in global scope, then never delete them. The `.ino` file contains these allocations
+either as statically initialized global variables or in the setup() method and this
+essentially forms the Composition Root for the system.
+
+Since we can assume that most objects are never freed, there is little to be gained
+from the use of smart pointers and we have chosen to avoid the overhead and use "raw" pointers
+where necessary. We do however make use of the `std::vector<T>` class within the command
+dispatcher system.
 
 ## Motor Control
 

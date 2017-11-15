@@ -133,7 +133,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties debug.view.FreeMemory="" debug.view.DigitalPins="" />
+      <UserProperties debug.view.FreeMemory="" arduino.build.auto_discover_includes="0" debug.view.DigitalPins="" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

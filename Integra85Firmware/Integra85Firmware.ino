@@ -1,9 +1,10 @@
 #if defined(ARDUINO) && ARDUINO >= 100
-  #include "PersistentSettings.h"
-#include "Arduino.h"
+  #include "Arduino.h"
 #else
   #include "WProgram.h"
 #endif
+
+#include <ArduinoSTL.h>
 #include <SoftwareSerial.h>
 #include "Integra85.h"
 #include "ForceSensitiveResistor.h"
@@ -18,10 +19,10 @@
 	Avoid using new and delete to dynamically allocate and free memory.
 */
 
-PersistentSettings settings;
-auto stepGenerator = new CounterTimer1StepGenerator();
-auto focuserMotor = Motor(M1_STEP_PIN, M1_ENABLE_PIN, M1_DIRECTION_PIN, stepGenerator, settings.focuserSettings );
-auto rotatorMotor = Motor(M2_STEP_PIN, M2_ENABLE_PIN, M2_DIRECTION_PIN, stepGenerator, settings.rotatorSettings );
+auto stepGenerator = CounterTimer1StepGenerator();
+auto settings = PersistentSettings();
+auto focuserMotor = Motor(M1_STEP_PIN, M1_ENABLE_PIN, M1_DIRECTION_PIN, stepGenerator, settings.focuser);
+auto rotatorMotor = Motor(M2_STEP_PIN, M2_ENABLE_PIN, M2_DIRECTION_PIN, stepGenerator, settings.rotator);
 auto touchSensor = ForceSensitiveResistor(TOUCH_SENSOR_CHANNEL);
 auto bluetooth = SoftwareSerial(BluetoothRxPin, BluetoothTxPin);
 auto calibrationStateMachine = CalibrationStateMachine(&focuserMotor, &touchSensor);
@@ -37,9 +38,7 @@ void setup()
 	bluetooth.begin(9600);
 	focuserMotor.ReleaseMotor();
 	rotatorMotor.ReleaseMotor();
-	focuserMotor.SetRampTime(0.5);
-	rotatorMotor.SetRampTime(0.5);
-	sei();
+	interrupts();
 	}
 
 int counter = 0;
