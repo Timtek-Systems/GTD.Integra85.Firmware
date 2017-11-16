@@ -11,29 +11,21 @@
 
 #include "Integra85.h"
 #include "Motor.h"
+#include "CalibrationStateMachine.h"
 
 struct PersistentSettings
 	{
-		struct MotorSettings focuser;
-		struct MotorSettings rotator;
-		uint32_t focuserBacklash;
+	static const uint16_t fingerprint = 0x4AFB;
+	static const uint8_t majorVersion = FIRMWARE_MAJOR_VERSION;
+	static const uint8_t minorVersion = FIRMWARE_MINOR_VERSION;
 
-		PersistentSettings()
-			{
-			focuser = {
-				M1_MAX_POSITION,	// maxPosition
-				M1_MAX_POSITION,	// currentPosition
-				M1_RAMP_TIME,		// Ramp time (seconds)
-				M1_MAX_SPEED		// Max speed (steps per sec)
-				};
-			rotator = {
-				M2_MAX_POSITION,	// maxPosition
-				M2_MAX_POSITION,	// currentPosition
-				M2_RAMP_TIME,		// Ramp time (seconds)
-				M2_MAX_SPEED		// Max speed (steps per sec)
-				};
-			focuserBacklash = 0;
-			}
+	struct MotorSettings focuser;
+	struct MotorSettings rotator;
+	struct Calibration calibration;
+
+	PersistentSettings();
+	static PersistentSettings Load();
+	void Save();
 	};
 
 

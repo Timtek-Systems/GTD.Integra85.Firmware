@@ -9,8 +9,3 @@
 		commandProcessors.push_back(new SetRampTimeCommandProcessor(deviceAddress, motor));
 		commandProcessors.push_back(new CalibrateStartCommandProcessor(deviceAddress, motor, calibrator));
 		}
-
-	std::vector<ICommandProcessor *>& FocuserCommandTarget::GetCommandProcessors()
-		{
-		return commandProcessors;
-		}

@@ -12,6 +12,7 @@
 #include "Integra85.h"
 #include "Motor.h"
 #include "CalibrationStateMachine.h"
+#include "PersistentSettings.h"
 
 struct Command
 	{
@@ -57,7 +58,10 @@ class ICommandProcessor
 class ICommandTarget
 	{
 	public:
-		virtual std::vector<ICommandProcessor *>& GetCommandProcessors() = 0;
+		virtual std::vector<ICommandProcessor *>& GetCommandProcessors()
+			{
+			return commandProcessors;
+			};
 	protected:
 		std::vector<ICommandProcessor *> commandProcessors;
 		char deviceAddress;
@@ -121,20 +125,31 @@ class CalibrateStartCommandProcessor : public ICommandProcessor
 		CalibrationStateMachine *calibrator;
 	};
 
+class SaveSettingsCommandProcessor : public ICommandProcessor
+	{
+	public:
+		SaveSettingsCommandProcessor(char targetDevice, PersistentSettings& settings);
+		virtual Response Execute(Command& command) override;
+	private:
+		PersistentSettings *settings;
+	};
+
 class FocuserCommandTarget : public ICommandTarget
 	{
 	public:
 		FocuserCommandTarget(char address, Motor& motor, CalibrationStateMachine& calibrator);
-		// Inherited via ICommandTarget
-		virtual std::vector<ICommandProcessor *>& GetCommandProcessors() override;
 	};
 
 class RotatorCommandTarget : public ICommandTarget
 	{
 	public:
 		RotatorCommandTarget(char address, Motor& motor);
-		// Inherited via ICommandTarget
-		virtual std::vector<ICommandProcessor *>& GetCommandProcessors() override;
+	};
+
+class DefaultCommandTarget : public ICommandTarget
+	{
+	public:
+		DefaultCommandTarget(char deviceAddress, PersistentSettings& settings);
 	};
 
 #endif

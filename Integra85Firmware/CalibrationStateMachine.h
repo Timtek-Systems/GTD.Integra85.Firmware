@@ -13,22 +13,38 @@
 #include "Motor.h"
 #include "ForceSensitiveResistor.h"
 
+enum CalibrationResult
+	{
+	Uncalibrated = 0,
+	Calibrated = 1,
+	InProgress = 2,
+	Cancelled = 3
+	};
+
+struct Calibration
+	{
+	CalibrationResult status = Uncalibrated;
+	uint16_t focuserBacklash = 0;
+	};
+
 class ICalibrationState;
 
 class CalibrationStateMachine
 	{
 	public:
-		CalibrationStateMachine(Motor *motor, ForceSensitiveResistor *limitSensor);
+		CalibrationStateMachine(Motor *motor, ForceSensitiveResistor *limitSensor, Calibration& status);
 		void Loop();
 		void StartCalibration();
 	private:
 		Motor *stepper;
 		ForceSensitiveResistor *sensor;
+		Calibration *status;
 		ICalibrationState *currentState;
 		uint32_t calibrationDistanceMovingIn, calibrationDistanceMovingOut;
-		uint32_t backlashMeasurement;
+		unsigned long startTime;
 		void ChangeState(ICalibrationState& newState);
 		void CalibrationComplete();
+		void StopCalibrationIfTimedOut();
 		friend class IdleCalibrationState;
 		friend class FindHomeCalibrationState;
 		friend class DelayAfterFindHomeCalibrationState;

@@ -9,11 +9,10 @@ SetRampTimeCommandProcessor::SetRampTimeCommandProcessor(char targetDevice, Moto
 
 Response SetRampTimeCommandProcessor::Execute(Command& command)
 	{
-	// The command payload is the ramp time in milliseconds, we must convert to seconds.
-	float rampTimeSeconds = command.StepPosition / 1000.0;
-	// The minimum ramp time is 0.1 seconds, fail if the user tries to set it lower.
-	if (rampTimeSeconds < 0.1)
+	auto rampTime = command.StepPosition;
+	// The minimum ramp time is 100ms, fail if the user tries to set it lower.
+	if (rampTime < MIN_RAMP_TIME)
 		return Response::Fail();
-	motor->SetRampTime(rampTimeSeconds);
-	return Response::Ok();
+	motor->SetRampTime(rampTime);
+	return Response::FromSuccessfulCommand(command);
 	}

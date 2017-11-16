@@ -15,5 +15,5 @@ Response MoveOutCommandProcessor::Execute(Command & command)
 	if (targetPosition > motor->LimitOfTravel())
 		return Response::Fail();
 	motor->MoveToPosition(targetPosition);
-	return Response::Ok();
+	return Response::FromSuccessfulCommand(command);
 	}

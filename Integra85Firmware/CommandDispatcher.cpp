@@ -40,22 +40,3 @@ ICommandProcessor& CommandDispatcher::GetCommandProcessorForCommand(Command & co
 	return invalidCommand;
 	}
 
-/***
-static ICommandProcessor GetCommandProcessorForCommand(Command command)
-	{
-	var deviceValid = false;
-	foreach(ICommandProcessor candidate in CommandProcessors)
-		{
-		if (candidate.DeviceAddress != command.DeviceId)
-			continue;
-		deviceValid = true; // Found at least 1 command processor with this device address.
-		if (candidate.Verb.CaseInsensitiveEquals(command.Verb))
-			return candidate;
-		}
-	// The command can't be processed and we must raise an exception.
-	if (deviceValid)
-		throw new InvalidCommandVerbException(command, "The command is not valid for the addressed device");
-	throw new InvalidAddressException(command, "No such device address");
-	}
-***/
-

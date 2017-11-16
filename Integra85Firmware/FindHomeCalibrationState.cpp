@@ -29,6 +29,7 @@ void FindHomeCalibrationState::Loop(CalibrationStateMachine & machine)
 
 void FindHomeCalibrationState::OnEnter(CalibrationStateMachine & machine)
 	{
+	machine.startTime = millis();
 	machine.stepper->SetCurrentPosition(machine.stepper->MidpointPosition());
 	machine.stepper->MoveToPosition(0);
 	}

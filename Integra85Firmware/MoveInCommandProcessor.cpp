@@ -15,5 +15,5 @@ Response MoveInCommandProcessor::Execute(Command & command)
 	if (targetPosition < 0) 
 		return Response::Fail();
 	motor->MoveToPosition(targetPosition);
-	return Response::Ok();
+	return Response::FromSuccessfulCommand(command);
 	}
