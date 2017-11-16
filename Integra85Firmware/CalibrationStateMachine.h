@@ -62,7 +62,6 @@ class ICalibrationState
 		virtual void Loop(CalibrationStateMachine & machine) {};
 		virtual void OnExit(CalibrationStateMachine& machine) {};
 		virtual void OnEnter(CalibrationStateMachine& machine) {};
-		char* StateName = "anon";
 		virtual ~ICalibrationState() {};
 		// State maching input events
 		virtual void StartCalibration(CalibrationStateMachine& machine) {};

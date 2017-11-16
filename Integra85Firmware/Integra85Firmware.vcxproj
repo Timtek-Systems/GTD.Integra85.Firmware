@@ -94,7 +94,6 @@
     <ClInclude Include="CounterTimer1StepGenerator.h" />
     <ClInclude Include="ForceSensitiveResistor.h" />
     <ClInclude Include="Integra85.h" />
-    <ClInclude Include="ISingleton.h" />
     <ClInclude Include="IStepGenerator.h" />
     <ClInclude Include="IStepSequencer.h" />
     <ClInclude Include="Motor.h" />
@@ -126,6 +125,8 @@
     <ClCompile Include="MoveInCommandProcessor.cpp" />
     <ClCompile Include="MovingAverage.cpp" />
     <ClCompile Include="PersistentSettings.cpp" />
+    <ClCompile Include="PositionReadCommandProcessor.cpp" />
+    <ClCompile Include="Response.cpp" />
     <ClCompile Include="RotatorCommandTarget.cpp" />
     <ClCompile Include="SaveSettingsCommandProcessor.cpp" />
     <ClCompile Include="SetRampTimeCommandProcessor.cpp" />
@@ -135,7 +136,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties debug.view.FreeMemory="" arduino.build.auto_discover_includes="0" debug.view.DigitalPins="" />
+      <UserProperties debug.view.FreeMemory="" arduino.build.auto_discover_includes="1" debug.view.DigitalPins="" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

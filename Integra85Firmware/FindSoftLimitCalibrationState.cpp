@@ -45,5 +45,4 @@ void FindSoftLimitCalibrationState::OnEnter(CalibrationStateMachine & machine)
 
 FindSoftLimitCalibrationState::FindSoftLimitCalibrationState()
 	{
-	StateName = "FindSoftLimit";
 	}

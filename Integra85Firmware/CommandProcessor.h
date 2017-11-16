@@ -23,26 +23,27 @@ struct Command
 
 struct Response
 	{
+	static const String Terminator;
 	String Message;
-	static Response BadCommand() 
-		{
-		return Response{ "Bad command" };
-		}
-	static Response Ok() 
-		{
-		return Response{ "1" };
-		}
-	static Response Fail() 
-		{
-		return Response{ "0" };
-		}
-	static Response FromSuccessfulCommand(Command& command)
-		{
-		auto message = command.Verb;
-		message.concat('#');
-		return Response{ message };
-		}
+
+	/*
+		Creates an error response.
+	*/
+	static Response Error();
+
+	/*
+		Creates a success response by echoing the command verb,
+		terminated with a '#'.
+	*/
+	static Response FromSuccessfulCommand(Command& command);
+
+	/*
+		Creates a response consisting of the command verb,
+		plus an unsigned integer (usually a motor step position).
+	*/
+	static Response FromPosition(Command& command, uint32_t position);
 	};
+
 
 class ICommandProcessor
 	{
@@ -132,6 +133,15 @@ class SaveSettingsCommandProcessor : public ICommandProcessor
 		virtual Response Execute(Command& command) override;
 	private:
 		PersistentSettings *settings;
+	};
+
+class PositionReadCommandProcessor : public ICommandProcessor
+	{
+	public:
+		PositionReadCommandProcessor(char targetDevice, Motor& motor);
+		virtual Response Execute(Command& command) override;
+	private:
+		Motor *motor;
 	};
 
 class FocuserCommandTarget : public ICommandTarget

@@ -13,7 +13,7 @@ Response MoveOutCommandProcessor::Execute(Command & command)
 	auto microStepsToMove = command.StepPosition * MICROSTEPS_PER_STEP;
 	auto targetPosition = motor->CurrentPosition() + microStepsToMove;
 	if (targetPosition > motor->LimitOfTravel())
-		return Response::Fail();
+		return Response::Error();
 	motor->MoveToPosition(targetPosition);
 	return Response::FromSuccessfulCommand(command);
 	}

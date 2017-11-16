@@ -11,7 +11,6 @@ void IdleCalibrationState::Loop(CalibrationStateMachine& machine)
 
 IdleCalibrationState::IdleCalibrationState()
 	{
-	StateName = "Idle";
 	}
 
 ICalibrationState& IdleCalibrationState::GetInstance()

@@ -113,6 +113,9 @@ In general, commands have the form <kbd>@</kbd> `Verb` `Device`<kbd>,</kbd> `Par
 
 <example>Example: `@MI1,1000`.</example>
 
+If the parameter field is not required then it can be omitted. For example, the following are all equivalent:
+`@PR1`, `@PR1,`, `@PR1,1000`
+
 ### Command Protocol Details
 
 <pre>
@@ -122,6 +125,7 @@ Command  | Action            | Example    | Success | Failed  | Notes
 ---------|-------------------|------------|---------|---------|-----------------------------------------------------
 @MIm,S   | Move In S steps   | @MI1,1000  | MI#     |         | Move in or anticlockwise
 @MOm,S   | Move Out S steps  | @MO1,1000  | MO#     |         | Move out or clockwise
+@PRm,n   | Read Position     | @PR1,0     | PR1234# |         | Read step position of motor m (parameter ignored)
 ---------|-------------------|------------|---------|---------|-----------------------------------------------------
 @RWm,n   | Set ramp time     | @RW1,5000  | RW#     |         | Sets the acceleration ramp time, in milliseconds. Default 250ms, minimum 100ms.
 </pre>

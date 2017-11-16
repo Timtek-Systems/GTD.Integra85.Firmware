@@ -31,5 +31,4 @@ void FindMidpointCalibrationState::OnEnter(CalibrationStateMachine & machine)
 
 FindMidpointCalibrationState::FindMidpointCalibrationState()
 	{
-	StateName = "FindMidpoint";
 	}

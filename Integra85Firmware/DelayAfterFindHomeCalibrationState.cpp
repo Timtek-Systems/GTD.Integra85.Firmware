@@ -4,7 +4,6 @@
 DelayAfterFindHomeCalibrationState::DelayAfterFindHomeCalibrationState()
 	{
 	delayDuration = 1000;
-	StateName = "DelayAfterFindHome";
 	}
 
 void DelayAfterFindHomeCalibrationState::TransitionToNextState(CalibrationStateMachine & machine)

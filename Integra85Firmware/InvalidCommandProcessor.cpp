@@ -3,4 +3,4 @@
 
 InvalidCommandProcessor::InvalidCommandProcessor(){}
 
-Response InvalidCommandProcessor::Execute(Command& command) { return Response::BadCommand(); }
+Response InvalidCommandProcessor::Execute(Command& command) { return Response::Error(); }

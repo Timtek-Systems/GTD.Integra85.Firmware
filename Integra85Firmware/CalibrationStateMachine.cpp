@@ -41,10 +41,6 @@ void CalibrationStateMachine::StopCalibrationIfTimedOut()
 
 void CalibrationStateMachine::ChangeState(ICalibrationState& newState)
 	{
-	Serial.print("Changing state: ");
-	Serial.print(currentState->StateName);
-	Serial.print(" --> ");
-	Serial.println(newState.StateName);
 	currentState->OnExit(*this);
 	newState.OnEnter(*this);
 	currentState = &newState;

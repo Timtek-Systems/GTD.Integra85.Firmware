@@ -12,7 +12,7 @@ Response SetRampTimeCommandProcessor::Execute(Command& command)
 	auto rampTime = command.StepPosition;
 	// The minimum ramp time is 100ms, fail if the user tries to set it lower.
 	if (rampTime < MIN_RAMP_TIME)
-		return Response::Fail();
+		return Response::Error();
 	motor->SetRampTime(rampTime);
 	return Response::FromSuccessfulCommand(command);
 	}

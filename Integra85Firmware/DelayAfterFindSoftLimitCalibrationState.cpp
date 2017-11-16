@@ -3,7 +3,6 @@
 DelayAfterFindSoftLimitCalibrationState::DelayAfterFindSoftLimitCalibrationState()
 	{
 	delayDuration = 1000;
-	StateName = "DelayAfterFindSoftLimit";
 	}
 
 void DelayAfterFindSoftLimitCalibrationState::TransitionToNextState(CalibrationStateMachine & machine)

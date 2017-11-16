@@ -103,7 +103,7 @@ void HandleSerialCommunications()
 Response DispatchCommand(char *buffer, unsigned int charCount)
 	{
 	if (charCount < 2)
-		return Response::BadCommand();
+		return Response::Error();
 	Command command;
 	command.StepPosition = 0;
 	command.Verb.concat(buffer[0]);

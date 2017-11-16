@@ -36,5 +36,4 @@ void FindHomeCalibrationState::OnEnter(CalibrationStateMachine & machine)
 
 FindHomeCalibrationState::FindHomeCalibrationState()
 	{
-	StateName = "FindHome";
 	}

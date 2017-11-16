@@ -42,5 +42,4 @@ void FindBacklashCalibrationState::OnEnter(CalibrationStateMachine & machine)
 
 FindBacklashCalibrationState::FindBacklashCalibrationState()
 	{
-	StateName = "FindBacklash";
 	}
