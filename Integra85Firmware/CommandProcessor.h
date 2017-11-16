@@ -144,6 +144,15 @@ class PositionReadCommandProcessor : public ICommandProcessor
 		Motor *motor;
 	};
 
+class StopMotorCommandProcessor : public ICommandProcessor
+	{
+	public:
+		StopMotorCommandProcessor(char targetDevice, Motor& motor);
+		virtual Response Execute(Command& command) override;
+	private:
+		Motor *motor;
+	};
+
 class FocuserCommandTarget : public ICommandTarget
 	{
 	public:

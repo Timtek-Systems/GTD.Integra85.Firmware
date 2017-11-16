@@ -130,6 +130,7 @@
     <ClCompile Include="RotatorCommandTarget.cpp" />
     <ClCompile Include="SaveSettingsCommandProcessor.cpp" />
     <ClCompile Include="SetRampTimeCommandProcessor.cpp" />
+    <ClCompile Include="StopMotorCommandProcessor.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
