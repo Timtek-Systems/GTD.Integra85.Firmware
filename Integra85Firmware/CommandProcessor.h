@@ -167,6 +167,17 @@ class IsMovingCommandProcessor : public ICommandProcessor
 		Motor *focuser, *rotator;
 	};
 
+
+class CalibrateAbortCommandProcessor : public ICommandProcessor
+	{
+	public:
+		CalibrateAbortCommandProcessor(char targetDevice, CalibrationStateMachine& calibrator);
+		virtual Response Execute(Command& command) override;
+	private:
+		CalibrationStateMachine * machine;
+	};
+
+
 class FocuserCommandTarget : public ICommandTarget
 	{
 	public:

@@ -35,6 +35,7 @@ class CalibrationStateMachine
 		CalibrationStateMachine(Motor *motor, ForceSensitiveResistor *limitSensor, Calibration& status);
 		void Loop();
 		void StartCalibration();
+		void StopCalibration();
 	private:
 		Motor *stepper;
 		ForceSensitiveResistor *sensor;

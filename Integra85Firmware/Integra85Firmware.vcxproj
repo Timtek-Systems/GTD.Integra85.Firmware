@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BacklOutSlowlyCalibrationState.cpp" />
+    <ClCompile Include="CalibrateAbortCommandProcessor.cpp" />
     <ClCompile Include="CalibrateStartCommandProcessor.cpp" />
     <ClCompile Include="CalibrationStateMachine.cpp" />
     <ClCompile Include="CommandDispatcher.cpp" />

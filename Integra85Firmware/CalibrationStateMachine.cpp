@@ -33,10 +33,15 @@ void CalibrationStateMachine::StopCalibrationIfTimedOut()
 	auto elapsedMilliseconds = millis() - startTime;
 	if (elapsedMilliseconds > MAX_CALIBRATION_TIME)
 		{
-		ChangeState(IdleCalibrationState::GetInstance());
-		stepper->HardStop();
-		status->status = Cancelled;
+		StopCalibration();
 		}
+	}
+
+void CalibrationStateMachine::StopCalibration()
+	{
+	ChangeState(IdleCalibrationState::GetInstance());
+	stepper->HardStop();
+	status->status = Cancelled;
 	}
 
 void CalibrationStateMachine::ChangeState(ICalibrationState& newState)
