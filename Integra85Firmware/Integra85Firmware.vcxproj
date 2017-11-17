@@ -128,6 +128,7 @@
     <ClCompile Include="MovingAverage.cpp" />
     <ClCompile Include="PersistentSettings.cpp" />
     <ClCompile Include="PositionReadCommandProcessor.cpp" />
+    <ClCompile Include="RangeReadCommandProcessor.cpp" />
     <ClCompile Include="Response.cpp" />
     <ClCompile Include="RotatorCommandTarget.cpp" />
     <ClCompile Include="SaveSettingsCommandProcessor.cpp" />

@@ -159,5 +159,8 @@
     <ClCompile Include="CalibrateAbortCommandProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RangeReadCommandProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -177,6 +177,15 @@ class CalibrateAbortCommandProcessor : public ICommandProcessor
 		CalibrationStateMachine * machine;
 	};
 
+class RangeReadCommandProcessor : public ICommandProcessor
+	{
+	public:
+		RangeReadCommandProcessor(char targetDevice, Motor& motor);
+		virtual Response Execute(Command& command) override;
+	private:
+		Motor * motor;
+	};
+
 
 class FocuserCommandTarget : public ICommandTarget
 	{

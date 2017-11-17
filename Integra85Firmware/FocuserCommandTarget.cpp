@@ -11,4 +11,5 @@
 		commandProcessors.push_back(new PositionReadCommandProcessor(deviceAddress, motor));
 		commandProcessors.push_back(new StopMotorCommandProcessor(deviceAddress, motor));
 		commandProcessors.push_back(new CalibrateAbortCommandProcessor(deviceAddress, calibrator));
+		commandProcessors.push_back(new RangeReadCommandProcessor(deviceAddress, motor));
 		}
