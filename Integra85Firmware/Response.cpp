@@ -17,5 +17,10 @@ Response Response::FromPosition(Command& command, uint32_t position)
 	return Response{ message };
 	}
 
+Response Response::FromInteger(int i)
+	{
+	return Response{ (String)i + Response::Terminator };
+	}
+
 const String Response::Terminator = "#";
 

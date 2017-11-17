@@ -127,6 +127,7 @@ Command  | Action            | Example    | Success | Failed  | Notes
 @MOm,S   | Move Out S steps  | @MO1,1000  | MO#     |         | Move out or clockwise
 @PRm,n   | Read Position     | @PR1,0     | PR1234# |         | Read step position of motor m (parameter ignored)
 @SWm,n   | Stop motor        | @SW1,0     | SW#     |         | Performs an emergency stop (no deceleration)
+X        | Is motor moving?  | X          | 1#      |         | Returns 0# if stopped; 1# focuser; 2# rotator
 ---------|-------------------|------------|---------|---------|-----------------------------------------------------
 @RWm,n   | Set ramp time     | @RW1,5000  | RW#     |         | Sets the acceleration ramp time, in milliseconds. Default 250ms, minimum 100ms.
 </pre>

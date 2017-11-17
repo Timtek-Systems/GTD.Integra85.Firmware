@@ -42,6 +42,11 @@ struct Response
 		plus an unsigned integer (usually a motor step position).
 	*/
 	static Response FromPosition(Command& command, uint32_t position);
+
+	/*
+		Creates a response consisting of just an integer and the terminator.
+	*/
+	static Response FromInteger(int i);
 	};
 
 
@@ -153,6 +158,15 @@ class StopMotorCommandProcessor : public ICommandProcessor
 		Motor *motor;
 	};
 
+class IsMovingCommandProcessor : public ICommandProcessor
+	{
+	public:
+		IsMovingCommandProcessor(char targetDevice, Motor& focuser, Motor& rotator);
+		virtual Response Execute(Command& command) override;
+	private:
+		Motor *focuser, *rotator;
+	};
+
 class FocuserCommandTarget : public ICommandTarget
 	{
 	public:
@@ -168,7 +182,7 @@ class RotatorCommandTarget : public ICommandTarget
 class DefaultCommandTarget : public ICommandTarget
 	{
 	public:
-		DefaultCommandTarget(char deviceAddress, PersistentSettings& settings);
+		DefaultCommandTarget(char deviceAddress, PersistentSettings& settings, Motor& focuser, Motor& rotator);
 	};
 
 #endif

@@ -30,7 +30,7 @@ auto calibrationStateMachine = CalibrationStateMachine(&focuserMotor, &touchSens
 auto dispatcher = CommandDispatcher();
 auto focuser = FocuserCommandTarget('1', focuserMotor, calibrationStateMachine);
 auto rotator = RotatorCommandTarget('2', rotatorMotor);
-auto defaultDevice = DefaultCommandTarget('0', settings);
+auto defaultDevice = DefaultCommandTarget('0', settings, focuserMotor, rotatorMotor);
 Command command;
 
 void setup() 
@@ -102,12 +102,13 @@ void HandleSerialCommunications()
 
 Response DispatchCommand(char *buffer, unsigned int charCount)
 	{
-	if (charCount < 2)
+	if (charCount < 1)
 		return Response::Error();
 	Command command;
 	command.StepPosition = 0;
 	command.Verb.concat(buffer[0]);
-	command.Verb.concat(buffer[1]);
+	if (charCount > 1)
+		command.Verb.concat(buffer[1]);
 	// If there is no device address then use '0', the default device.
 	if (charCount < 3)
 		{
