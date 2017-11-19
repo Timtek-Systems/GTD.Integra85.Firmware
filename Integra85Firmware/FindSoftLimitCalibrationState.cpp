@@ -37,7 +37,6 @@ void FindSoftLimitCalibrationState::Loop(CalibrationStateMachine & machine)
 void FindSoftLimitCalibrationState::OnEnter(CalibrationStateMachine & machine)
 	{
 	softLimitPosition = 0;
-	machine.backlashMeasurement = 0;
 	machine.calibrationDistanceMovingIn = 0;
 	machine.calibrationDistanceMovingOut = 0;
 	machine.stepper->SetCurrentPosition(machine.stepper->MidpointPosition());
@@ -46,5 +45,4 @@ void FindSoftLimitCalibrationState::OnEnter(CalibrationStateMachine & machine)
 
 FindSoftLimitCalibrationState::FindSoftLimitCalibrationState()
 	{
-	StateName = "FindSoftLimit";
 	}

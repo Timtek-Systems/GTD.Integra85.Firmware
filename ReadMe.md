@@ -23,15 +23,20 @@ a switch statement, but that wouldn't be the 'Object Oriented Way'.
 ## Memory Management
 
 Dynamic memory allocations have been agressively avoided. As a
-resource-constrained embedded system with just 2K of data memory, there is not
+resource-constrained embedded system with just 2Kb of data memory, there is not
 much space available for a heap and we can't tolerate "Out Of Memory" errors
 at runtime. The system must be stable for days, months or even years at a time
-so the memory management strategy must be deterministic and stable.
+so the memory management strategy must be frugal, deterministic and stable.
 
 Our solution to this is to statically pre-allocate as many objects as possible once,
-in global scope, then never delete them. The .ino file contains these allocations either as
-statically initialized global variables or in the setup() method and this essentially
-forms the Composition Root for the system.
+in global scope, then never delete them. The `.ino` file contains these allocations
+either as statically initialized global variables or in the setup() method and this
+essentially forms the Composition Root for the system.
+
+Since we can assume that most objects are never freed, there is little to be gained
+from the use of smart pointers and we have chosen to avoid the overhead and use "raw" pointers
+where necessary. We do however make use of the `std::vector<T>` class within the command
+dispatcher system.
 
 ## Motor Control
 
@@ -97,28 +102,43 @@ and ultimately returns a response string, which is passed back to the client app
 
 ## Command Protocol
 
-### General structure
+### Command Grammar
 
-In general, commands have the form <kbd>@</kbd> `Verb` `Device`<kbd>,</kbd> `Parameter`.
-- <kbd>@</kbd> is a literal character that marks the start of a new command and clears the receive buffer.
-- `Verb` is the command verb.
+Commands have the form: <kbd>@</kbd> `Verb` `Device`<kbd>,</kbd> `Parameter`<kbd>RETURN</kbd><kbd>LINE FEED</kbd>.
+
+- <kbd>@</kbd> is a literal character that marks the start of a new command and clears the receive buffer. Use of the <kbd>@</kbd> initiator is optional, but recommended.
+- `Verb` is the command verb, which normally consists of two characters. Single character verbs are also possible but in this case the entire command is a single character.
 - `Device` is the target device for the command, generally a motor number `1` (focuser) or `2` (rotator).
+Where no device address is given, a default value of `0` is assumed.
 - <kbd>,</kbd> is a literal character that separates the device ID from the parameter.
 - `Parameter` is a positive integer. If omitted, zero is assumed.
+- <kbd>RETURN</kbd><kbd>LINE FEED</kbd> is the command terminator and submits the command to the dispatcher.
+Only one is required. If both are present then they can be in any order.
 
 <example>Example: `@MI1,1000`.</example>
+
+If the parameter field is not required then it can be omitted. For example, the following are all equivalent:
+`@PR1`, `@PR1,`, `@PR1,1000`
 
 ### Command Protocol Details
 
 <pre>
-Command  | Action            | Example    | Success | Failed  | Notes
-=========|===================|============|=========|=========|=====================================================
-@CS1,0   | Calibration Start | @CS1,0     | CS#     | Invalid | Only valid for motor 1 (focuser). Parameter ignored.
----------|-------------------|------------|---------|---------|-----------------------------------------------------
-@MIm,S   | Move In S steps   | @MI1,1000  | MI#     |         | Move in or anticlockwise
-@MOm,S   | Move Out S steps  | @MO1,1000  | MO#     |         | Move out or clockwise
----------|-------------------|------------|---------|---------|-----------------------------------------------------
-@RWm,n   | Set ramp time     | @RW1,5000  | RW#     |         | Sets the acceleration ramp time, in milliseconds. Default 250ms, minimum 100ms.
+Command  | Action            | Example    | Success | Notes
+=========|===================|============|=========|=====================================================
+@CSm,n   | Calibration Start | @CS1,0     | CS#     | Only valid for motor 1 (focuser). Parameter ignored.
+@CEm,n   | Calibration Abort | @CE1,0     | CE#     | Stops calibration and sets status to Cancelled
+@CRm,n   | Calibration state | @CR1,0     | CS1#    | Returns 0=Uncalibrated; 1=Calibrated; 2=In Progress; 3=Cancelled
+---------|-------------------|------------|---------|-----------------------------------------------------
+@MIm,S   | Move In S steps   | @MI1,1000  | MI#     | Move in or anticlockwise
+@MOm,S   | Move Out S steps  | @MO1,1000  | MO#     | Move out or clockwise
+@SWm,n   | Stop motor        | @SW1,0     | SW#     | Performs an emergency stop (no deceleration)
+X        | Is motor moving?  | X          | 1#      | Returns 0# if stopped; 1# focuser; 2# rotator
+---------|-------------------|------------|---------|-----------------------------------------------------
+@RRm,n   | Read motor range  | @RR1,0     | RR1234# | Reads the range of movement in steps for motor m
+@PRm,n   | Read Position     | @PR1,0     | PR1234# | Read step position of motor m (parameter ignored)
+---------|-------------------|------------|---------|-----------------------------------------------------
+@RWm,n   | Set ramp time     | @RW1,5000  | RW#     | Sets the ramp time in milliseconds. Minimum 100ms.
+@VR      | Read Version      | @VR        | VR2.0#  | Reads the firmware version number Major.Minor
 </pre>
 
 

@@ -6,12 +6,11 @@
 
 void IdleCalibrationState::Loop(CalibrationStateMachine& machine)
 	{
-	// Do nothing.
+	machine.startTime = millis();
 	}
 
 IdleCalibrationState::IdleCalibrationState()
 	{
-	StateName = "Idle";
 	}
 
 ICalibrationState& IdleCalibrationState::GetInstance()
@@ -22,5 +21,6 @@ ICalibrationState& IdleCalibrationState::GetInstance()
 
 void IdleCalibrationState::StartCalibration(CalibrationStateMachine& machine)
 	{
+	machine.status->status = InProgress;
 	machine.ChangeState(FindHomeCalibrationState::GetInstance());
 	}

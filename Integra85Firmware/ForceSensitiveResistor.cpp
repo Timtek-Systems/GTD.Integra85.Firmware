@@ -6,7 +6,7 @@
 
 ForceSensitiveResistor::ForceSensitiveResistor(uint8_t analogChannel)
 	{
-	movingAverage = MovingAverage::MovingAverage(10);
+	movingAverage = MovingAverage::MovingAverage(5);
 	channel = analogChannel;
 	}
 

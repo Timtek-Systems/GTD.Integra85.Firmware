@@ -9,19 +9,28 @@
 	#include "WProgram.h"
 #endif
 
-#include "IStepGenerator.h"
+#include "Integra85.h"
 #include "IStepSequencer.h"
+#include "IStepGenerator.h"
+
+struct MotorSettings
+	{
+	uint32_t maxPosition;				// limit of travel, in steps
+	volatile uint32_t currentPosition;	// the current position (potentially updated by ISR)
+	uint16_t rampTimeMilliseconds;		// milliseconds to ramp from minSpeed to maxSpeed
+	uint16_t maxSpeed;					// maximum number of steps per second
+	};
 
 class Motor : public IStepSequencer
 	{
 	public:
-		Motor();
-		Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, uint32_t limitOfTravel, IStepGenerator *stepper);
+		Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin);
+		Motor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, IStepGenerator& stepper, MotorSettings& settings);
 		virtual void Step(bool state) final;
 		void MoveAtVelocity(float stepsPerSecond);
 		void EnergizeMotor();
 		void ReleaseMotor();
-		void SetRampTime(float seconds);
+		void SetRampTime(uint16_t milliseconds);
 		void HardStop();
 		void ComputeAcceleratedVelocity();
 		void MoveToPosition(uint32_t position);
@@ -32,14 +41,14 @@ class Motor : public IStepSequencer
 		const uint32_t LimitOfTravel();
 
 	private:
+		MotorSettings *configuration;
 		uint8_t stepPin, enablePin, directionPin;
 		IStepGenerator *stepGenerator;
 		int8_t direction = +1;
-		uint32_t currentPosition, targetPosition, maxPosition, midpointPosition;
+		uint32_t targetPosition;
 		unsigned long startTime;
-		float rampTime;
 		float startVelocity, currentVelocity, targetVelocity, currentAcceleration;
-		float maxSpeed, minSpeed;
+		float minSpeed;
 		void InitializeHardware();
 		float AcceleratedVelocity();
 		float DeceleratedVelocity();

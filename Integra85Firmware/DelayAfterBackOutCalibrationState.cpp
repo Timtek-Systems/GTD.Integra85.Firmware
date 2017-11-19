@@ -3,7 +3,6 @@
 DelayAfterBackOutCalibrationState::DelayAfterBackOutCalibrationState()
 	{
 	delayDuration = 1000;
-	StateName = "DelayAfterBackOut";
 	}
 
 void DelayAfterBackOutCalibrationState::TransitionToNextState(CalibrationStateMachine & machine)

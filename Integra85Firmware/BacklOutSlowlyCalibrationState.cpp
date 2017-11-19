@@ -13,7 +13,6 @@ void BackOutCalibrationState::OnEnter(CalibrationStateMachine & machine)
 
 BackOutCalibrationState::BackOutCalibrationState()
 	{
-	StateName = "Backout";
 	}
 
 ICalibrationState& BackOutCalibrationState::GetInstance()

@@ -29,11 +29,12 @@ void FindHomeCalibrationState::Loop(CalibrationStateMachine & machine)
 
 void FindHomeCalibrationState::OnEnter(CalibrationStateMachine & machine)
 	{
+	machine.startTime = millis();
+	machine.status->backlash = 0;
 	machine.stepper->SetCurrentPosition(machine.stepper->MidpointPosition());
 	machine.stepper->MoveToPosition(0);
 	}
 
 FindHomeCalibrationState::FindHomeCalibrationState()
 	{
-	StateName = "FindHome";
 	}
