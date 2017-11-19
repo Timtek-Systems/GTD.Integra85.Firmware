@@ -24,7 +24,8 @@ enum CalibrationResult
 struct Calibration
 	{
 	CalibrationResult status = Uncalibrated;
-	uint16_t focuserBacklash = 0;
+	uint16_t backlash = 0;
+	int8_t lastDirection = 0;
 	};
 
 class ICalibrationState;

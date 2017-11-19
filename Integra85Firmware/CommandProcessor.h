@@ -70,7 +70,6 @@ class ICommandTarget
 			};
 	protected:
 		std::vector<ICommandProcessor *> commandProcessors;
-		char deviceAddress;
 	};
 
 class InvalidCommandProcessor : public ICommandProcessor
@@ -186,11 +185,27 @@ class RangeReadCommandProcessor : public ICommandProcessor
 		Motor * motor;
 	};
 
+class CalibrationStateCommandProcessor : public ICommandProcessor
+	{
+	public:
+		CalibrationStateCommandProcessor(char targetDevice, Calibration& status);
+		virtual Response Execute(Command& command) override;
+	private:
+		Calibration * calibration;
+	};
+
+class VersionReadCommandProcessor : public ICommandProcessor
+	{
+	public:
+		VersionReadCommandProcessor(char targetDevice);
+		virtual Response Execute(Command& command) override;
+	};
+
 
 class FocuserCommandTarget : public ICommandTarget
 	{
 	public:
-		FocuserCommandTarget(char address, Motor& motor, CalibrationStateMachine& calibrator);
+		FocuserCommandTarget(char address, Motor& motor, CalibrationStateMachine& calibrator, Calibration& state);
 	};
 
 class RotatorCommandTarget : public ICommandTarget

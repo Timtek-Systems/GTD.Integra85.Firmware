@@ -64,6 +64,9 @@
     <ClInclude Include="PersistentSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BacklashCompensatingMotor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Motor.cpp">
@@ -160,6 +163,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RangeReadCommandProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VersionReadCommandProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CalibrationStateCommandProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BacklashCompensatingMotor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

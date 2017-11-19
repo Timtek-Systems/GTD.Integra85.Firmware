@@ -19,7 +19,7 @@ PersistentSettings::PersistentSettings()
 		M2_RAMP_TIME,		// Ramp time (seconds)
 		M2_MAX_SPEED		// Max speed (steps per sec)
 		};
-	calibration.focuserBacklash = 0;
+	calibration.backlash = 0;
 	calibration.status = Uncalibrated;
 	}
 
@@ -33,10 +33,12 @@ PersistentSettings::PersistentSettings()
 void PersistentSettings::Save()
 	{
 	uint16_t *destination = 0;
-	eeprom_update_word(destination++, fingerprint);
 	auto source = (const byte *)this;
 	auto byteCount = sizeof(PersistentSettings);
 	eeprom_update_block(source, destination, byteCount);
+	// Now write a "fingerprint" immediately after the settings.
+	destination += sizeof(PersistentSettings);
+	eeprom_update_word(destination, fingerprint);
 	}
 
 /*
@@ -49,13 +51,17 @@ PersistentSettings PersistentSettings::Load()
 	{
 	auto defaultSettings = PersistentSettings();
 	uint16_t *source = 0;
-	auto eepromFingerprint = eeprom_read_word(source++);
-	if (eepromFingerprint != fingerprint)
-		return defaultSettings;	// use defaults if fingerprint is invalid
 	auto loadedSettings = PersistentSettings();
 	eeprom_read_block(&loadedSettings, source, sizeof(PersistentSettings));
+	// Read the fingerprint and make sure it is valid
+	source += sizeof(PersistentSettings);
+	auto eepromFingerprint = eeprom_read_word(source);
+	if (eepromFingerprint != fingerprint)
+		return defaultSettings;	// use defaults if fingerprint is invalid
+	// Ensure that the firmware major version is the same as when the settings were saved.
 	if (loadedSettings.majorVersion != FIRMWARE_MAJOR_VERSION)
 		return defaultSettings;
+	// All is well, we can return the loaded settings.
 	return loadedSettings;
 	}
 

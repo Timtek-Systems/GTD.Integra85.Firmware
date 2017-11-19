@@ -102,14 +102,18 @@ and ultimately returns a response string, which is passed back to the client app
 
 ## Command Protocol
 
-### General structure
+### Command Grammar
 
-In general, commands have the form <kbd>@</kbd> `Verb` `Device`<kbd>,</kbd> `Parameter`.
-- <kbd>@</kbd> is a literal character that marks the start of a new command and clears the receive buffer.
-- `Verb` is the command verb.
+Commands have the form: <kbd>@</kbd> `Verb` `Device`<kbd>,</kbd> `Parameter`<kbd>RETURN</kbd><kbd>LINE FEED</kbd>.
+
+- <kbd>@</kbd> is a literal character that marks the start of a new command and clears the receive buffer. Use of the <kbd>@</kbd> initiator is optional, but recommended.
+- `Verb` is the command verb, which normally consists of two characters. Single character verbs are also possible but in this case the entire command is a single character.
 - `Device` is the target device for the command, generally a motor number `1` (focuser) or `2` (rotator).
+Where no device address is given, a default value of `0` is assumed.
 - <kbd>,</kbd> is a literal character that separates the device ID from the parameter.
 - `Parameter` is a positive integer. If omitted, zero is assumed.
+- <kbd>RETURN</kbd><kbd>LINE FEED</kbd> is the command terminator and submits the command to the dispatcher.
+Only one is required. If both are present then they can be in any order.
 
 <example>Example: `@MI1,1000`.</example>
 
@@ -123,6 +127,7 @@ Command  | Action            | Example    | Success | Notes
 =========|===================|============|=========|=====================================================
 @CSm,n   | Calibration Start | @CS1,0     | CS#     | Only valid for motor 1 (focuser). Parameter ignored.
 @CEm,n   | Calibration Abort | @CE1,0     | CE#     | Stops calibration and sets status to Cancelled
+@CRm,n   | Calibration state | @CR1,0     | CS1#    | Returns 0=Uncalibrated; 1=Calibrated; 2=In Progress; 3=Cancelled
 ---------|-------------------|------------|---------|-----------------------------------------------------
 @MIm,S   | Move In S steps   | @MI1,1000  | MI#     | Move in or anticlockwise
 @MOm,S   | Move Out S steps  | @MO1,1000  | MO#     | Move out or clockwise
@@ -133,6 +138,7 @@ X        | Is motor moving?  | X          | 1#      | Returns 0# if stopped; 1# 
 @PRm,n   | Read Position     | @PR1,0     | PR1234# | Read step position of motor m (parameter ignored)
 ---------|-------------------|------------|---------|-----------------------------------------------------
 @RWm,n   | Set ramp time     | @RW1,5000  | RW#     | Sets the ramp time in milliseconds. Minimum 100ms.
+@VR      | Read Version      | @VR        | VR2.0#  | Reads the firmware version number Major.Minor
 </pre>
 
 

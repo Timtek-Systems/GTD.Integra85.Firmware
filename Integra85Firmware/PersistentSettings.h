@@ -16,8 +16,8 @@
 struct PersistentSettings
 	{
 	static const uint16_t fingerprint = 0x4AFB;
-	static const uint8_t majorVersion = FIRMWARE_MAJOR_VERSION;
-	static const uint8_t minorVersion = FIRMWARE_MINOR_VERSION;
+	uint8_t majorVersion = FIRMWARE_MAJOR_VERSION;
+	uint8_t minorVersion = FIRMWARE_MINOR_VERSION;
 
 	struct MotorSettings focuser;
 	struct MotorSettings rotator;

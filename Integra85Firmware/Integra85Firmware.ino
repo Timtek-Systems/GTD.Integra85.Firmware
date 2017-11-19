@@ -1,5 +1,6 @@
 #if defined(ARDUINO) && ARDUINO >= 100
-  #include "Arduino.h"
+  #include "BacklashCompensatingMotor.h"
+#include "Arduino.h"
 #else
   #include "WProgram.h"
 #endif
@@ -28,7 +29,7 @@ auto touchSensor = ForceSensitiveResistor(TOUCH_SENSOR_CHANNEL);
 auto bluetooth = SoftwareSerial(BluetoothRxPin, BluetoothTxPin);
 auto calibrationStateMachine = CalibrationStateMachine(&focuserMotor, &touchSensor, settings.calibration);
 auto dispatcher = CommandDispatcher();
-auto focuser = FocuserCommandTarget('1', focuserMotor, calibrationStateMachine);
+auto focuser = FocuserCommandTarget('1', focuserMotor, calibrationStateMachine, settings.calibration);
 auto rotator = RotatorCommandTarget('2', rotatorMotor);
 auto defaultDevice = DefaultCommandTarget('0', settings, focuserMotor, rotatorMotor);
 Command command;
@@ -42,8 +43,6 @@ void setup()
 	rotatorMotor.ReleaseMotor();
 	interrupts();
 	}
-
-int counter = 0;
 
 void loop() 
 	{

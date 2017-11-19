@@ -55,12 +55,11 @@ void CalibrationStateMachine::CalibrationComplete()
 	{
 	int backlash = calibrationDistanceMovingIn - calibrationDistanceMovingOut;
 	// Backlash should be positive. If it's not, something is wrong.
-	// ToDo: Fail calibration if backlash is negative? Or should we assume it is too small to measure?
 	if (backlash < 0)
 		{
 		backlash = 0;
 		}
 
-	status->focuserBacklash = backlash;
+	status->backlash = backlash;	// Note: in microsteps
 	status->status = Calibrated;
 	}
