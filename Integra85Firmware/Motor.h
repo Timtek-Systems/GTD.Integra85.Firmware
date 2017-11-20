@@ -32,16 +32,19 @@ class Motor : public IStepSequencer
 		void ReleaseMotor();
 		void SetRampTime(uint16_t milliseconds);
 		void HardStop();
+		virtual void Loop();
 		void ComputeAcceleratedVelocity();
-		void MoveToPosition(uint32_t position);
+		virtual void MoveToPosition(uint32_t position);
 		void SetCurrentPosition(uint32_t position);
 		const float CurrentVelocity();
 		const uint32_t CurrentPosition();
 		const uint32_t MidpointPosition();
 		const uint32_t LimitOfTravel();
 
-	private:
+	protected:
 		MotorSettings *configuration;
+
+	private:
 		uint8_t stepPin, enablePin, directionPin;
 		IStepGenerator *stepGenerator;
 		int8_t direction = +1;

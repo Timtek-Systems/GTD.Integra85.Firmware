@@ -224,6 +224,12 @@ void Motor::HardStop()
 	ReleaseMotor();
 	}
 
+void Motor::Loop()
+	{
+	if (currentVelocity != 0)
+		ComputeAcceleratedVelocity();
+	}
+
 /*
 	Recomputes the current motor velocity. Call this from within the main loop.
 */

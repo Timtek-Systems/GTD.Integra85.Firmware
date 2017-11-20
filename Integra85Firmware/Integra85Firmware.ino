@@ -50,10 +50,8 @@ void loop()
 	HandleBluetoothCommunications();
 	touchSensor.Loop();
 	calibrationStateMachine.Loop();
-	if (focuserMotor.CurrentVelocity() != 0)
-		focuserMotor.ComputeAcceleratedVelocity();
-	if (rotatorMotor.CurrentVelocity() != 0)
-		rotatorMotor.ComputeAcceleratedVelocity();
+	focuserMotor.Loop();
+	rotatorMotor.Loop();
 	}
 
 void RegisterCommandTargets()
