@@ -164,6 +164,11 @@ const uint32_t Motor::LimitOfTravel()
 	return configuration->maxPosition;
 	}
 
+const bool Motor::IsMoving()
+	{
+	return currentVelocity != 0;
+	}
+
 /*
 	Computes the linear acceleration required to accelerate from rest to the maximum
 	speed in the ramp time. The returned value is always positive.
@@ -226,7 +231,7 @@ void Motor::HardStop()
 
 void Motor::Loop()
 	{
-	if (currentVelocity != 0)
+	if (Motor::IsMoving())
 		ComputeAcceleratedVelocity();
 	}
 

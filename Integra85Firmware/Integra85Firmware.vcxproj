@@ -104,7 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BacklashCompensatingMotor.cpp" />
-    <ClCompile Include="BacklOutSlowlyCalibrationState.cpp" />
+    <ClCompile Include="BacklOutCalibrationState.cpp" />
     <ClCompile Include="CalibrateAbortCommandProcessor.cpp" />
     <ClCompile Include="CalibrateStartCommandProcessor.cpp" />
     <ClCompile Include="CalibrationStateCommandProcessor.cpp" />
@@ -144,7 +144,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties debug.view.FreeMemory="" arduino.build.auto_discover_includes="1" debug.view.DigitalPins="" />
+      <UserProperties debug.view.FreeMemory="" arduino.build.auto_discover_includes="0" debug.view.DigitalPins="" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

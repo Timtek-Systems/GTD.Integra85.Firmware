@@ -31,7 +31,7 @@ class Motor : public IStepSequencer
 		void EnergizeMotor();
 		void ReleaseMotor();
 		void SetRampTime(uint16_t milliseconds);
-		void HardStop();
+		virtual void HardStop();
 		virtual void Loop();
 		void ComputeAcceleratedVelocity();
 		virtual void MoveToPosition(uint32_t position);
@@ -40,6 +40,7 @@ class Motor : public IStepSequencer
 		const uint32_t CurrentPosition();
 		const uint32_t MidpointPosition();
 		const uint32_t LimitOfTravel();
+		virtual const bool IsMoving();
 
 	protected:
 		MotorSettings *configuration;
