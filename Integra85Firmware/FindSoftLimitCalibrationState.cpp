@@ -23,11 +23,16 @@ void FindSoftLimitCalibrationState::Loop(CalibrationStateMachine & machine)
 	if (sensorValue >= FSR_SOFT_THRESHOLD && softLimitPosition == 0)
 		{
 		softLimitPosition = position;
+		Serial.print(softLimitPosition);
+		Serial.print("-");
 		}
 	if (sensorValue >= FSR_HARD_THRESHOLD)
 		{
 		machine.stepper->HardStop();
 		auto distanceBetweenHardAndSoftLimits = softLimitPosition - position;
+		Serial.print(position);
+		Serial.print("=");
+		Serial.println(distanceBetweenHardAndSoftLimits);
 		machine.calibrationDistanceMovingIn=distanceBetweenHardAndSoftLimits;
 		machine.stepper->SetCurrentPosition(0);	// We are now at the "hard stop" position.
 		machine.ChangeState(DelayAfterFindSoftLimitCalibrationState::GetInstance());

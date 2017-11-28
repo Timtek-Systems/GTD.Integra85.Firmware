@@ -10,9 +10,9 @@ IsMovingCommandProcessor::IsMovingCommandProcessor(char targetDevice, Motor& foc
 
 Response IsMovingCommandProcessor::Execute(Command& command)
 	{
-	if (focuser->CurrentVelocity() != 0)
+	if (focuser->IsMoving())
 		return Response::FromInteger(1);
-	if (rotator->CurrentVelocity() != 0)
+	if (rotator->IsMoving())
 		return Response::FromInteger(2);
 	return Response::FromInteger(0);
 	}

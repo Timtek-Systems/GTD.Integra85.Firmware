@@ -53,7 +53,9 @@ void CalibrationStateMachine::ChangeState(ICalibrationState& newState)
 
 void CalibrationStateMachine::CalibrationComplete()
 	{
-	int backlash = calibrationDistanceMovingIn - calibrationDistanceMovingOut;
+	int backlash =  calibrationDistanceMovingOut - calibrationDistanceMovingIn;
+	Serial.print("Blsh ");
+	Serial.println(backlash);
 	// Backlash should be positive. If it's not, something is wrong.
 	if (backlash < 0)
 		{

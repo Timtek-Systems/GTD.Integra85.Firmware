@@ -17,7 +17,7 @@ ICalibrationState & FindMidpointCalibrationState::GetInstance()
 void FindMidpointCalibrationState::Loop(CalibrationStateMachine & machine)
 	{
 	auto position = machine.stepper->CurrentPosition();
-	if (machine.stepper->CurrentVelocity()==0)
+	if (!machine.stepper->IsMoving())
 		{
 		machine.CalibrationComplete();
 		machine.ChangeState(IdleCalibrationState::GetInstance());

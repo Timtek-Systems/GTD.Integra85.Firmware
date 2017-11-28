@@ -2,13 +2,13 @@
 
 void BackOutCalibrationState::Loop(CalibrationStateMachine& machine)
 	{
-	if (machine.stepper->CurrentVelocity() == 0)
+	if (!machine.stepper->IsMoving())
 		machine.ChangeState(DelayAfterBackOutCalibrationState::GetInstance());
 	}
 
 void BackOutCalibrationState::OnEnter(CalibrationStateMachine & machine)
 	{
-	machine.stepper->MoveToPosition(160000);
+	machine.stepper->MoveToPosition(CALIBRATE_SAFE_DISTANCE);
 	}
 
 BackOutCalibrationState::BackOutCalibrationState()
