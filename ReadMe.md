@@ -123,15 +123,15 @@ If the parameter field is not required then it can be omitted. For example, the 
 ### Command Protocol Details
 
 <pre>
-Command  | Action            | Example    | Success | Notes
+Command  | Action            | Short      | Reply   | Notes
 =========|===================|============|=========|=====================================================
-@CSm,n   | Calibration Start | @CS1,0     | CS#     | Only valid for motor 1 (focuser). Parameter ignored.
-@CEm,n   | Calibration Abort | @CE1,0     | CE#     | Stops calibration and sets status to Cancelled
-@CRm,n   | Calibration state | @CR1,0     | CS1#    | Returns 0=Uncalibrated; 1=Calibrated; 2=In Progress; 3=Cancelled
+@CSm,n   | Calibration Start | CS1        | CS#     | Only valid for motor 1 (focuser). Parameter ignored.
+@CEm,n   | Calibration Abort | CE1        | CE#     | Stops calibration and sets status to Cancelled
+@CRm,n   | Calibration state | CR1        | CR1#    | Returns 0=Uncalibrated; 1=Calibrated; 2=In Progress; 3=Cancelled
 ---------|-------------------|------------|---------|-----------------------------------------------------
-@MIm,S   | Move In S steps   | @MI1,1000  | MI#     | Move in or anticlockwise
-@MOm,S   | Move Out S steps  | @MO1,1000  | MO#     | Move out or clockwise
-@SWm,n   | Stop motor        | @SW1,0     | SW#     | Performs an emergency stop (no deceleration)
+@MIm,S   | Move In S steps   | MI1,1000   | MI#     | Move in or anticlockwise
+@MOm,S   | Move Out S steps  | MO1,1000   | MO#     | Move out or clockwise
+@SWm,n   | Stop motor        | SW1        | SW#     | Performs an emergency stop (no deceleration)
 X        | Is motor moving?  | X          | 1#      | Returns 0# if stopped; 1# focuser; 2# rotator
 ---------|-------------------|------------|---------|-----------------------------------------------------
 @RRm,n   | Read motor range  | @RR1,0     | RR1234# | Reads the range of movement in steps for motor m
@@ -139,6 +139,9 @@ X        | Is motor moving?  | X          | 1#      | Returns 0# if stopped; 1# 
 ---------|-------------------|------------|---------|-----------------------------------------------------
 @RWm,n   | Set ramp time     | @RW1,5000  | RW#     | Sets the ramp time in milliseconds. Minimum 100ms.
 @VR      | Read Version      | @VR        | VR2.0#  | Reads the firmware version number Major.Minor
+---------|-------------------|------------|---------|-----------------------------------------------------
+@ZW      | Write settings    | ZW         | ZW#     | Writes settings to persistent storage
+@ZD      | Load Defaults     | ZD         | ZD#     | Revert to default settings. A calibration must be performed.
 </pre>
 
 

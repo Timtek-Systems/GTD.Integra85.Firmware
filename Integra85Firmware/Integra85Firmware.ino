@@ -28,15 +28,16 @@ auto rotatorMotor = Motor(M2_STEP_PIN, M2_ENABLE_PIN, M2_DIRECTION_PIN, stepGene
 auto touchSensor = ForceSensitiveResistor(TOUCH_SENSOR_CHANNEL);
 auto bluetooth = SoftwareSerial(BluetoothRxPin, BluetoothTxPin);
 auto calibrationStateMachine = CalibrationStateMachine(&focuserMotor, &touchSensor, settings.calibration);
-auto dispatcher = CommandDispatcher();
-auto focuser = FocuserCommandTarget('1', focuserMotor, calibrationStateMachine, settings.calibration);
-auto rotator = RotatorCommandTarget('2', rotatorMotor);
-auto defaultDevice = DefaultCommandTarget('0', settings, focuserMotor, rotatorMotor);
+auto commandProcessor = CommandProcessor(focuserMotor, rotatorMotor, calibrationStateMachine, settings);
+//auto rotator = RotatorCommandTarget('2', rotatorMotor);
+//auto defaultDevice = DefaultCommandTarget('0', settings, focuserMotor, rotatorMotor);
+//auto targets = std::vector<ICommandTarget *>{ &focuser };
+//auto dispatcher = CommandDispatcher(targets);
+
 Command command;
 
 void setup() 
 	{
-	RegisterCommandTargets();
 	Serial.begin(115200);
 	bluetooth.begin(9600);
 	focuserMotor.ReleaseMotor();
@@ -46,20 +47,14 @@ void setup()
 
 void loop() 
 	{
+	focuserMotor.Loop();
+	rotatorMotor.Loop();
 	HandleSerialCommunications();
 	HandleBluetoothCommunications();
 	touchSensor.Loop();
 	calibrationStateMachine.Loop();
-	focuserMotor.Loop();
-	rotatorMotor.Loop();
 	}
 
-void RegisterCommandTargets()
-	{
-	dispatcher.RegisterCommandTarget(focuser);
-	dispatcher.RegisterCommandTarget(rotator);
-	dispatcher.RegisterCommandTarget(defaultDevice);
-	}
 
 void HandleSerialCommunications()
 	{
@@ -110,7 +105,7 @@ Response DispatchCommand(char *buffer, unsigned int charCount)
 	if (charCount < 3)
 		{
 		command.TargetDevice = '0';
-		return dispatcher.Dispatch(command);
+		return commandProcessor.HandleCommand(command);
 		}
 	// Use the device address from the command
 	command.TargetDevice = buffer[2];
@@ -120,7 +115,7 @@ Response DispatchCommand(char *buffer, unsigned int charCount)
 		auto wholeSteps = std::strtoul(buffer+4, NULL, 10);
 		command.StepPosition = wholeSteps;
 		}
-	auto response = dispatcher.Dispatch(command);
+	auto response = commandProcessor.HandleCommand(command);
 	return response;
 	}
 

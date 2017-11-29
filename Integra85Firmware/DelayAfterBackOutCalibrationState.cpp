@@ -7,11 +7,6 @@ DelayAfterBackOutCalibrationState::DelayAfterBackOutCalibrationState()
 
 void DelayAfterBackOutCalibrationState::TransitionToNextState(CalibrationStateMachine & machine)
 	{
-	machine.ChangeState(FindSoftLimitCalibrationState::GetInstance());
+	machine.ChangeState(new FindSoftLimitCalibrationState());
 	}
 
-ICalibrationState& DelayAfterBackOutCalibrationState::GetInstance()
-	{
-	static DelayAfterBackOutCalibrationState instance;
-	return instance;
-	}

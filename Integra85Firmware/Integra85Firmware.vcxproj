@@ -105,13 +105,8 @@
   <ItemGroup>
     <ClCompile Include="BacklashCompensatingMotor.cpp" />
     <ClCompile Include="BacklOutCalibrationState.cpp" />
-    <ClCompile Include="CalibrateAbortCommandProcessor.cpp" />
-    <ClCompile Include="CalibrateStartCommandProcessor.cpp" />
-    <ClCompile Include="CalibrationStateCommandProcessor.cpp" />
     <ClCompile Include="CalibrationStateMachine.cpp" />
-    <ClCompile Include="CommandDispatcher.cpp" />
     <ClCompile Include="CounterTimer1StepGenerator.cpp" />
-    <ClCompile Include="DefaultCommandTarget.cpp" />
     <ClCompile Include="DelayAfterBackOutCalibrationState.cpp" />
     <ClCompile Include="DelayAfterFindHomeCalibrationState.cpp" />
     <ClCompile Include="DelayAfterFindSoftLimitCalibrationState.cpp" />
@@ -120,24 +115,13 @@
     <ClCompile Include="FindHomeCalibrationState.cpp" />
     <ClCompile Include="FindMidpointCalibrationState.cpp" />
     <ClCompile Include="FindSoftLimitCalibrationState.cpp" />
-    <ClCompile Include="FocuserCommandTarget.cpp" />
+    <ClCompile Include="CommandProcessor.cpp" />
     <ClCompile Include="ForceSensitiveResistor.cpp" />
     <ClCompile Include="IdleCalibrationState.cpp" />
-    <ClCompile Include="InvalidCommandProcessor.cpp" />
-    <ClCompile Include="IsMovingCommandProcessor.cpp" />
     <ClCompile Include="Motor.cpp" />
-    <ClCompile Include="MoveOutCommandProcessor.cpp" />
-    <ClCompile Include="MoveInCommandProcessor.cpp" />
     <ClCompile Include="MovingAverage.cpp" />
     <ClCompile Include="PersistentSettings.cpp" />
-    <ClCompile Include="PositionReadCommandProcessor.cpp" />
-    <ClCompile Include="RangeReadCommandProcessor.cpp" />
     <ClCompile Include="Response.cpp" />
-    <ClCompile Include="RotatorCommandTarget.cpp" />
-    <ClCompile Include="SaveSettingsCommandProcessor.cpp" />
-    <ClCompile Include="SetRampTimeCommandProcessor.cpp" />
-    <ClCompile Include="StopMotorCommandProcessor.cpp" />
-    <ClCompile Include="VersionReadCommandProcessor.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

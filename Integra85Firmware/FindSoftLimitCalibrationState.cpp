@@ -6,12 +6,6 @@ Moves the focuser at full speed towards the hard stop. During the move, the Curr
 of the motor is kept at the midpoint, to prevent it from exceeding safety limits.
 */
 
-ICalibrationState & FindSoftLimitCalibrationState::GetInstance()
-	{
-	static FindSoftLimitCalibrationState instance;
-	return instance;
-	}
-
 /*
 	Move in until the FSR reaches the soft threshold, and record that position.
 	Continue to move in until the hard stop is reached.
@@ -35,7 +29,7 @@ void FindSoftLimitCalibrationState::Loop(CalibrationStateMachine & machine)
 		Serial.println(distanceBetweenHardAndSoftLimits);
 		machine.calibrationDistanceMovingIn=distanceBetweenHardAndSoftLimits;
 		machine.stepper->SetCurrentPosition(0);	// We are now at the "hard stop" position.
-		machine.ChangeState(DelayAfterFindSoftLimitCalibrationState::GetInstance());
+		machine.ChangeState(new DelayAfterFindSoftLimitCalibrationState());
 		}
 	}
 
@@ -46,8 +40,4 @@ void FindSoftLimitCalibrationState::OnEnter(CalibrationStateMachine & machine)
 	machine.calibrationDistanceMovingOut = 0;
 	machine.stepper->SetCurrentPosition(machine.stepper->MidpointPosition());
 	machine.stepper->MoveAtVelocity(-2880);
-	}
-
-FindSoftLimitCalibrationState::FindSoftLimitCalibrationState()
-	{
 	}

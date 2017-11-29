@@ -3,14 +3,14 @@
   <Class Name="ICalibrationState">
     <Position X="0.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAIAgAAAAAAAAAAAAAAAAAQAAAAAIAAAAEAAAA=</HashCode>
+      <HashCode>AAAAAAAIAgAAAAAAAAAAAAAAAAAQAgAAAIAAAAAAAAA=</HashCode>
       <FileName>CalibrationStateMachine.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CalibrationStateMachine">
     <Position X="3.5" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAABAAAIIACABAQAIAAAABAAAAAAAAAAAAAAAgAAAAg=</HashCode>
+      <HashCode>AAQBAAAIAACABAQAIAAgAACAAAQAAgAAAAAAAgAAAAg=</HashCode>
       <FileName>CalibrationStateMachine.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -20,90 +20,100 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="ForceSensitiveResistor">
-    <Position X="6.75" Y="1.5" Width="2" />
+    <Position X="6.5" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIAAAAIEAAAAAAAAAAAgAAAAAAAAAAAAAAQAA=</HashCode>
       <FileName>ForceSensitiveResistor.h</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="movingAverage" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Motor">
-    <Position X="9.75" Y="0.5" Width="2.25" />
+    <Position X="13.5" Y="0.5" Width="2.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>IAAEEAKAABAAIIwyAACgIDQDAAQASgwAIAFAAAAEKAA=</HashCode>
+      <HashCode>IAAEEAKIAAAAIIAyAACgIDQBAASAag0AIAFAAAAEIAA=</HashCode>
       <FileName>Motor.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FindHomeCalibrationState">
-    <Position X="3" Y="6" Width="2.25" />
+    <Position X="3" Y="6.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAABACAAAAAAIAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
       <FileName>CalibrationStateMachine.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="IdleCalibrationState">
-    <Position X="0.5" Y="6" Width="2" />
+    <Position X="0.5" Y="6.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAABAAAAAAAAAAAIAAAAAA=</HashCode>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
       <FileName>CalibrationStateMachine.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BackOutCalibrationState">
-    <Position X="5.75" Y="6" Width="2" />
+    <Position X="5.75" Y="6.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAIAAAAAAAABAAAAAAABAAAAAAAAIAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
       <FileName>CalibrationStateMachine.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DelayBaseCalibrationState">
-    <Position X="8.25" Y="6" Width="2.25" />
+    <Position X="8.25" Y="6.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAgAIAAAAAAAAAAAgACBAAAAAAAAAAIAAAAAAAAA=</HashCode>
       <FileName>CalibrationStateMachine.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DelayAfterBackOutCalibrationState">
-    <Position X="4.5" Y="9.25" Width="2.75" />
+    <Position X="4.5" Y="10" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAABCAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABCAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>CalibrationStateMachine.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DelayAfterFindHomeCalibrationState">
-    <Position X="11.5" Y="9.25" Width="2.75" />
+    <Position X="11.5" Y="10" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAACAABEAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAEAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>CalibrationStateMachine.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DelayAfterFindSoftLimitCalibrationState">
-    <Position X="7.75" Y="9.25" Width="3.25" />
+    <Position X="7.75" Y="10" Width="3.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAACAABAAAAAAAEAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAEAAAAAAAAAA=</HashCode>
       <FileName>CalibrationStateMachine.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FindSoftLimitCalibrationState">
-    <Position X="11" Y="6" Width="2.25" />
+    <Position X="11" Y="6.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAABAAAAAAAAIgAAAAAAAg=</HashCode>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAg=</HashCode>
       <FileName>CalibrationStateMachine.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FindBacklashCalibrationState">
-    <Position X="13.75" Y="6" Width="2.25" />
+    <Position X="13.75" Y="6.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAEBAAAAAAAAIAAAAAAAAg=</HashCode>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAg=</HashCode>
       <FileName>CalibrationStateMachine.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FindMidpointCalibrationState">
-    <Position X="16.5" Y="6" Width="2.25" />
+    <Position X="16.5" Y="6.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAABAAAAAAAAIAAAAQAAAA=</HashCode>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
       <FileName>CalibrationStateMachine.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MovingAverage">
+    <Position X="10" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAEAgAAAAAAAAACAAABIAAAAADAAgAAA=</HashCode>
+      <FileName>MovingAverage.h</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

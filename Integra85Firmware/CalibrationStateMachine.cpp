@@ -8,7 +8,7 @@ CalibrationStateMachine::CalibrationStateMachine(Motor *motor, ForceSensitiveRes
 	{
 	stepper = motor;
 	sensor = limitSensor;
-	currentState = &IdleCalibrationState::GetInstance();
+	currentState = new IdleCalibrationState();
 	this->status = &status;
 	}
 
@@ -39,19 +39,23 @@ void CalibrationStateMachine::StopCalibrationIfTimedOut()
 
 void CalibrationStateMachine::StopCalibration()
 	{
-	ChangeState(IdleCalibrationState::GetInstance());
+	ChangeState(new IdleCalibrationState());
 	stepper->HardStop();
 	status->status = Cancelled;
 	}
 
-void CalibrationStateMachine::ChangeState(ICalibrationState& newState)
+void CalibrationStateMachine::ChangeState(ICalibrationState *newState)
 	{
 	currentState->OnExit(*this);
-	newState.OnEnter(*this);
-	currentState = &newState;
+	newState->OnEnter(*this);
+	delete currentState;
+	currentState = newState;
 	}
 
-void CalibrationStateMachine::CalibrationComplete()
+/*
+	Commits the calibration measurements so they are used from now on.
+*/
+void CalibrationStateMachine::CommitCalibration()
 	{
 	int backlash =  calibrationDistanceMovingOut - calibrationDistanceMovingIn;
 	Serial.print("Blsh ");

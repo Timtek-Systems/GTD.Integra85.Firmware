@@ -8,11 +8,5 @@ DelayAfterFindHomeCalibrationState::DelayAfterFindHomeCalibrationState()
 
 void DelayAfterFindHomeCalibrationState::TransitionToNextState(CalibrationStateMachine & machine)
 	{
-	machine.ChangeState(BackOutCalibrationState::GetInstance());
-	}
-
-ICalibrationState& DelayAfterFindHomeCalibrationState::GetInstance()
-	{
-	static DelayAfterFindHomeCalibrationState instance;
-	return instance;
+	machine.ChangeState(new BackOutCalibrationState());
 	}

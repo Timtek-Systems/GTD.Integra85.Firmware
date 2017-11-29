@@ -1,38 +1,19 @@
 #include <ArduinoSTL.h>
 #include "CommandProcessor.h"
+#include "Integra85.h"
 
-std::vector<ICommandProcessor *> CommandDispatcher::processors;
-InvalidCommandProcessor CommandDispatcher::invalidCommand = InvalidCommandProcessor();
-
-void CommandDispatcher::RegisterCommandTarget(ICommandTarget& target)
+CommandDispatcher::CommandDispatcher(std::vector<ICommandTarget*> targets)
 	{
-	// Note: no error checking is performed, each command processor must be unique.
-	auto commandProcessors = target.GetCommandProcessors();
-	for (std::vector<ICommandProcessor*>::iterator item = commandProcessors.begin(); item != commandProcessors.end(); ++item)
-		{
-		processors.push_back(*item);
-		}
+	this->targets = targets;
 	}
 
 Response CommandDispatcher::Dispatch(Command & command)
 	{
-	auto &processor = GetCommandProcessorForCommand(command);
-	if (&processor == &invalidCommand)
-		return Response::Error();
-	auto response = processor.Execute(command);
-	return response;
-	}
-
-ICommandProcessor& CommandDispatcher::GetCommandProcessorForCommand(Command & command)
-	{
-	for (std::vector<ICommandProcessor*>::iterator item = processors.begin(); item != processors.end(); ++item)
+	for (auto target = targets.begin(); target != targets.end(); ++target)
 		{
-		auto processor = *item;
-		if (processor->DeviceAddress() != command.TargetDevice)
-			continue;
-		if (processor->Verb() == command.Verb)
-			return *processor;
+		auto response = (*target)->HandleCommand(command);
+		if (response.success) return response;
 		}
-	return invalidCommand;
+	return Response::Error();
 	}
 

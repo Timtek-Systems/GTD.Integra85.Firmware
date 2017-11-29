@@ -19,12 +19,15 @@ struct Command
 	String Verb;
 	char TargetDevice;
 	uint32_t StepPosition;	// Target step position for a move command
+	bool IsMotorCommand();
+	bool IsSystemCommand();
 	};
 
 struct Response
 	{
 	static const String Terminator;
 	String Message;
+	bool success;
 
 	/*
 		Creates an error response.
@@ -49,175 +52,31 @@ struct Response
 	static Response FromInteger(int i);
 	};
 
-
-class ICommandProcessor
+class CommandProcessor
 	{
 	public:
-		char DeviceAddress() { return deviceAddress; }
-		String Verb() { return commandVerb; };
-		virtual Response Execute(Command& command) = 0;
-	protected:
-		char deviceAddress;
-		String commandVerb;
-	};
+		CommandProcessor(Motor& focuser, Motor& rotator, CalibrationStateMachine& calibrator, PersistentSettings& settings);
+		Response HandleCommand(Command& command);
 
-class ICommandTarget
-	{
-	public:
-		virtual std::vector<ICommandProcessor *>& GetCommandProcessors()
-			{
-			return commandProcessors;
-			};
-	protected:
-		std::vector<ICommandProcessor *> commandProcessors;
-	};
-
-class InvalidCommandProcessor : public ICommandProcessor
-	{
-	public:
-		InvalidCommandProcessor();
-		virtual Response Execute(Command& command) final;
-	};
-
-class CommandDispatcher
-	{
-	public:
-		static Response Dispatch(Command& command);
-		static ICommandProcessor& GetCommandProcessorForCommand(Command& command);
-		static void RegisterCommandTarget(ICommandTarget& target);
 	private:
-		static std::vector<ICommandProcessor *> processors;
-		static InvalidCommandProcessor invalidCommand;
-	};
-
-class MoveInCommandProcessor : public ICommandProcessor
-	{
-	public:
-		MoveInCommandProcessor() {};
-		MoveInCommandProcessor(char deviceAddress, Motor& motor);
-		virtual Response Execute(Command& command) override;
-	private:
-		Motor *motor;
-	};
-
-class MoveOutCommandProcessor : public ICommandProcessor
-	{
-	public:
-		MoveOutCommandProcessor() {};
-		MoveOutCommandProcessor(char deviceAddress, Motor& motor);
-		virtual Response Execute(Command& command) override;
-	private:
-		Motor *motor;
-	};
-
-class SetRampTimeCommandProcessor : public ICommandProcessor
-	{
-	public:
-		SetRampTimeCommandProcessor() {};
-		SetRampTimeCommandProcessor(char deviceAddress, Motor& motor);
-		virtual Response Execute(Command& command) override;
-	private:
-		Motor *motor;
-	};
-
-class CalibrateStartCommandProcessor : public ICommandProcessor
-	{
-	public:
-		CalibrateStartCommandProcessor(char targetDevice, Motor & motor, CalibrationStateMachine & stateMachine);
-		virtual Response Execute(Command& command) override;
-	private:
-		Motor *motor;
+		Motor * CommandProcessor::GetMotor(Command& command);
+		Response HandleMI(Command & command);
+		Response HandleMO(Command & command);
+		Response HandleRW(Command & command);
+		Response HandleCS(Command & command);
+		Response HandleCR(Command & command);
+		Response HandleCE(Command & command);
+		Response HandleSW(Command & command);
+		Response HandleZW(Command & command);
+		Response HandleZD(Command & command);
+		Response HandlePR(Command & command);
+		Response HandleRR(Command & command);
+		Response HandleVR(Command & command);
+		Response HandleX(Command & command);
+		Motor *focuser;
+		Motor *rotator;
 		CalibrationStateMachine *calibrator;
-	};
-
-class SaveSettingsCommandProcessor : public ICommandProcessor
-	{
-	public:
-		SaveSettingsCommandProcessor(char targetDevice, PersistentSettings& settings);
-		virtual Response Execute(Command& command) override;
-	private:
 		PersistentSettings *settings;
-	};
-
-class PositionReadCommandProcessor : public ICommandProcessor
-	{
-	public:
-		PositionReadCommandProcessor(char targetDevice, Motor& motor);
-		virtual Response Execute(Command& command) override;
-	private:
-		Motor *motor;
-	};
-
-class StopMotorCommandProcessor : public ICommandProcessor
-	{
-	public:
-		StopMotorCommandProcessor(char targetDevice, Motor& motor);
-		virtual Response Execute(Command& command) override;
-	private:
-		Motor *motor;
-	};
-
-class IsMovingCommandProcessor : public ICommandProcessor
-	{
-	public:
-		IsMovingCommandProcessor(char targetDevice, Motor& focuser, Motor& rotator);
-		virtual Response Execute(Command& command) override;
-	private:
-		Motor *focuser, *rotator;
-	};
-
-
-class CalibrateAbortCommandProcessor : public ICommandProcessor
-	{
-	public:
-		CalibrateAbortCommandProcessor(char targetDevice, CalibrationStateMachine& calibrator);
-		virtual Response Execute(Command& command) override;
-	private:
-		CalibrationStateMachine * machine;
-	};
-
-class RangeReadCommandProcessor : public ICommandProcessor
-	{
-	public:
-		RangeReadCommandProcessor(char targetDevice, Motor& motor);
-		virtual Response Execute(Command& command) override;
-	private:
-		Motor * motor;
-	};
-
-class CalibrationStateCommandProcessor : public ICommandProcessor
-	{
-	public:
-		CalibrationStateCommandProcessor(char targetDevice, Calibration& status);
-		virtual Response Execute(Command& command) override;
-	private:
-		Calibration * calibration;
-	};
-
-class VersionReadCommandProcessor : public ICommandProcessor
-	{
-	public:
-		VersionReadCommandProcessor(char targetDevice);
-		virtual Response Execute(Command& command) override;
-	};
-
-
-class FocuserCommandTarget : public ICommandTarget
-	{
-	public:
-		FocuserCommandTarget(char address, Motor& motor, CalibrationStateMachine& calibrator, Calibration& state);
-	};
-
-class RotatorCommandTarget : public ICommandTarget
-	{
-	public:
-		RotatorCommandTarget(char address, Motor& motor);
-	};
-
-class DefaultCommandTarget : public ICommandTarget
-	{
-	public:
-		DefaultCommandTarget(char deviceAddress, PersistentSettings& settings, Motor& focuser, Motor& rotator);
 	};
 
 #endif

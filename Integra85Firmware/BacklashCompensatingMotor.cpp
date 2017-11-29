@@ -37,7 +37,7 @@ const bool BacklashCompensatingMotor::IsMoving()
 
 void BacklashCompensatingMotor::HardStop()
 	{
-	ChangeState(Stopped);
+	//ChangeState(Stopped);
 	Motor::HardStop();
 	}
 
