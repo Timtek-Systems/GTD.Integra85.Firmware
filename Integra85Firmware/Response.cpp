@@ -2,7 +2,9 @@
 
 Response Response::Error()
 	{
-	return Response{ "Err" };
+	auto error = Response{ "Err" };
+	error.success = false;
+	return error;
 	}
 
 Response Response::FromSuccessfulCommand(Command& command)

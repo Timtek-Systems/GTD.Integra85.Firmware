@@ -28,10 +28,12 @@ auto rotatorMotor = Motor(M2_STEP_PIN, M2_ENABLE_PIN, M2_DIRECTION_PIN, stepGene
 auto touchSensor = ForceSensitiveResistor(TOUCH_SENSOR_CHANNEL);
 auto bluetooth = SoftwareSerial(BluetoothRxPin, BluetoothTxPin);
 auto calibrationStateMachine = CalibrationStateMachine(&focuserMotor, &touchSensor, settings.calibration);
-auto dispatcher = CommandDispatcher();
 auto focuser = FocuserCommandTarget('1', focuserMotor, calibrationStateMachine, settings.calibration);
-auto rotator = RotatorCommandTarget('2', rotatorMotor);
-auto defaultDevice = DefaultCommandTarget('0', settings, focuserMotor, rotatorMotor);
+//auto rotator = RotatorCommandTarget('2', rotatorMotor);
+//auto defaultDevice = DefaultCommandTarget('0', settings, focuserMotor, rotatorMotor);
+auto targets = std::vector<ICommandTarget *>{ &focuser };
+auto dispatcher = CommandDispatcher(targets);
+
 Command command;
 
 void setup() 
@@ -56,9 +58,9 @@ void loop()
 
 void RegisterCommandTargets()
 	{
-	dispatcher.RegisterCommandTarget(focuser);
-	dispatcher.RegisterCommandTarget(rotator);
-	dispatcher.RegisterCommandTarget(defaultDevice);
+	//dispatcher.RegisterCommandTarget(focuser);
+	//dispatcher.RegisterCommandTarget(rotator);
+	//dispatcher.RegisterCommandTarget(defaultDevice);
 	}
 
 void HandleSerialCommunications()

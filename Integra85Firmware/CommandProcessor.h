@@ -25,6 +25,17 @@ struct Response
 	{
 	static const String Terminator;
 	String Message;
+	bool success;
+
+	Response() { success = true; };
+	Response(const char* message) : Response()
+		{
+		Message = message;
+		}
+	Response(String message) :Response()
+		{
+		Message = message;
+		}
 
 	/*
 		Creates an error response.
@@ -49,7 +60,6 @@ struct Response
 	static Response FromInteger(int i);
 	};
 
-
 class ICommandProcessor
 	{
 	public:
@@ -64,12 +74,9 @@ class ICommandProcessor
 class ICommandTarget
 	{
 	public:
-		virtual std::vector<ICommandProcessor *>& GetCommandProcessors()
-			{
-			return commandProcessors;
-			};
+		virtual Response HandleCommand(Command& command) = 0; // pure virtual
 	protected:
-		std::vector<ICommandProcessor *> commandProcessors;
+		char deviceAddress;
 	};
 
 class InvalidCommandProcessor : public ICommandProcessor
@@ -82,12 +89,14 @@ class InvalidCommandProcessor : public ICommandProcessor
 class CommandDispatcher
 	{
 	public:
-		static Response Dispatch(Command& command);
-		static ICommandProcessor& GetCommandProcessorForCommand(Command& command);
-		static void RegisterCommandTarget(ICommandTarget& target);
+		CommandDispatcher(std::vector<ICommandTarget *> targets);
+		Response Dispatch(Command& command);
+		//static ICommandProcessor& GetCommandProcessorForCommand(Command& command);
+		//static void RegisterCommandTarget(ICommandTarget& target);
 	private:
-		static std::vector<ICommandProcessor *> processors;
-		static InvalidCommandProcessor invalidCommand;
+		std::vector<ICommandTarget*> targets;
+		//static std::vector<ICommandProcessor *> processors;
+		//static InvalidCommandProcessor invalidCommand;
 	};
 
 class MoveInCommandProcessor : public ICommandProcessor
@@ -206,6 +215,12 @@ class FocuserCommandTarget : public ICommandTarget
 	{
 	public:
 		FocuserCommandTarget(char address, Motor& motor, CalibrationStateMachine& calibrator, Calibration& state);
+		Response FocuserCommandTarget::HandleCommand(Command& command) override;
+	private:
+		Response HandleMI(Command & command);
+		Motor *motor;
+		CalibrationStateMachine *calibrator;
+		Calibration *calibrationState;
 	};
 
 class RotatorCommandTarget : public ICommandTarget
