@@ -123,7 +123,7 @@ If the parameter field is not required then it can be omitted. For example, the 
 ### Command Protocol Details
 
 <pre>
-Command  | Action            | Short      | Success | Notes
+Command  | Action            | Short      | Reply   | Notes
 =========|===================|============|=========|=====================================================
 @CSm,n   | Calibration Start | CS1        | CS#     | Only valid for motor 1 (focuser). Parameter ignored.
 @CEm,n   | Calibration Abort | CE1        | CE#     | Stops calibration and sets status to Cancelled
@@ -131,7 +131,7 @@ Command  | Action            | Short      | Success | Notes
 ---------|-------------------|------------|---------|-----------------------------------------------------
 @MIm,S   | Move In S steps   | MI1,1000   | MI#     | Move in or anticlockwise
 @MOm,S   | Move Out S steps  | MO1,1000   | MO#     | Move out or clockwise
-@SWm,n   | Stop motor        | SW1,0      | SW#     | Performs an emergency stop (no deceleration)
+@SWm,n   | Stop motor        | SW1        | SW#     | Performs an emergency stop (no deceleration)
 X        | Is motor moving?  | X          | 1#      | Returns 0# if stopped; 1# focuser; 2# rotator
 ---------|-------------------|------------|---------|-----------------------------------------------------
 @RRm,n   | Read motor range  | @RR1,0     | RR1234# | Reads the range of movement in steps for motor m

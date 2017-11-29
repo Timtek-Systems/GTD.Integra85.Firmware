@@ -19,7 +19,6 @@ struct Command
 	String Verb;
 	char TargetDevice;
 	uint32_t StepPosition;	// Target step position for a move command
-
 	bool IsMotorCommand();
 	bool IsSystemCommand();
 	};
@@ -51,17 +50,6 @@ struct Response
 		Creates a response consisting of just an integer and the terminator.
 	*/
 	static Response FromInteger(int i);
-	};
-
-class ICommandProcessor
-	{
-	public:
-		char DeviceAddress() { return deviceAddress; }
-		String Verb() { return commandVerb; };
-		virtual Response Execute(Command& command) = 0;
-	protected:
-		char deviceAddress;
-		String commandVerb;
 	};
 
 class CommandProcessor
