@@ -19,6 +19,9 @@ struct Command
 	String Verb;
 	char TargetDevice;
 	uint32_t StepPosition;	// Target step position for a move command
+
+	bool IsMotorCommand();
+	bool IsSystemCommand();
 	};
 
 struct Response
@@ -59,53 +62,6 @@ class ICommandProcessor
 	protected:
 		char deviceAddress;
 		String commandVerb;
-	};
-
-class InvalidCommandProcessor : public ICommandProcessor
-	{
-	public:
-		InvalidCommandProcessor();
-		virtual Response Execute(Command& command) final;
-	};
-
-class MoveInCommandProcessor : public ICommandProcessor
-	{
-	public:
-		MoveInCommandProcessor() {};
-		MoveInCommandProcessor(char deviceAddress, Motor& motor);
-		virtual Response Execute(Command& command) override;
-	private:
-		Motor *motor;
-	};
-
-class MoveOutCommandProcessor : public ICommandProcessor
-	{
-	public:
-		MoveOutCommandProcessor() {};
-		MoveOutCommandProcessor(char deviceAddress, Motor& motor);
-		virtual Response Execute(Command& command) override;
-	private:
-		Motor *motor;
-	};
-
-class SetRampTimeCommandProcessor : public ICommandProcessor
-	{
-	public:
-		SetRampTimeCommandProcessor() {};
-		SetRampTimeCommandProcessor(char deviceAddress, Motor& motor);
-		virtual Response Execute(Command& command) override;
-	private:
-		Motor *motor;
-	};
-
-class CalibrateStartCommandProcessor : public ICommandProcessor
-	{
-	public:
-		CalibrateStartCommandProcessor(char targetDevice, Motor & motor, CalibrationStateMachine & stateMachine);
-		virtual Response Execute(Command& command) override;
-	private:
-		Motor *motor;
-		CalibrationStateMachine *calibrator;
 	};
 
 class SaveSettingsCommandProcessor : public ICommandProcessor
@@ -190,6 +146,8 @@ class CommandProcessor
 		Motor * CommandProcessor::GetMotor(Command& command);
 		Response HandleMI(Command & command);
 		Response HandleMO(Command & command);
+		Response HandleRW(Command & command);
+		Response HandleCS(Command & command);
 		Motor *focuser;
 		Motor *rotator;
 		CalibrationStateMachine *calibrator;

@@ -111,15 +111,6 @@
     <ClCompile Include="FindMidpointCalibrationState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InvalidCommandProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SetRampTimeCommandProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CalibrateStartCommandProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PersistentSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
