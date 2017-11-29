@@ -114,9 +114,6 @@
     <ClCompile Include="PersistentSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SaveSettingsCommandProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PositionReadCommandProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -129,16 +126,10 @@
     <ClCompile Include="IsMovingCommandProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CalibrateAbortCommandProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RangeReadCommandProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VersionReadCommandProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CalibrationStateCommandProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BacklashCompensatingMotor.cpp">

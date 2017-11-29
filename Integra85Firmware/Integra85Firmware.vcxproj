@@ -105,8 +105,6 @@
   <ItemGroup>
     <ClCompile Include="BacklashCompensatingMotor.cpp" />
     <ClCompile Include="BacklOutCalibrationState.cpp" />
-    <ClCompile Include="CalibrateAbortCommandProcessor.cpp" />
-    <ClCompile Include="CalibrationStateCommandProcessor.cpp" />
     <ClCompile Include="CalibrationStateMachine.cpp" />
     <ClCompile Include="CounterTimer1StepGenerator.cpp" />
     <ClCompile Include="DelayAfterBackOutCalibrationState.cpp" />
@@ -127,7 +125,6 @@
     <ClCompile Include="PositionReadCommandProcessor.cpp" />
     <ClCompile Include="RangeReadCommandProcessor.cpp" />
     <ClCompile Include="Response.cpp" />
-    <ClCompile Include="SaveSettingsCommandProcessor.cpp" />
     <ClCompile Include="StopMotorCommandProcessor.cpp" />
     <ClCompile Include="VersionReadCommandProcessor.cpp" />
   </ItemGroup>

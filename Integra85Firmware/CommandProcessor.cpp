@@ -11,12 +11,12 @@ bool Command::IsSystemCommand()
 	return TargetDevice == '0';
 	}
 
-CommandProcessor::CommandProcessor(Motor& focuser, Motor& rotator, CalibrationStateMachine& calibrator, Calibration& calibrationState)
+CommandProcessor::CommandProcessor(Motor& focuser, Motor& rotator, CalibrationStateMachine& calibrator, PersistentSettings& settings)
 	{
 	this->focuser = &focuser;
 	this->rotator = &rotator;
 	this->calibrator = &calibrator;
-	this->calibrationState = &calibrationState;
+	this->settings = &settings;
 	//commandProcessors.push_back(new MoveInCommandProcessor(deviceAddress, motor));
 	//commandProcessors.push_back(new MoveOutCommandProcessor(deviceAddress, motor));
 	//commandProcessors.push_back(new SetRampTimeCommandProcessor(deviceAddress, motor));
@@ -45,10 +45,13 @@ Response CommandProcessor::HandleCommand(Command& command)
 		if (command.Verb == "MO") return HandleMO(command);
 		if (command.Verb == "RW") return HandleRW(command);
 		if (command.Verb == "CS") return HandleCS(command);
+		if (command.Verb == "CR") return HandleCR(command);
+		if (command.Verb == "CE") return HandleCE(command);
 		}
 	if (command.IsSystemCommand())
 		{
-		// ToDo:
+		if (command.Verb == "ZW") return HandleZW(command);
+		if (command.Verb == "ZD") return HandleZD(command);
 		}
 	return Response::Error();
 	}
@@ -96,5 +99,33 @@ Response CommandProcessor::HandleCS(Command & command)
 	auto motor = GetMotor(command);
 	motor->HardStop();
 	calibrator->StartCalibration();
+	return Response::FromSuccessfulCommand(command);
+	}
+
+Response CommandProcessor::HandleCR(Command & command)
+	{
+	if (command.TargetDevice != '1')
+		return Response::Error();
+	return Response::FromPosition(command, (uint32_t)settings->calibration.status);
+	}
+
+Response CommandProcessor::HandleCE(Command & command)
+	{
+	if (command.TargetDevice != '1')
+		return Response::Error();
+	calibrator->StopCalibration();
+	return Response::FromSuccessfulCommand(command);
+	}
+
+Response CommandProcessor::HandleZW(Command & command)
+	{
+	settings->Save();
+	return Response::FromSuccessfulCommand(command);
+	}
+
+Response CommandProcessor::HandleZD(Command & command)
+	{
+	*settings = PersistentSettings();
+	settings->Save();
 	return Response::FromSuccessfulCommand(command);
 	}

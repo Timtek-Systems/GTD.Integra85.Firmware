@@ -64,15 +64,6 @@ class ICommandProcessor
 		String commandVerb;
 	};
 
-class SaveSettingsCommandProcessor : public ICommandProcessor
-	{
-	public:
-		SaveSettingsCommandProcessor(char targetDevice, PersistentSettings& settings);
-		virtual Response Execute(Command& command) override;
-	private:
-		PersistentSettings *settings;
-	};
-
 class PositionReadCommandProcessor : public ICommandProcessor
 	{
 	public:
@@ -119,15 +110,6 @@ class RangeReadCommandProcessor : public ICommandProcessor
 		Motor * motor;
 	};
 
-class CalibrationStateCommandProcessor : public ICommandProcessor
-	{
-	public:
-		CalibrationStateCommandProcessor(char targetDevice, Calibration& status);
-		virtual Response Execute(Command& command) override;
-	private:
-		Calibration * calibration;
-	};
-
 class VersionReadCommandProcessor : public ICommandProcessor
 	{
 	public:
@@ -139,7 +121,7 @@ class VersionReadCommandProcessor : public ICommandProcessor
 class CommandProcessor
 	{
 	public:
-		CommandProcessor(Motor& focuser, Motor& rotator, CalibrationStateMachine& calibrator, Calibration& state);
+		CommandProcessor(Motor& focuser, Motor& rotator, CalibrationStateMachine& calibrator, PersistentSettings& settings);
 		Response HandleCommand(Command& command);
 
 	private:
@@ -148,10 +130,14 @@ class CommandProcessor
 		Response HandleMO(Command & command);
 		Response HandleRW(Command & command);
 		Response HandleCS(Command & command);
+		Response HandleCR(Command & command);
+		Response HandleCE(Command & command);
+		Response HandleZW(Command & command);
+		Response HandleZD(Command & command);
 		Motor *focuser;
 		Motor *rotator;
 		CalibrationStateMachine *calibrator;
-		Calibration *calibrationState;
+		PersistentSettings *settings;
 	};
 
 #endif
