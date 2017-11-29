@@ -1,34 +1,26 @@
 
 #include "CalibrationStateMachine.h"
+#include "CommandProcessor.h"
 
 /*
 Moves the focuser at full speed to the midpoint of travel.
 */
-
-ICalibrationState & FindMidpointCalibrationState::GetInstance()
-	{
-	static FindMidpointCalibrationState instance;
-	return instance;
-	}
 
 /*
 	Wait until the motor has stopped at the midpoint
 */
 void FindMidpointCalibrationState::Loop(CalibrationStateMachine & machine)
 	{
-	auto position = machine.stepper->CurrentPosition();
 	if (!machine.stepper->IsMoving())
 		{
-		machine.CalibrationComplete();
-		machine.ChangeState(IdleCalibrationState::GetInstance());
+		auto writeSettings = Command { "ZW" };
+		CommandDispatcher::Dispatch(writeSettings);	// Write persistent settings
+		machine.ChangeState(new IdleCalibrationState());
 		}
 	}
 
 void FindMidpointCalibrationState::OnEnter(CalibrationStateMachine & machine)
 	{
+	machine.CommitCalibration();
 	machine.stepper->MoveToPosition(machine.stepper->MidpointPosition());
-	}
-
-FindMidpointCalibrationState::FindMidpointCalibrationState()
-	{
 	}

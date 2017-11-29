@@ -7,11 +7,5 @@ DelayAfterFindSoftLimitCalibrationState::DelayAfterFindSoftLimitCalibrationState
 
 void DelayAfterFindSoftLimitCalibrationState::TransitionToNextState(CalibrationStateMachine & machine)
 	{
-	machine.ChangeState(FindBacklashCalibrationState::GetInstance());
-	}
-
-ICalibrationState& DelayAfterFindSoftLimitCalibrationState::GetInstance()
-	{
-	static DelayAfterFindSoftLimitCalibrationState instance;
-	return instance;
+	machine.ChangeState(new FindBacklashCalibrationState());
 	}
