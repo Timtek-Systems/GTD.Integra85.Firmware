@@ -64,32 +64,6 @@ class ICommandProcessor
 		String commandVerb;
 	};
 
-class IsMovingCommandProcessor : public ICommandProcessor
-	{
-	public:
-		IsMovingCommandProcessor(char targetDevice, Motor& focuser, Motor& rotator);
-		virtual Response Execute(Command& command) override;
-	private:
-		Motor *focuser, *rotator;
-	};
-
-class CalibrateAbortCommandProcessor : public ICommandProcessor
-	{
-	public:
-		CalibrateAbortCommandProcessor(char targetDevice, CalibrationStateMachine& calibrator);
-		virtual Response Execute(Command& command) override;
-	private:
-		CalibrationStateMachine * machine;
-	};
-
-class VersionReadCommandProcessor : public ICommandProcessor
-	{
-	public:
-		VersionReadCommandProcessor(char targetDevice);
-		virtual Response Execute(Command& command) override;
-	};
-
-
 class CommandProcessor
 	{
 	public:
@@ -109,6 +83,8 @@ class CommandProcessor
 		Response HandleZD(Command & command);
 		Response HandlePR(Command & command);
 		Response HandleRR(Command & command);
+		Response HandleVR(Command & command);
+		Response HandleX(Command & command);
 		Motor *focuser;
 		Motor *rotator;
 		CalibrationStateMachine *calibrator;

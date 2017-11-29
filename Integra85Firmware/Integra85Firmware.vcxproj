@@ -118,12 +118,10 @@
     <ClCompile Include="CommandProcessor.cpp" />
     <ClCompile Include="ForceSensitiveResistor.cpp" />
     <ClCompile Include="IdleCalibrationState.cpp" />
-    <ClCompile Include="IsMovingCommandProcessor.cpp" />
     <ClCompile Include="Motor.cpp" />
     <ClCompile Include="MovingAverage.cpp" />
     <ClCompile Include="PersistentSettings.cpp" />
     <ClCompile Include="Response.cpp" />
-    <ClCompile Include="VersionReadCommandProcessor.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -43,6 +43,8 @@ Response CommandProcessor::HandleCommand(Command& command)
 		{
 		if (command.Verb == "ZW") return HandleZW(command);
 		if (command.Verb == "ZD") return HandleZD(command);
+		if (command.Verb == "VR") return HandleVR(command);
+		if (command.Verb == "X") return HandleX(command);
 		}
 	return Response::Error();
 	}
@@ -141,4 +143,18 @@ Response CommandProcessor::HandleRR(Command & command)
 	auto motor = GetMotor(command);
 	auto range = motor->LimitOfTravel() / MICROSTEPS_PER_STEP;
 	return Response::FromPosition(command, range);
+	}
+
+Response CommandProcessor::HandleVR(Command & command)
+	{
+	return Response{ (String)FIRMWARE_MAJOR_VERSION + "." + (String)FIRMWARE_MINOR_VERSION + "#" };
+	}
+
+Response CommandProcessor::HandleX(Command & command)
+	{
+	if (focuser->IsMoving())
+		return Response::FromInteger(1);
+	if (rotator->IsMoving())
+		return Response::FromInteger(2);
+	return Response::FromInteger(0);
 	}
