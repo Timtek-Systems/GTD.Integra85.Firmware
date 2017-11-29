@@ -27,16 +27,6 @@ struct Response
 	String Message;
 	bool success;
 
-	Response() { success = true; };
-	Response(const char* message) : Response()
-		{
-		Message = message;
-		}
-	Response(String message) :Response()
-		{
-		Message = message;
-		}
-
 	/*
 		Creates an error response.
 	*/
@@ -71,32 +61,11 @@ class ICommandProcessor
 		String commandVerb;
 	};
 
-class ICommandTarget
-	{
-	public:
-		virtual Response HandleCommand(Command& command) = 0; // pure virtual
-	protected:
-		char deviceAddress;
-	};
-
 class InvalidCommandProcessor : public ICommandProcessor
 	{
 	public:
 		InvalidCommandProcessor();
 		virtual Response Execute(Command& command) final;
-	};
-
-class CommandDispatcher
-	{
-	public:
-		CommandDispatcher(std::vector<ICommandTarget *> targets);
-		Response Dispatch(Command& command);
-		//static ICommandProcessor& GetCommandProcessorForCommand(Command& command);
-		//static void RegisterCommandTarget(ICommandTarget& target);
-	private:
-		std::vector<ICommandTarget*> targets;
-		//static std::vector<ICommandProcessor *> processors;
-		//static InvalidCommandProcessor invalidCommand;
 	};
 
 class MoveInCommandProcessor : public ICommandProcessor
@@ -211,28 +180,20 @@ class VersionReadCommandProcessor : public ICommandProcessor
 	};
 
 
-class FocuserCommandTarget : public ICommandTarget
+class CommandProcessor
 	{
 	public:
-		FocuserCommandTarget(char address, Motor& motor, CalibrationStateMachine& calibrator, Calibration& state);
-		Response FocuserCommandTarget::HandleCommand(Command& command) override;
+		CommandProcessor(Motor& focuser, Motor& rotator, CalibrationStateMachine& calibrator, Calibration& state);
+		Response HandleCommand(Command& command);
+
 	private:
+		Motor * CommandProcessor::GetMotor(Command& command);
 		Response HandleMI(Command & command);
-		Motor *motor;
+		Response HandleMO(Command & command);
+		Motor *focuser;
+		Motor *rotator;
 		CalibrationStateMachine *calibrator;
 		Calibration *calibrationState;
-	};
-
-class RotatorCommandTarget : public ICommandTarget
-	{
-	public:
-		RotatorCommandTarget(char address, Motor& motor);
-	};
-
-class DefaultCommandTarget : public ICommandTarget
-	{
-	public:
-		DefaultCommandTarget(char deviceAddress, PersistentSettings& settings, Motor& focuser, Motor& rotator);
 	};
 
 #endif
