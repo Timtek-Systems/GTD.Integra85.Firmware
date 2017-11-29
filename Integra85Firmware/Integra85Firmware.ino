@@ -48,7 +48,7 @@ void setup()
 void loop() 
 	{
 	focuserMotor.Loop();
-	//rotatorMotor.Loop();
+	rotatorMotor.Loop();
 	HandleSerialCommunications();
 	HandleBluetoothCommunications();
 	touchSensor.Loop();

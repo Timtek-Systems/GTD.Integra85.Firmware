@@ -114,19 +114,10 @@
     <ClCompile Include="PersistentSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PositionReadCommandProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Response.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StopMotorCommandProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IsMovingCommandProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RangeReadCommandProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VersionReadCommandProcessor.cpp">

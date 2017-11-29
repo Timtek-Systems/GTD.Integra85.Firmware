@@ -17,15 +17,6 @@ CommandProcessor::CommandProcessor(Motor& focuser, Motor& rotator, CalibrationSt
 	this->rotator = &rotator;
 	this->calibrator = &calibrator;
 	this->settings = &settings;
-	//commandProcessors.push_back(new MoveInCommandProcessor(deviceAddress, motor));
-	//commandProcessors.push_back(new MoveOutCommandProcessor(deviceAddress, motor));
-	//commandProcessors.push_back(new SetRampTimeCommandProcessor(deviceAddress, motor));
-	//commandProcessors.push_back(new CalibrateStartCommandProcessor(deviceAddress, motor, calibrator));
-	//commandProcessors.push_back(new PositionReadCommandProcessor(deviceAddress, motor));
-	//commandProcessors.push_back(new StopMotorCommandProcessor(deviceAddress, motor));
-	//commandProcessors.push_back(new CalibrateAbortCommandProcessor(deviceAddress, calibrator));
-	//commandProcessors.push_back(new RangeReadCommandProcessor(deviceAddress, motor));
-	//commandProcessors.push_back(new CalibrationStateCommandProcessor(deviceAddress, calibrationState));
 	}
 
 Motor* CommandProcessor::GetMotor(Command& command)
@@ -36,9 +27,6 @@ Motor* CommandProcessor::GetMotor(Command& command)
 
 Response CommandProcessor::HandleCommand(Command& command)
 	{
-	/*
-		Commands that address a motor
-	*/
 	if (command.IsMotorCommand())
 		{
 		if (command.Verb == "MI") return HandleMI(command);
@@ -47,6 +35,9 @@ Response CommandProcessor::HandleCommand(Command& command)
 		if (command.Verb == "CS") return HandleCS(command);
 		if (command.Verb == "CR") return HandleCR(command);
 		if (command.Verb == "CE") return HandleCE(command);
+		if (command.Verb == "SW") return HandleSW(command);
+		if (command.Verb == "PR") return HandlePR(command);
+		if (command.Verb == "RR") return HandleRR(command);
 		}
 	if (command.IsSystemCommand())
 		{
@@ -117,6 +108,13 @@ Response CommandProcessor::HandleCE(Command & command)
 	return Response::FromSuccessfulCommand(command);
 	}
 
+Response CommandProcessor::HandleSW(Command & command)
+	{
+	auto motor = GetMotor(command);
+	motor->HardStop();
+	return Response::FromSuccessfulCommand(command);
+	}
+
 Response CommandProcessor::HandleZW(Command & command)
 	{
 	settings->Save();
@@ -128,4 +126,19 @@ Response CommandProcessor::HandleZD(Command & command)
 	*settings = PersistentSettings();
 	settings->Save();
 	return Response::FromSuccessfulCommand(command);
+	}
+
+Response CommandProcessor::HandlePR(Command & command)
+	{
+	auto motor = GetMotor(command);
+	auto position = motor->CurrentPosition() / MICROSTEPS_PER_STEP;
+	auto response = Response::FromPosition(command, position);
+	return response;
+	}
+
+Response CommandProcessor::HandleRR(Command & command)
+	{
+	auto motor = GetMotor(command);
+	auto range = motor->LimitOfTravel() / MICROSTEPS_PER_STEP;
+	return Response::FromPosition(command, range);
 	}
