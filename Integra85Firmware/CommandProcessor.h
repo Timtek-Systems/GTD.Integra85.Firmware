@@ -79,4 +79,6 @@ class CommandProcessor
 		PersistentSettings *settings;
 	};
 
+extern Response DispatchCommand(Command& command);
+
 #endif

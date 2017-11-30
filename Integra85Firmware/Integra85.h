@@ -4,7 +4,6 @@
 #define FIRMWARE_MINOR_VERSION		(0)
 
 // Analogue input channels
-#define TEMPERATURE_SENSOR_CHANNEL  (11)
 #define TOUCH_SENSOR_CHANNEL		(0)
 
 
@@ -30,6 +29,9 @@
 #define M2_MIDPOINT					(M2_MAX_POSITION / 2)
 #define M2_RAMP_TIME				(500)	// milliseconds
 #define M2_MAX_SPEED				(16000)
+
+// Temperature Probe
+#define TEMPERATURE_SENSOR_PIN		(11)
 
 //Software serial
 #define BluetoothRxPin				(2)

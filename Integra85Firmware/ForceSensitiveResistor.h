@@ -14,12 +14,12 @@
 class ForceSensitiveResistor
 	{
 	private:
-		MovingAverage movingAverage;
+		MovingAverage<int> movingAverage;
 		uint8_t channel;				// Analog input channel
 	public:
 		ForceSensitiveResistor(uint8_t analogPin);
 		void Loop();
-		int MovingAverage();
+		int AverageValue();
 	};
 
 #endif
