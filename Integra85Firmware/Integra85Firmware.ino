@@ -34,10 +34,6 @@ auto temperatureSensor = TemperatureSensor(oneWireBus);
 auto bluetooth = SoftwareSerial(BluetoothRxPin, BluetoothTxPin);
 auto calibrationStateMachine = CalibrationStateMachine(&focuserMotor, &touchSensor, settings.calibration);
 auto commandProcessor = CommandProcessor(focuserMotor, rotatorMotor, calibrationStateMachine, settings, temperatureSensor);
-//auto rotator = RotatorCommandTarget('2', rotatorMotor);
-//auto defaultDevice = DefaultCommandTarget('0', settings, focuserMotor, rotatorMotor);
-//auto targets = std::vector<ICommandTarget *>{ &focuser };
-//auto dispatcher = CommandDispatcher(targets);
 
 Command command;
 

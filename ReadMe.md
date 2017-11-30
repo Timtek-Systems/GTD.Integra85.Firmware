@@ -15,11 +15,6 @@ D - Dependency inversion principle: depend on abstractions not details.
 Well-factored object oriented code that adheres to the SOLID principles should be loosely coupled,
 highly cohesive, testable and have low viscosity for future maintenance.
 
-We have tried to use recognized design patterns, as decribed in the book
-"Design Patterns" by the "Gang of Four". In particular we have used the State Pattern to
-implement the calibration state machine. Yes, we could have done it with
-a switch statement, but that wouldn't be the 'Object Oriented Way'.
-
 ## Memory Management
 
 Dynamic memory allocations have been agressively avoided. As a
@@ -35,8 +30,7 @@ essentially forms the Composition Root for the system.
 
 Since we can assume that most objects are never freed, there is little to be gained
 from the use of smart pointers and we have chosen to avoid the overhead and use "raw" pointers
-where necessary. We do however make use of the `std::vector<T>` class within the command
-dispatcher system.
+where necessary. We do however make use of the `std::vector<T>` class.
 
 ## Motor Control
 
@@ -50,7 +44,7 @@ where each rising edge causes the motor to make one step. The step generator is 
 for timing (step speed) and has no concept of position, direction or the type of steps (whole
 steps, microsteps, etc.)
 
-We have provided a sinlge implementation, CounterTimer1StepGenerator, which uses the Timer 1
+We have provided a single implementation, CounterTimer1StepGenerator, which uses the Timer 1
 block of the AVR processor to generate accurately timed pulses with 50% duty cycle.
 The timer is configured to generate interrupts using the OCR1A compare register. The timing
 source is the undivided system clock, which allows for a stepping bandwidth of about 
@@ -63,14 +57,17 @@ The step sequencer (implements: `IStepSequencer`) carries the responsibility of 
 hardware signals to the motor driver and keeping track of the step position.
 
 Our `Motor` class provides the `IStepSequencer` implementation and allows for acceleration
-and deceleration.
+and deceleration. `Motor` also keeps track of the current step position and enforces limits
+of travel on the motors.
+
+Derived from `Motor` is `BacklashCompensatingMotor` which performs backlash compensation
+when moving in the out direction. All moves therefore finish in the inward direction. This
+class is used only for the focuser motor.
 
 ### Acceleration
 
 The `Motor` class provides a method for recalculating the motor velocity once per Arduino loop().
-The method uses uniform accelration and the acceleration ramp time can be adjusted.
-
-`Motor` keeps track of the current step position and enforces limits of travel on the motors.
+The method uses uniform acceleration and the ramp time can be adjusted.
 
 ### Limitations
 
@@ -80,25 +77,23 @@ be controlled at a higher level (probably in the ASCOM driver).
 
 ## Command Processor
 
-Command processing is handled with a set of cooperating classes.
+Command processing is handled by the `CommandProcessor` class.
 
-`ICommandTarget` represents an addressable device. Implementations include `FocuserCommandTarget`, 
-`RotatorCommandTarget` and `TemperatureProbeCommandTarget`. Each target has a unique device address
-and a collection of `ICommandProcessor` instances.
-
-An `ICommandProcessor` encodes all of the logic for performing some operation on the command target
-(device) to which it belongs. An example might be "Move to a specified step position", or "Read 
-temperature". Structuring the command actions one-per-class like this allows all of the logic
-for a single action to be bound together and managed as a unit. Each command processor recognizes 
-and processes exactly one command verb. The `ICommandProcessor.Execute()` method is called passing 
-the full command as a parameter, so it is able to inspect the payload data and use that to carry out
-whatever action it performs.
+Originally, we had a nice object oriented design for the command processor but it used one class
+for each command and then sometimes multiple instances of each command processor for different devices.
+It all took up a bit too much memory for the Arduino Uno, which only has 2 Kb of data memory.
+The pattern is recorded in the version control repository and may be useful in future projects
+where resources are less constrained.
 
 When a well formed command is received from the communications channel (serial or bluetooth) it is
-passed to `CommandDispatcher.Dispatch()`. This method is responsible for determining which
-`ICommandProcessor` is best suited to executing the command. The decision is based on the device
-address and the command verb within the command. The selected command processor is then invoked
-and ultimately returns a response string, which is passed back to the client application.
+passed to `DispatchCommand()` which passes it on to `CommandProcessor::HandleCommand()`.
+
+Each command verv has its own handler method, so for example, the `PR` (position read) command
+would be handled by `CommandProcessor::HandlePR()`. `CommandProcessor::HandleCommand()`
+decides which handler method to call based on the command verb.
+
+All command handlers return a `Response` structure, which contains the text to be transmitted
+via the serial port or Bluetooth adapter to the client application.
 
 ## Command Protocol
 
@@ -123,29 +118,33 @@ If the parameter field is not required then it can be omitted. For example, the 
 ### Command Protocol Details
 
 <pre>
-Command  | Action            | Short      | Reply   | Notes
-=========|===================|============|=========|=====================================================
-@CSm,n   | Calibration Start | CS1        | CS#     | Only valid for motor 1 (focuser). Parameter ignored.
-@CEm,n   | Calibration Abort | CE1        | CE#     | Stops calibration and sets status to Cancelled
-@CRm,n   | Calibration state | CR1        | CR1#    | Returns 0=Uncalibrated; 1=Calibrated; 2=In Progress; 3=Cancelled
----------|-------------------|------------|---------|-----------------------------------------------------
-@MIm,S   | Move In S steps   | MI1,1000   | MI#     | Move in or anticlockwise
-@MOm,S   | Move Out S steps  | MO1,1000   | MO#     | Move out or clockwise
-@SWm,n   | Stop motor        | SW1        | SW#     | Performs an emergency stop (no deceleration)
-X        | Is motor moving?  | X          | 1#      | Returns 0# if stopped; 1# focuser; 2# rotator
----------|-------------------|------------|---------|-----------------------------------------------------
-@RRm,n   | Read motor range  | @RR1,0     | RR1234# | Reads the range of movement in steps for motor m
-@PRm,n   | Read Position     | @PR1,0     | PR1234# | Read step position of motor m (parameter ignored)
----------|-------------------|------------|---------|-----------------------------------------------------
-@RWm,n   | Set ramp time     | @RW1,5000  | RW#     | Sets the ramp time in milliseconds. Minimum 100ms.
-@VR      | Read Version      | @VR        | VR2.0#  | Reads the firmware version number Major.Minor
----------|-------------------|------------|---------|-----------------------------------------------------
-@TR      | Temperature read  | TR         | TR21.5# | Reads the temperature in Celsius.
----------|-------------------|------------|---------|-----------------------------------------------------
-@ZW      | Write settings    | ZW         | ZW#     | Writes settings to persistent storage
-@ZD      | Load Defaults     | ZD         | ZD#     | Revert to default settings. A calibration must be performed.
+Command  | Action            | Short    | Reply   | Notes
+=========|===================|==========|=========|=====================================================
+@CSm,n   | Calibration Start | CS1      | CS#     | Only valid for motor 1 (focuser). Parameter ignored.
+@CEm,n   | Calibration Abort | CE1      | CE#     | Stops calibration and sets status to Cancelled
+@CRm,n   | Calibration state | CR1      | CR1#    | Returns 0=Uncalibrated; 1=Calibrated; 2=In Progress; 3=Cancelled
+---------|-------------------|----------|---------|-----------------------------------------------------
+@MIm,S   | Move In S steps   | MI1,1000 | MI#     | Move in or anticlockwise
+@MOm,S   | Move Out S steps  | MO1,1000 | MO#     | Move out or clockwise
+@SWm,n   | Stop motor        | SW1      | SW#     | Performs an emergency stop (no deceleration)
+X        | Is motor moving?  | X        | 1#      | Returns 0# if stopped; 1# focuser; 2# rotator
+---------|-------------------|----------|---------|-----------------------------------------------------
+@RRm,n   | Read motor range  | RR1      | RR1234# | Reads the range of movement in steps for motor m
+@PRm,n   | Read Position     | PR1      | PR1234# | Read step position of motor m (parameter ignored)
+---------|-------------------|----------|---------|-----------------------------------------------------
+@RWm,n   | Set ramp time     | RW1,5000 | RW#     | Sets the ramp time in milliseconds. Minimum 100ms.
+@VR      | Read Version      | @VR      | VR2.0#  | Reads the firmware version number Major.Minor
+---------|-------------------|----------|---------|-----------------------------------------------------
+@TR      | Temperature read  | TR       | TR21.5# | Reads the temperature in Celsius.
+---------|-------------------|----------|---------|-----------------------------------------------------
+@ZW      | Write settings    | ZW       | ZW#     | Writes settings to persistent storage
+@ZD      | Load Defaults     | ZD       | ZD#     | Revert to default settings. Erases calibration data.
 </pre>
 
+Note that omitting all of the optional parts of each command gives a more convenient syntax when
+entering commands manually in a terminal emulator. See the `Short` column in the table for the short
+form of each command.
 
-[tigra-home]:    http://tigra-astronomy.com
-[gtd-home]:     www.geminitelescope.com/
+
+[tigra-home]:   http://tigra-astronomy.com
+[gtd-home]:     http://www.geminitelescope.com/

@@ -149,7 +149,7 @@ Response CommandProcessor::HandleRR(Command & command)
 
 Response CommandProcessor::HandleVR(Command & command)
 	{
-	return Response{ (String)FIRMWARE_MAJOR_VERSION + "." + (String)FIRMWARE_MINOR_VERSION + "#" };
+	return Response{ "VR"+(String)FIRMWARE_MAJOR_VERSION + "." + (String)FIRMWARE_MINOR_VERSION + "#" };
 	}
 
 Response CommandProcessor::HandleTR(Command & command)
