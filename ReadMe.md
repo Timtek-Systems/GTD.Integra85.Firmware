@@ -145,6 +145,14 @@ Note that omitting all of the optional parts of each command gives a more conven
 entering commands manually in a terminal emulator. See the `Short` column in the table for the short
 form of each command.
 
+## Arduino Libraries Used
+
+- ArduinoSTL - standard template library
+- eeprom - for reading and writing the nonvolatile storage
+- SoftwareSerial - used to access the Bluetooth module
+- OneWire - used for low-level access to the temperature probe.
+- DallasTemperature - intermediate level interfacing to the temperature probe
+
 
 [tigra-home]:   http://tigra-astronomy.com
 [gtd-home]:     http://www.geminitelescope.com/

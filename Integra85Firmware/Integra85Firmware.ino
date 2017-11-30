@@ -1,3 +1,5 @@
+
+
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
 #else
@@ -6,7 +8,7 @@
 
 #include <ArduinoSTL.h>
 #include <SoftwareSerial.h>
-#include <eeprom.h>
+#include <EEPROM.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include "Integra85.h"
