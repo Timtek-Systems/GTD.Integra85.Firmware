@@ -21,5 +21,9 @@ void FindMidpointCalibrationState::Loop(CalibrationStateMachine & machine)
 void FindMidpointCalibrationState::OnEnter(CalibrationStateMachine & machine)
 	{
 	machine.CommitCalibration();
-	machine.stepper->MoveToPosition(machine.stepper->MidpointPosition());
+	auto midpoint = machine.stepper->MidpointPosition();
+	auto deltaMicrosteps = midpoint - machine.stepper->CurrentPosition();
+	auto deltaWholeSteps = deltaMicrosteps / MICROSTEPS_PER_STEP;
+	auto moveCommand = Command{ "MO",'1', deltaWholeSteps };
+	::DispatchCommand(moveCommand);
 	}

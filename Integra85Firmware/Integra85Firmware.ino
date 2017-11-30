@@ -1,5 +1,4 @@
 #if defined(ARDUINO) && ARDUINO >= 100
-  #include "BacklashCompensatingMotor.h"
 #include "Arduino.h"
 #else
   #include "WProgram.h"
@@ -8,13 +7,17 @@
 #include <ArduinoSTL.h>
 #include <SoftwareSerial.h>
 #include <eeprom.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
 #include "Integra85.h"
+#include "BacklashCompensatingMotor.h"
 #include "ForceSensitiveResistor.h"
 #include "Motor.h"
 #include "CounterTimer1StepGenerator.h"
 #include "CalibrationStateMachine.h"
 #include "CommandProcessor.h"
 #include "PersistentSettings.h"
+#include "TemperatureSensor.h"
 
 /*
 	Composition root - most of the system's runtime objects should be created here.
@@ -26,9 +29,11 @@ auto settings = PersistentSettings::Load();
 auto focuserMotor = BacklashCompensatingMotor(M1_STEP_PIN, M1_ENABLE_PIN, M1_DIRECTION_PIN, stepGenerator, settings.focuser, settings.calibration);
 auto rotatorMotor = Motor(M2_STEP_PIN, M2_ENABLE_PIN, M2_DIRECTION_PIN, stepGenerator, settings.rotator);
 auto touchSensor = ForceSensitiveResistor(TOUCH_SENSOR_CHANNEL);
+auto oneWireBus = OneWire(TEMPERATURE_SENSOR_PIN);
+auto temperatureSensor = TemperatureSensor(oneWireBus);
 auto bluetooth = SoftwareSerial(BluetoothRxPin, BluetoothTxPin);
 auto calibrationStateMachine = CalibrationStateMachine(&focuserMotor, &touchSensor, settings.calibration);
-auto commandProcessor = CommandProcessor(focuserMotor, rotatorMotor, calibrationStateMachine, settings);
+auto commandProcessor = CommandProcessor(focuserMotor, rotatorMotor, calibrationStateMachine, settings, temperatureSensor);
 //auto rotator = RotatorCommandTarget('2', rotatorMotor);
 //auto defaultDevice = DefaultCommandTarget('0', settings, focuserMotor, rotatorMotor);
 //auto targets = std::vector<ICommandTarget *>{ &focuser };
@@ -42,6 +47,7 @@ void setup()
 	bluetooth.begin(9600);
 	focuserMotor.ReleaseMotor();
 	rotatorMotor.ReleaseMotor();
+	temperatureSensor.Initialize();
 	interrupts();
 	}
 
@@ -53,6 +59,10 @@ void loop()
 	HandleBluetoothCommunications();
 	touchSensor.Loop();
 	calibrationStateMachine.Loop();
+	if (focuserMotor.IsMoving() || rotatorMotor.IsMoving() || settings.calibration.status == InProgress)
+		return;
+	// The following items are not interrupt safe and would disrupt motor movement.
+	temperatureSensor.Loop();
 	}
 
 
@@ -90,6 +100,12 @@ void HandleSerialCommunications()
 				}
 			break;
 		}
+	}
+
+Response DispatchCommand(Command& command)
+	{
+	auto response = commandProcessor.HandleCommand(command);
+	return response;
 	}
 
 Response DispatchCommand(char *buffer, unsigned int charCount)

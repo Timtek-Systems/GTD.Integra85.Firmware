@@ -13,19 +13,16 @@ Continue to move in until the hard stop is reached.
 */
 void FindBacklashCalibrationState::Loop(CalibrationStateMachine & machine)
 	{
-	auto sensorValue = machine.sensor->MovingAverage();
+	auto sensorValue = machine.sensor->AverageValue();
 	auto position = machine.stepper->CurrentPosition();
 	if (sensorValue <= FSR_SOFT_THRESHOLD && softLimitPosition == 0)
 		{
 		softLimitPosition = position;
-		Serial.print("Out:");
-		Serial.println(softLimitPosition);
 		}
 	if (position >= CALIBRATE_SAFE_DISTANCE)
 		{
 		machine.stepper->HardStop();
 		machine.calibrationDistanceMovingOut = softLimitPosition;
-		//machine.stepper->SetCurrentPosition(0);	// This will be the home position.
 		machine.ChangeState(new FindMidpointCalibrationState());
 		}
 	}

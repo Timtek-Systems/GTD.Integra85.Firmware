@@ -12,21 +12,16 @@ of the motor is kept at the midpoint, to prevent it from exceeding safety limits
 */
 void FindSoftLimitCalibrationState::Loop(CalibrationStateMachine & machine)
 	{
-	auto sensorValue = machine.sensor->MovingAverage();
+	auto sensorValue = machine.sensor->AverageValue();
 	auto position = machine.stepper->CurrentPosition();
 	if (sensorValue >= FSR_SOFT_THRESHOLD && softLimitPosition == 0)
 		{
 		softLimitPosition = position;
-		Serial.print(softLimitPosition);
-		Serial.print("-");
 		}
 	if (sensorValue >= FSR_HARD_THRESHOLD)
 		{
 		machine.stepper->HardStop();
 		auto distanceBetweenHardAndSoftLimits = softLimitPosition - position;
-		Serial.print(position);
-		Serial.print("=");
-		Serial.println(distanceBetweenHardAndSoftLimits);
 		machine.calibrationDistanceMovingIn=distanceBetweenHardAndSoftLimits;
 		machine.stepper->SetCurrentPosition(0);	// We are now at the "hard stop" position.
 		machine.ChangeState(new DelayAfterFindSoftLimitCalibrationState());

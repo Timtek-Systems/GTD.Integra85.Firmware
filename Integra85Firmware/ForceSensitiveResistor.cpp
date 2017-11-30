@@ -6,7 +6,7 @@
 
 ForceSensitiveResistor::ForceSensitiveResistor(uint8_t analogChannel)
 	{
-	movingAverage = MovingAverage::MovingAverage(5);
+	movingAverage = MovingAverage<int>(5);
 	channel = analogChannel;
 	}
 
@@ -22,7 +22,7 @@ void ForceSensitiveResistor::Loop()
 /*
 	Gets the current value, which is a moving average over a number of samples.
 */
-int ForceSensitiveResistor::MovingAverage()
+int ForceSensitiveResistor::AverageValue()
 	{
-	return (int)movingAverage.average;
+	return movingAverage.average;
 	}

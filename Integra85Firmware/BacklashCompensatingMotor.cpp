@@ -17,9 +17,7 @@ void BacklashCompensatingMotor::MoveToPosition(uint32_t targetPosition)
 	int32_t deltaSteps = (int)targetPosition - (int)CurrentPosition();
 	if (deltaSteps > 0) // move out
 		{
-		Serial.print("blsteps ");
-		Serial.println(calibration->backlash);
-		auto compensatedTarget = targetPosition + calibration->backlash;
+		uint32_t compensatedTarget = targetPosition + calibration->backlash;
 		ChangeState(MovingOut);
 		Motor::MoveToPosition(compensatedTarget);
 		}
@@ -64,10 +62,10 @@ void BacklashCompensatingMotor::Loop()
 
 void BacklashCompensatingMotor::ChangeState(BacklashState newState)
 	{
-	Serial.print("Backlash ");
-	Serial.print(backlashState);
-	Serial.print("->");
-	Serial.println(newState);
+	//Serial.print("Backlash ");
+	//Serial.print(backlashState);
+	//Serial.print("->");
+	//Serial.println(newState);
 	backlashState = newState;
 	}
 
@@ -81,13 +79,14 @@ void BacklashCompensatingMotor::MovingOutState()
 	{
 	if (Motor::IsMoving())
 		return;
-	//if (calibration->backlash == 0)
-	//	{
-	//	ChangeState(Stopped);
-	//	return;
-	//	}
+	if (calibration->backlash == 0)
+		{
+		ChangeState(Stopped);
+		return;
+		}
 	ChangeState(Compensating);
-	Motor::MoveToPosition(CurrentPosition() - calibration->backlash);
+	uint32_t targetPosition = CurrentPosition() - calibration->backlash;
+	Motor::MoveToPosition(targetPosition);
 	}
 
 void BacklashCompensatingMotor::CompensatingState()

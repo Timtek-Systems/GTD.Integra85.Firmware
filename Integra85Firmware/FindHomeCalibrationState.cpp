@@ -8,7 +8,7 @@
 
 void FindHomeCalibrationState::Loop(CalibrationStateMachine & machine)
 	{
-	auto sensorValue = machine.sensor->MovingAverage();
+	auto sensorValue = machine.sensor->AverageValue();
 	if (sensorValue >= FSR_HARD_THRESHOLD)
 		{
 		machine.stepper->HardStop();
