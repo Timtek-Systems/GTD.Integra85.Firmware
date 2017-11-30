@@ -140,6 +140,8 @@ X        | Is motor moving?  | X          | 1#      | Returns 0# if stopped; 1# 
 @RWm,n   | Set ramp time     | @RW1,5000  | RW#     | Sets the ramp time in milliseconds. Minimum 100ms.
 @VR      | Read Version      | @VR        | VR2.0#  | Reads the firmware version number Major.Minor
 ---------|-------------------|------------|---------|-----------------------------------------------------
+@TR      | Temperature read  | TR         | TR21.5# | Reads the temperature in Celsius.
+---------|-------------------|------------|---------|-----------------------------------------------------
 @ZW      | Write settings    | ZW         | ZW#     | Writes settings to persistent storage
 @ZD      | Load Defaults     | ZD         | ZD#     | Revert to default settings. A calibration must be performed.
 </pre>

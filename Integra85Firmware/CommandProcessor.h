@@ -13,6 +13,7 @@
 #include "Motor.h"
 #include "CalibrationStateMachine.h"
 #include "PersistentSettings.h"
+#include "TemperatureSensor.h"
 
 struct Command
 	{
@@ -55,7 +56,7 @@ struct Response
 class CommandProcessor
 	{
 	public:
-		CommandProcessor(Motor& focuser, Motor& rotator, CalibrationStateMachine& calibrator, PersistentSettings& settings);
+		CommandProcessor(Motor& focuser, Motor& rotator, CalibrationStateMachine& calibrator, PersistentSettings& settings, TemperatureSensor& temperature);
 		Response HandleCommand(Command& command);
 
 	private:
@@ -72,11 +73,13 @@ class CommandProcessor
 		Response HandlePR(Command & command);
 		Response HandleRR(Command & command);
 		Response HandleVR(Command & command);
+		Response HandleTR(Command & command);
 		Response HandleX(Command & command);
 		Motor *focuser;
 		Motor *rotator;
 		CalibrationStateMachine *calibrator;
 		PersistentSettings *settings;
+		TemperatureSensor *temperature;
 	};
 
 extern Response DispatchCommand(Command& command);

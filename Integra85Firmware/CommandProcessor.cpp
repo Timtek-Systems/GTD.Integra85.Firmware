@@ -11,12 +11,13 @@ bool Command::IsSystemCommand()
 	return TargetDevice == '0';
 	}
 
-CommandProcessor::CommandProcessor(Motor& focuser, Motor& rotator, CalibrationStateMachine& calibrator, PersistentSettings& settings)
+CommandProcessor::CommandProcessor(Motor& focuser, Motor& rotator, CalibrationStateMachine& calibrator, PersistentSettings& settings, TemperatureSensor& temperature)
 	{
 	this->focuser = &focuser;
 	this->rotator = &rotator;
 	this->calibrator = &calibrator;
 	this->settings = &settings;
+	this->temperature = &temperature;
 	}
 
 Motor* CommandProcessor::GetMotor(Command& command)
@@ -44,6 +45,7 @@ Response CommandProcessor::HandleCommand(Command& command)
 		if (command.Verb == "ZW") return HandleZW(command);
 		if (command.Verb == "ZD") return HandleZD(command);
 		if (command.Verb == "VR") return HandleVR(command);
+		if (command.Verb == "TR") return HandleTR(command);
 		if (command.Verb == "X") return HandleX(command);
 		}
 	return Response::Error();
@@ -148,6 +150,12 @@ Response CommandProcessor::HandleRR(Command & command)
 Response CommandProcessor::HandleVR(Command & command)
 	{
 	return Response{ (String)FIRMWARE_MAJOR_VERSION + "." + (String)FIRMWARE_MINOR_VERSION + "#" };
+	}
+
+Response CommandProcessor::HandleTR(Command & command)
+	{
+	auto celsius = temperature->GetValue();
+	return Response{ "T" + (String)celsius + "#" };
 	}
 
 Response CommandProcessor::HandleX(Command & command)
