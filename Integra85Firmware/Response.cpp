@@ -19,9 +19,9 @@ Response Response::FromPosition(Command& command, uint32_t position)
 	return Response{ message };
 	}
 
-Response Response::FromInteger(int i)
+Response Response::FromInteger(Command& command, int i)
 	{
-	return Response{ (String)i + Response::Terminator };
+	return Response{ command.Verb + (String)i + Response::Terminator };
 	}
 
 const String Response::Terminator = "#";

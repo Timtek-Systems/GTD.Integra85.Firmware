@@ -38,6 +38,7 @@ Response CommandProcessor::HandleCommand(Command& command)
 		if (command.Verb == "CE") return HandleCE(command);
 		if (command.Verb == "SW") return HandleSW(command);
 		if (command.Verb == "PR") return HandlePR(command);
+		if (command.Verb == "PW") return HandlePW(command);
 		if (command.Verb == "RR") return HandleRR(command);
 		}
 	if (command.IsSystemCommand())
@@ -140,6 +141,17 @@ Response CommandProcessor::HandlePR(Command & command)
 	return response;
 	}
 
+Response CommandProcessor::HandlePW(Command & command)
+{
+	// Step position can only be set for the rotator.
+	if (command.TargetDevice != '2')
+		return Response::Error();
+	auto microsteps = command.StepPosition * MICROSTEPS_PER_STEP;
+	auto motor = GetMotor(command);
+	motor->SetCurrentPosition(microsteps);
+	return Response::FromSuccessfulCommand(command);
+}
+
 Response CommandProcessor::HandleRR(Command & command)
 	{
 	auto motor = GetMotor(command);
@@ -155,14 +167,14 @@ Response CommandProcessor::HandleVR(Command & command)
 Response CommandProcessor::HandleTR(Command & command)
 	{
 	auto celsius = temperature->GetValue();
-	return Response{ "T" + (String)celsius + "#" };
+	return Response{ "TR" + (String)celsius + "#" };
 	}
 
 Response CommandProcessor::HandleX(Command & command)
 	{
 	if (focuser->IsMoving())
-		return Response::FromInteger(1);
+		return Response::FromInteger(command, 1);
 	if (rotator->IsMoving())
-		return Response::FromInteger(2);
-	return Response::FromInteger(0);
+		return Response::FromInteger(command, 2);
+	return Response::FromInteger(command, 0);
 	}

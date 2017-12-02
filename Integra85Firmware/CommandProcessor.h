@@ -50,7 +50,7 @@ struct Response
 	/*
 		Creates a response consisting of just an integer and the terminator.
 	*/
-	static Response FromInteger(int i);
+	static Response FromInteger(Command& command, int i);
 	};
 
 class CommandProcessor
@@ -71,6 +71,7 @@ class CommandProcessor
 		Response HandleZW(Command & command);
 		Response HandleZD(Command & command);
 		Response HandlePR(Command & command);
+		Response HandlePW(Command & command);
 		Response HandleRR(Command & command);
 		Response HandleVR(Command & command);
 		Response HandleTR(Command & command);
