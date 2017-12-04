@@ -36,6 +36,8 @@
 //Software serial
 #define BluetoothRxPin				(2)
 #define BluetoothTxPin				(3)
+#define RX_BUFFER_SIZE				(16)
+
 
 // FSR limits
 #define FSR_HARD_THRESHOLD			(600)	// Used during calibration to find the "hard stop" home position

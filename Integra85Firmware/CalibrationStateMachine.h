@@ -45,6 +45,7 @@ class CalibrationStateMachine
 		unsigned long startTime;
 		void ChangeState(ICalibrationState *newState);
 		void CommitCalibration();
+		void CalibrationComplete();
 		void StopCalibrationIfTimedOut();
 		friend class IdleCalibrationState;
 		friend class FindHomeCalibrationState;

@@ -65,5 +65,10 @@ void CalibrationStateMachine::CommitCalibration()
 		}
 
 	status->backlash = backlash;	// Note: in microsteps
-	status->status = Calibrated;
+	//status->status = Calibrated;
 	}
+
+void CalibrationStateMachine::CalibrationComplete()
+{
+	status->status = Calibrated;
+}
