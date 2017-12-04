@@ -44,6 +44,21 @@ void CalibrationStateMachine::StopCalibration()
 	status->status = Cancelled;
 	}
 
+void CalibrationStateMachine::SetCalibrated()
+{
+	status->status = Calibrated;
+}
+
+void CalibrationStateMachine::SetUncalibrated()
+{
+	status->status = Uncalibrated;
+}
+
+bool CalibrationStateMachine::InProgress()
+{
+	return status->status == CalibrationResult::InProgress;
+}
+
 void CalibrationStateMachine::ChangeState(ICalibrationState *newState)
 	{
 	currentState->OnExit(*this);

@@ -36,6 +36,9 @@ class CalibrationStateMachine
 		void Loop();
 		void StartCalibration();
 		void StopCalibration();
+		void SetCalibrated();
+		void SetUncalibrated();
+		bool InProgress();
 	private:
 		Motor *stepper;
 		ForceSensitiveResistor *sensor;
