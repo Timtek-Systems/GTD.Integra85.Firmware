@@ -13,7 +13,9 @@ void FindMidpointCalibrationState::Loop(CalibrationStateMachine & machine)
 	{
 	if (!machine.stepper->IsMoving())
 		{
-		auto writeSettings = Command { "ZW" };
+		machine.CalibrationComplete();
+		auto writeSettings = Command{ "ZW",'0',0 };
+		DispatchCommand(writeSettings);
 		machine.ChangeState(new IdleCalibrationState());
 		}
 	}

@@ -134,9 +134,84 @@ Response DispatchCommand(char *buffer, unsigned int charCount)
 	}
 
 void HandleBluetoothCommunications()
-	{
+{
+	static char rxBuffer[RX_BUFFER_SIZE];
+	static unsigned int rxIndex = 0;
 
+	if (bluetooth.available() <= 0)
+		return;	// No data available.
+	auto rx = bluetooth.read();
+	if (rx < 0)
+		return;	// No data available.
+	char rxChar = (char)rx;
+	switch (rxChar)
+	{
+	case 0x01:
+	case 0x02:
+	case 0x03:
+	case 0x04:
+	case 0x05:
+		rxIndex = 0;
+		HandleShortCommand(rxChar);
+		break;
+	case '@':	// Start of new command
+		rxIndex = 0;
+		break;
+	case '\n':	// newline - dispatch the command
+	case '\r':	// carriage return - dispatch the command
+		if (rxIndex > 0)
+		{
+			auto response = DispatchCommand(rxBuffer, rxIndex);
+			Serial.println(response.Message);
+		}
+		rxIndex = 0;
+		break;
+	default:	// collect received characters into the command buffer
+		if (rxIndex < (RX_BUFFER_SIZE - 1))	// Allow room for null terminator
+		{
+			rxBuffer[rxIndex++] = rxChar;
+			rxBuffer[rxIndex] = '\0';	// Ensure that the buffer is always null-terminated.
+		}
+		break;
 	}
+}
+
+/*
+	Short commands start a movement towards the limit of travel, unless stopped by a stop command.
+	It is assumed that parameter rx has been validated elsewhere.
+*/
+void HandleShortCommand(char rx)
+{
+	Command command;
+	switch (rx)
+	{
+	case 0x01:	// M1 Out
+		command=Command{ "MO", '1', focuserMotor.LimitOfTravel() - focuserMotor.CurrentPosition() };
+		DispatchCommand(command);
+		break;
+	case 0x02:	// M2 Out
+		command=Command{ "MO", '2', rotatorMotor.LimitOfTravel() - rotatorMotor.CurrentPosition() };
+		DispatchCommand(command);
+		break;
+	case 0x03:	// M1 In
+		command = Command{ "MI", '1', 0 };
+		DispatchCommand(command);
+		break;
+	case 0x04:	// M2 In
+		command = Command{ "MI", '2', 0 };
+		DispatchCommand(command);
+		break;
+	case 0x05:	// All stop
+		command = Command{ "SW",'1',0 };
+		DispatchCommand(command);
+		command = Command{ "SW",'2',0 };
+		DispatchCommand(command);
+		break;
+	default:
+		break;
+	}
+}
+
 
 
 
