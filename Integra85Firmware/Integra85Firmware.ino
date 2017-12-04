@@ -106,6 +106,12 @@ Response DispatchCommand(Command& command)
 	return response;
 	}
 
+Response DispatchCommand(String verb, char targetDevice, uint32_t stepPosition)
+{
+	auto command = Command{ verb,targetDevice,stepPosition };
+	return DispatchCommand(command);
+}
+
 Response DispatchCommand(char *buffer, unsigned int charCount)
 	{
 	if (charCount < 1)
@@ -182,30 +188,23 @@ void HandleBluetoothCommunications()
 */
 void HandleShortCommand(char rx)
 {
-	Command command;
 	switch (rx)
 	{
 	case 0x01:	// M1 Out
-		command=Command{ "MO", '1', focuserMotor.LimitOfTravel() - focuserMotor.CurrentPosition() };
-		DispatchCommand(command);
+		DispatchCommand("MO", '1', focuserMotor.LimitOfTravel() - focuserMotor.CurrentPosition());
 		break;
 	case 0x02:	// M2 Out
-		command=Command{ "MO", '2', rotatorMotor.LimitOfTravel() - rotatorMotor.CurrentPosition() };
-		DispatchCommand(command);
+		DispatchCommand("MO", '2', rotatorMotor.LimitOfTravel() - rotatorMotor.CurrentPosition());
 		break;
 	case 0x03:	// M1 In
-		command = Command{ "MI", '1', 0 };
-		DispatchCommand(command);
+		DispatchCommand("MI", '1', 0);
 		break;
 	case 0x04:	// M2 In
-		command = Command{ "MI", '2', 0 };
-		DispatchCommand(command);
+		DispatchCommand("MI", '2', 0);
 		break;
 	case 0x05:	// All stop
-		command = Command{ "SW",'1',0 };
-		DispatchCommand(command);
-		command = Command{ "SW",'2',0 };
-		DispatchCommand(command);
+		DispatchCommand("SW", '1', 0);
+		DispatchCommand("SW", '2', 0);
 		break;
 	default:
 		break;
