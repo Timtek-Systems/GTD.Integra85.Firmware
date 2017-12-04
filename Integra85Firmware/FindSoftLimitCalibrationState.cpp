@@ -34,5 +34,5 @@ void FindSoftLimitCalibrationState::OnEnter(CalibrationStateMachine & machine)
 	machine.calibrationDistanceMovingIn = 0;
 	machine.calibrationDistanceMovingOut = 0;
 	machine.stepper->SetCurrentPosition(machine.stepper->MidpointPosition());
-	machine.stepper->MoveAtVelocity(-2880);
+	machine.stepper->MoveAtVelocity(-machine.status->slowSpeed);
 	}

@@ -36,6 +36,9 @@ Response CommandProcessor::HandleCommand(Command& command)
 		if (command.Verb == "CS") return HandleCS(command);	// Calibration start
 		if (command.Verb == "CR") return HandleCR(command);	// Read calibration state
 		if (command.Verb == "CE") return HandleCE(command);	// Abort calibration
+		if (command.Verb == "Cl") return HandleCl(command);	// Set FSR low threshold
+		if (command.Verb == "CL") return HandleCL(command);	// Set FSR high threshold
+		if (command.Verb == "Cv") return HandleCv(command);	// Set calibration slow speed
 		if (command.Verb == "SW") return HandleSW(command);	// Stop motor
 		if (command.Verb == "PR") return HandlePR(command);	// Position read
 		if (command.Verb == "PW") return HandlePW(command);	// Position write (sync)
@@ -116,6 +119,39 @@ Response CommandProcessor::HandleCE(Command & command)
 	calibrator->StopCalibration();
 	return Response::FromSuccessfulCommand(command);
 	}
+
+// Sets the FSR lower threshold, which is the point where backlash is measured.
+Response CommandProcessor::HandleCl(Command & command)
+{
+	if (command.TargetDevice != '1')
+		return Response::Error();
+	auto limit = command.StepPosition;
+	if (limit > 1023)
+		return Response::Error();
+	settings->calibration.lowThreshold = limit;
+	return Response::FromSuccessfulCommand(command);
+}
+
+// Sets the FSR high threshold, which is the "hard stop" position.
+Response CommandProcessor::HandleCL(Command & command)
+{
+	if (command.TargetDevice != '1')
+		return Response::Error();
+	auto limit = command.StepPosition;
+	if (limit > 1023)
+		return Response::Error();
+	settings->calibration.highThreshold = limit;
+	return Response::FromSuccessfulCommand(command);
+}
+
+Response CommandProcessor::HandleCv(Command & command)
+{
+	if (command.TargetDevice != '1')
+		return Response::Error();
+	auto speed = command.StepPosition;
+	settings->calibration.slowSpeed = speed;
+	return Response::FromSuccessfulCommand(command);
+}
 
 Response CommandProcessor::HandleCW(Command & command)
 {

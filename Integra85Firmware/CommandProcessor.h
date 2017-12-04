@@ -60,13 +60,16 @@ class CommandProcessor
 		Response HandleCommand(Command& command);
 
 	private:
-		Motor * CommandProcessor::GetMotor(Command& command);
+		Motor * GetMotor(Command& command);
 		Response HandleMI(Command & command);
 		Response HandleMO(Command & command);
 		Response HandleAW(Command & command);
 		Response HandleCS(Command & command);
 		Response HandleCR(Command & command);
 		Response HandleCE(Command & command);
+		Response HandleCl(Command & command);
+		Response HandleCL(Command & command);
+		Response HandleCv(Command & command);
 		Response HandleCW(Command & command);
 		Response HandleSW(Command & command);
 		Response HandleZW(Command & command);
