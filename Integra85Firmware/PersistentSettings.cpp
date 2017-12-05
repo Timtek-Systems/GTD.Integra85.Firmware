@@ -21,6 +21,9 @@ PersistentSettings::PersistentSettings()
 		};
 	calibration.backlash = 0;
 	calibration.status = Uncalibrated;
+	calibration.lowThreshold = FSR_SOFT_THRESHOLD;
+	calibration.highThreshold = FSR_HARD_THRESHOLD;
+	calibration.slowSpeed = CALIBRATE_SLOW_MOTION;
 	}
 
 /*
