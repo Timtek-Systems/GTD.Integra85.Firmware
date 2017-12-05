@@ -14,11 +14,11 @@ void FindSoftLimitCalibrationState::Loop(CalibrationStateMachine & machine)
 	{
 	auto sensorValue = machine.sensor->AverageValue();
 	auto position = machine.stepper->CurrentPosition();
-	if (sensorValue >= FSR_SOFT_THRESHOLD && softLimitPosition == 0)
+	if (sensorValue >= machine.status->lowThreshold && softLimitPosition == 0)
 		{
 		softLimitPosition = position;
 		}
-	if (sensorValue >= FSR_HARD_THRESHOLD)
+	if (sensorValue >= machine.status->highThreshold)
 		{
 		machine.stepper->HardStop();
 		auto distanceBetweenHardAndSoftLimits = softLimitPosition - position;

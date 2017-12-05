@@ -33,7 +33,9 @@ Response CommandProcessor::HandleCommand(Command& command)
 		{
 		if (command.Verb == "MI") return HandleMI(command);	// Move motor in
 		if (command.Verb == "MO") return HandleMO(command);	// Move motor out
-		if (command.Verb == "RW") return HandleAW(command);	// Set limit of travel
+		if (command.Verb == "AW") return HandleAW(command);	// Set limit of travel
+		if (command.Verb == "BR") return HandleBR(command);	// Set limit of travel
+		if (command.Verb == "BW") return HandleBW(command);	// Set limit of travel
 		if (command.Verb == "CS") return HandleCS(command);	// Calibration start
 		if (command.Verb == "CR") return HandleCR(command);	// Read calibration state
 		if (command.Verb == "CE") return HandleCE(command);	// Abort calibration
@@ -44,6 +46,7 @@ Response CommandProcessor::HandleCommand(Command& command)
 		if (command.Verb == "PR") return HandlePR(command);	// Position read
 		if (command.Verb == "PW") return HandlePW(command);	// Position write (sync)
 		if (command.Verb == "RR") return HandleRR(command);	// Range Read (get limit of travel)
+		if (command.Verb == "RW") return HandleRW(command);	// Range Write (set limit of travel)
 		if (command.Verb == "VR") return HandleVR(command);	// Read maximum motor speed
 		if (command.Verb == "VW") return HandleVW(command);	// Read maximum motor speed
 
@@ -262,7 +265,8 @@ Response CommandProcessor::HandleVW(Command & command)
 	uint16_t speed = command.StepPosition;
 	if (speed < motor->MinimumSpeed())
 		return Response::Error();
-	motor->SetMaximumSpeed(command.StepPosition);
+	motor->SetMaximumSpeed(speed);
+	return Response::FromSuccessfulCommand(command);
 }
 
 Response CommandProcessor::HandleBR(Command & command)

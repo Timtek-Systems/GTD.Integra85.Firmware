@@ -15,7 +15,7 @@ void FindBacklashCalibrationState::Loop(CalibrationStateMachine & machine)
 	{
 	auto sensorValue = machine.sensor->AverageValue();
 	auto position = machine.stepper->CurrentPosition();
-	if (sensorValue <= FSR_SOFT_THRESHOLD && softLimitPosition == 0)
+	if (sensorValue <= machine.status->lowThreshold && softLimitPosition == 0)
 		{
 		softLimitPosition = position;
 		}
