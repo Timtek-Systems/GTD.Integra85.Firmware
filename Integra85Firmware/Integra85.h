@@ -46,6 +46,7 @@
 // Calibration
 #define MAX_CALIBRATION_TIME		(420000)	// Milliseconds, obviously.
 #define CALIBRATE_SAFE_DISTANCE		(100000)	// Distance to back off from hard stop
+#define CALIBRATE_SLOW_MOTION		(2880)		// High precision calibration slow motion speed, steps per second.
 
 // Error codes
 

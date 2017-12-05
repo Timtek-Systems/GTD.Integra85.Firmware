@@ -30,5 +30,5 @@ void FindBacklashCalibrationState::Loop(CalibrationStateMachine & machine)
 void FindBacklashCalibrationState::OnEnter(CalibrationStateMachine & machine)
 	{
 	softLimitPosition = 0;
-	machine.stepper->MoveAtVelocity(+2880);
+	machine.stepper->MoveAtVelocity(machine.status->slowSpeed);
 	}

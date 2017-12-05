@@ -35,7 +35,7 @@ auto oneWireBus = OneWire(TEMPERATURE_SENSOR_PIN);
 auto temperatureSensor = TemperatureSensor(oneWireBus);
 auto bluetooth = SoftwareSerial(BluetoothRxPin, BluetoothTxPin);
 auto calibrationStateMachine = CalibrationStateMachine(&focuserMotor, &touchSensor, settings.calibration);
-auto commandProcessor = CommandProcessor(focuserMotor, rotatorMotor, calibrationStateMachine, settings, temperatureSensor);
+auto commandProcessor = CommandProcessor(focuserMotor, rotatorMotor, calibrationStateMachine, settings, temperatureSensor, touchSensor);
 
 Command command;
 

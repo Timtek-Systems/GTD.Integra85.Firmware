@@ -25,6 +25,9 @@ struct Calibration
 	{
 	CalibrationResult status = Uncalibrated;
 	uint16_t backlash = 0;
+	uint16_t lowThreshold = FSR_SOFT_THRESHOLD;
+	uint16_t highThreshold = FSR_HARD_THRESHOLD;
+	uint16_t slowSpeed = CALIBRATE_SLOW_MOTION;
 	};
 
 class ICalibrationState;
@@ -36,6 +39,9 @@ class CalibrationStateMachine
 		void Loop();
 		void StartCalibration();
 		void StopCalibration();
+		void SetCalibrated();
+		void SetUncalibrated();
+		bool InProgress();
 	private:
 		Motor *stepper;
 		ForceSensitiveResistor *sensor;

@@ -139,6 +139,19 @@ void Motor::SetCurrentPosition(uint32_t position)
 	}
 
 /*
+	Sets the limit of travel (maximum step position) of the motor.
+*/
+	void Motor::SetLimitOfTravel(uint32_t limit)
+	{
+		configuration->maxPosition = limit;
+	}
+
+	void Motor::SetMaximumSpeed(uint16_t speed)
+	{
+		configuration->maxSpeed = speed;
+	}
+
+/*
 	Gets the current motor velocity in steps per second.
 */
 const float Motor::CurrentVelocity()
@@ -163,6 +176,16 @@ const uint32_t Motor::LimitOfTravel()
 	{
 	return configuration->maxPosition;
 	}
+
+const uint16_t Motor::MaximumSpeed()
+{
+	return configuration->maxSpeed;
+}
+
+const uint16_t Motor::MinimumSpeed()
+{
+	return minSpeed;
+}
 
 const bool Motor::IsMoving()
 	{
