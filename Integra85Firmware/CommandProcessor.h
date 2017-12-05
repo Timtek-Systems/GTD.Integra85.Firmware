@@ -56,41 +56,43 @@ struct Response
 class CommandProcessor
 	{
 	public:
-		CommandProcessor(Motor& focuser, Motor& rotator, CalibrationStateMachine& calibrator, PersistentSettings& settings, TemperatureSensor& temperature);
+		CommandProcessor(Motor& focuser, Motor& rotator, CalibrationStateMachine& calibrator, PersistentSettings& settings, TemperatureSensor& temperature, ForceSensitiveResistor& fsr);
 		Response HandleCommand(Command& command);
 
 	private:
-		Motor * GetMotor(Command& command);
-		Response HandleMI(Command & command);
-		Response HandleMO(Command & command);
-		Response HandleAW(Command & command);
-		Response HandleCS(Command & command);
-		Response HandleCR(Command & command);
-		Response HandleCE(Command & command);
-		Response HandleCl(Command & command);
-		Response HandleCL(Command & command);
-		Response HandleCv(Command & command);
-		Response HandleCW(Command & command);
-		Response HandleSW(Command & command);
-		Response HandleZW(Command & command);
-		Response HandleZR(Command & command);
-		Response HandleZD(Command & command);
-		Response HandlePR(Command & command);
-		Response HandlePW(Command & command);
-		Response HandleRR(Command & command);
-		Response HandleRW(Command & command);
-		Response HandleFR(Command & command);
-		Response HandleTR(Command & command);
-		Response HandleVR(Command & command);
-		Response HandleVW(Command & command);
-		Response HandleBR(Command & command);
-		Response HandleBW(Command & command);
-		Response HandleX(Command & command);
+		Motor * GetMotor(Command& command);		// Gets the motor addressed by the command
+		Response HandleAW(Command & command);	// AW - Acceleration ramp time write
+		Response HandleBR(Command & command);	// Backlash steps read
+		Response HandleBW(Command & command);	// Backlash steps write
+		Response HandleCS(Command & command);	// Calibration start
+		Response HandleCR(Command & command);	// Calibration state read
+		Response HandleCE(Command & command);	// Calibration end (abort/cancel)
+		Response HandleCl(Command & command);	// Calibration sensor first contact threshold
+		Response HandleCL(Command & command);	// Calibration sensor hard stop threshold
+		Response HandleCv(Command & command);	// Calibration slow motion velocity [sic] steps/sec
+		Response HandleCW(Command & command);	// Calibration state write
+		Response HandleER(Command & command);	// FSR value read
+		Response HandleFR(Command & command);	// Firmware version read
+		Response HandleMI(Command & command);	// Move motor in
+		Response HandleMO(Command & command);	// Move motor out
+		Response HandlePR(Command & command);	// Step position read
+		Response HandlePW(Command & command);	// Step position write (sync)
+		Response HandleRR(Command & command);	// Range (limit of travel) read
+		Response HandleRW(Command & command);	// Range (limit of travel) write
+		Response HandleSW(Command & command);	// Stop write (motor emergency stop)
+		Response HandleTR(Command & command);	// Temperature read (in Celsius)
+		Response HandleVR(Command & command);	// Velocity [sic] read (motor maximum speed in microsteps/sec)
+		Response HandleVW(Command & command);	// Velocity [sic] write (microsteps/sec)
+		Response HandleX(Command & command);	// Movement status read
+		Response HandleZW(Command & command);	// EEPROM write (save settings)
+		Response HandleZR(Command & command);	// EEPROM read (load settings)
+		Response HandleZD(Command & command);	// Reset to factory settings (clears both EEPROM and working settings)
 		Motor *focuser;
 		Motor *rotator;
 		CalibrationStateMachine *calibrator;
 		PersistentSettings *settings;
 		TemperatureSensor *temperature;
+		ForceSensitiveResistor *fsr;
 	};
 
 extern Response DispatchCommand(Command& command);

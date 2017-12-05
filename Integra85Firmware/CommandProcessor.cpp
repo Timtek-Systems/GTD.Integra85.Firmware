@@ -11,13 +11,14 @@ bool Command::IsSystemCommand()
 	return TargetDevice == '0';
 	}
 
-CommandProcessor::CommandProcessor(Motor& focuser, Motor& rotator, CalibrationStateMachine& calibrator, PersistentSettings& settings, TemperatureSensor& temperature)
+CommandProcessor::CommandProcessor(Motor& focuser, Motor& rotator, CalibrationStateMachine& calibrator, PersistentSettings& settings, TemperatureSensor& temperature, ForceSensitiveResistor& fsr)
 	{
 	this->focuser = &focuser;
 	this->rotator = &rotator;
 	this->calibrator = &calibrator;
 	this->settings = &settings;
 	this->temperature = &temperature;
+	this->fsr = &fsr;
 	}
 
 Motor* CommandProcessor::GetMotor(Command& command)
@@ -171,6 +172,13 @@ Response CommandProcessor::HandleCW(Command & command)
 		return Response::Error();
 		break;
 	}
+}
+
+// Read the value of the Force Sensitive Resistor (FSR)
+Response CommandProcessor::HandleER(Command & command)
+{
+	auto sensorValue = fsr->AverageValue();
+	return Response::FromInteger(command, sensorValue);
 }
 
 Response CommandProcessor::HandleSW(Command & command)
