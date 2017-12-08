@@ -286,6 +286,7 @@ Response CommandProcessor::HandleBW(Command & command)
 	if (backlash > (motor->LimitOfTravel() / 2))
 		return Response::Error();
 	settings->calibration.backlash = backlash;
+	return Response::FromSuccessfulCommand(command);
 }
 
 Response CommandProcessor::HandleX(Command & command)
