@@ -274,7 +274,7 @@ Response CommandProcessor::HandleBR(Command & command)
 	if (command.TargetDevice != '1')
 		return Response::Error();
 	auto backlash = settings->calibration.backlash;
-	return Response::FromPosition(command, backlash);
+	return Response::FromPosition(command, MicrostepsToSteps(backlash));
 }
 
 Response CommandProcessor::HandleBW(Command & command)
@@ -282,7 +282,7 @@ Response CommandProcessor::HandleBW(Command & command)
 	if (command.TargetDevice != '1')
 		return Response::Error();
 	auto motor = GetMotor(command);
-	auto backlash = command.StepPosition;
+	auto backlash = StepsToMicrosteps(command.StepPosition);
 	if (backlash > (motor->LimitOfTravel() / 2))
 		return Response::Error();
 	settings->calibration.backlash = backlash;
