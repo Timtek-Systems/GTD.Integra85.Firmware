@@ -171,8 +171,8 @@ RW1,n   | RW#     |    1 | 2^32-1 |  198000 | Sets the limit of travel for the f
 RW2,n   | RW#     |    1 | 2^32-1 |   61802 | Sets the number of whole steps per revolution for the rotator
 PRm     | PRnnnn# |      |        |         | Read step position of motor m in whole steps
 PWm,n   | PW#     |    0 | RRm    |         | Sync current whole step position. Max value is returned by RRm
-VRm     | VRnnnn# |  250 |  65535 |   16000 | Read maximum motor speed in microsteps/second
-VWm,n   | VW#     |  250 |  65535 |   16000 | Write maximum motor speed in microsteps/second
+VRm     | VRnnnn# |  16  |  65535 |    1000 | Read maximum motor speed in steps/second
+VWm,n   | VW#     |  250 |  65535 |    1000 | Write maximum motor speed in steps/second
 --------|---------|------|--------|---------|-----------------------------------------------------
 Motor movement
 --------|---------|------|--------|---------|-----------------------------------------------------
