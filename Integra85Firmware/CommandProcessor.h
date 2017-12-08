@@ -87,6 +87,8 @@ class CommandProcessor
 		Response HandleZW(Command & command);	// EEPROM write (save settings)
 		Response HandleZR(Command & command);	// EEPROM read (load settings)
 		Response HandleZD(Command & command);	// Reset to factory settings (clears both EEPROM and working settings)
+		uint32_t MicrostepsToSteps(uint32_t microsteps);
+		uint32_t StepsToMicrosteps(uint32_t wholesteps);
 		Motor *focuser;
 		Motor *rotator;
 		CalibrationStateMachine *calibrator;

@@ -67,7 +67,7 @@ Response CommandProcessor::HandleMI(Command& command)
 	{
 	// Commands are in whole steps, motors operate in microsteps, so we must convert.
 	auto motor = GetMotor(command);
-	auto microStepsToMove = command.StepPosition * MICROSTEPS_PER_STEP;
+	auto microStepsToMove = StepsToMicrosteps(command.StepPosition);
 	auto targetPosition = motor->CurrentPosition() - microStepsToMove;
 	if (targetPosition < 0)
 		return Response::Error();
@@ -79,7 +79,7 @@ Response CommandProcessor::HandleMO(Command& command)
 	{
 	// Commands are in whole steps, motors operate in microsteps, so we must convert.
 	auto motor = GetMotor(command);
-	auto microStepsToMove = command.StepPosition * MICROSTEPS_PER_STEP;
+	auto microStepsToMove = StepsToMicrosteps(command.StepPosition);
 	auto targetPosition = motor->CurrentPosition() + microStepsToMove;
 	if (targetPosition > motor->LimitOfTravel())
 		return Response::Error();
@@ -213,14 +213,14 @@ Response CommandProcessor::HandleZD(Command & command)
 Response CommandProcessor::HandlePR(Command & command)
 	{
 	auto motor = GetMotor(command);
-	auto position = motor->CurrentPosition() / MICROSTEPS_PER_STEP;
+	auto position = MicrostepsToSteps(motor->CurrentPosition());
 	auto response = Response::FromPosition(command, position);
 	return response;
 	}
 
 Response CommandProcessor::HandlePW(Command & command)
 {
-	auto microsteps = command.StepPosition * MICROSTEPS_PER_STEP;
+	auto microsteps = StepsToMicrosteps(command.StepPosition);
 	auto motor = GetMotor(command);
 	motor->SetCurrentPosition(microsteps);
 	return Response::FromSuccessfulCommand(command);
@@ -228,7 +228,7 @@ Response CommandProcessor::HandlePW(Command & command)
 
 Response CommandProcessor::HandleRW(Command & command)
 {
-	auto microsteps = command.StepPosition * MICROSTEPS_PER_STEP;
+	auto microsteps = StepsToMicrosteps(command.StepPosition);
 	auto motor = GetMotor(command);
 	motor->SetLimitOfTravel(microsteps);
 	return Response::FromSuccessfulCommand(command);
@@ -237,7 +237,7 @@ Response CommandProcessor::HandleRW(Command & command)
 Response CommandProcessor::HandleRR(Command & command)
 	{
 	auto motor = GetMotor(command);
-	auto range = motor->LimitOfTravel() / MICROSTEPS_PER_STEP;
+	auto range = MicrostepsToSteps(motor->LimitOfTravel());
 	return Response::FromPosition(command, range);
 	}
 
@@ -256,13 +256,13 @@ Response CommandProcessor::HandleVR(Command & command)
 {
 	auto motor = GetMotor(command);
 	auto maxSpeed = motor->MaximumSpeed();
-	return Response::FromPosition(command, maxSpeed);
+	return Response::FromPosition(command, MicrostepsToSteps(maxSpeed));
 }
 
 Response CommandProcessor::HandleVW(Command & command)
 {
 	auto motor = GetMotor(command);
-	uint16_t speed = command.StepPosition;
+	uint16_t speed = StepsToMicrosteps(command.StepPosition);
 	if (speed < motor->MinimumSpeed())
 		return Response::Error();
 	motor->SetMaximumSpeed(speed);
@@ -295,4 +295,14 @@ Response CommandProcessor::HandleX(Command & command)
 	if (rotator->IsMoving())
 		return Response::FromInteger(command, 2);
 	return Response::FromInteger(command, 0);
+	}
+
+inline uint32_t CommandProcessor::MicrostepsToSteps(uint32_t microsteps)
+	{
+	return microsteps / MICROSTEPS_PER_STEP;
+	}
+
+inline uint32_t CommandProcessor::StepsToMicrosteps(uint32_t wholesteps)
+	{
+	return wholesteps * MICROSTEPS_PER_STEP;
 	}
