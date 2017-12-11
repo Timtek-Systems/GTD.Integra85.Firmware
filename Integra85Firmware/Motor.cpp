@@ -53,9 +53,7 @@ void Motor::Step(bool state)
 	else
 		{
 		// Check hard limits on falling edge
-		if (configuration->currentPosition == targetPosition 
-			|| configuration->currentPosition >= configuration->maxPosition
-			|| configuration->currentPosition == 0)
+		if (configuration->currentPosition == targetPosition)
 			{
 			HardStop();
 			}
@@ -105,7 +103,7 @@ void Motor::SetRampTime(uint16_t milliseconds)
 	down to minSpeed and upon reaching the target position, will perform a hard stop.
 	Note: for short moves the motor may never reach maxSpeed.
 */
-void Motor::MoveToPosition(uint32_t position)
+void Motor::MoveToPosition(int32_t position)
 	{
 	int32_t deltaPosition = position - configuration->currentPosition;
 	targetPosition = position;
@@ -133,7 +131,7 @@ void Motor::MoveToPosition(uint32_t position)
 /*
 	Sets the motor's current step position. This does not cause any movement.
 */
-void Motor::SetCurrentPosition(uint32_t position)
+void Motor::SetCurrentPosition(int32_t position)
 	{
 	configuration->currentPosition = position;
 	}
@@ -162,7 +160,7 @@ const float Motor::CurrentVelocity()
 /*
 	Gets the current motor position in steps.
 */
-const uint32_t Motor::CurrentPosition()
+const int32_t Motor::CurrentPosition()
 	{
 	return configuration->currentPosition;
 	}

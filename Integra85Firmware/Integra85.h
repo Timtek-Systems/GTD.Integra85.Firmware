@@ -40,8 +40,8 @@
 
 
 // FSR limits
-#define FSR_HARD_THRESHOLD			(600)	// Used during calibration to find the "hard stop" home position
-#define FSR_SOFT_THRESHOLD			(300)	// Used during calibration to define the operational home position (Position = 0 steps).
+#define FSR_HARD_THRESHOLD			(800)	// Used during calibration to find the "hard stop" home position
+#define FSR_SOFT_THRESHOLD			(200)	// Used during calibration to define the operational home position (Position = 0 steps).
 
 // Calibration
 #define MAX_CALIBRATION_TIME		(420000)	// Milliseconds, obviously.
