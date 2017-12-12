@@ -16,7 +16,7 @@ class BacklashCompensatingMotor : public Motor
 	{
 	public:
 		BacklashCompensatingMotor(uint8_t stepPin, uint8_t enablePin, uint8_t directionPin, IStepGenerator& stepper, MotorSettings& settings, Calibration& calibration);
-		virtual void MoveToPosition(uint32_t targetPosition) final;
+		virtual void MoveToPosition(int32_t targetPosition) final;
 
 	private:
 		Calibration *calibration;

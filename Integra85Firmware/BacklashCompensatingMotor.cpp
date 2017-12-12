@@ -12,10 +12,10 @@ BacklashCompensatingMotor::BacklashCompensatingMotor(
 	this->calibration = &calibration;
 	}
 
-void BacklashCompensatingMotor::MoveToPosition(uint32_t targetPosition)
+void BacklashCompensatingMotor::MoveToPosition(int32_t targetPosition)
 	{
 	auto currentPosition = Motor::CurrentPosition();
-	int32_t deltaSteps = (int32_t)targetPosition - currentPosition;
+	int32_t deltaSteps = targetPosition - currentPosition;
 	if (deltaSteps == 0) return;
 	if (deltaSteps > 0 && calibration->lastDirectionIn)
 		{
