@@ -18,7 +18,7 @@
 #define M1_ENABLE_PIN				(13)
 #define M1_MAX_POSITION				(188600 * MICROSTEPS_PER_STEP)
 #define M1_MIDPOINT					(M1_MAX_POSITION / 2)
-#define M1_RAMP_TIME				(250)	// milliseconds
+#define M1_RAMP_TIME				(500)	// milliseconds
 #define M1_MAX_SPEED				(1500 * MICROSTEPS_PER_STEP)
 
 // Motor2/Rotator
@@ -27,7 +27,7 @@
 #define M2_ENABLE_PIN				(12)
 #define M2_MAX_POSITION				(61802 * MICROSTEPS_PER_STEP)
 #define M2_MIDPOINT					(M2_MAX_POSITION / 2)
-#define M2_RAMP_TIME				(500)	// milliseconds
+#define M2_RAMP_TIME				(1000)	// milliseconds
 #define M2_MAX_SPEED				(1500 * MICROSTEPS_PER_STEP)
 
 // Temperature Probe
