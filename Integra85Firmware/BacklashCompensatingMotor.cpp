@@ -12,86 +12,24 @@ BacklashCompensatingMotor::BacklashCompensatingMotor(
 	this->calibration = &calibration;
 	}
 
-void BacklashCompensatingMotor::MoveToPosition(uint32_t targetPosition)
+void BacklashCompensatingMotor::MoveToPosition(int32_t targetPosition)
 	{
-	int32_t deltaSteps = (int)targetPosition - (int)CurrentPosition();
-	if (deltaSteps > 0) // move out
+	auto currentPosition = Motor::CurrentPosition();
+	int32_t deltaSteps = targetPosition - currentPosition;
+	if (deltaSteps == 0) return;
+	if (deltaSteps > 0 && calibration->lastDirectionIn)
 		{
-		uint32_t compensatedTarget = targetPosition + calibration->backlash;
-		ChangeState(MovingOut);
-		Motor::MoveToPosition(compensatedTarget);
+		// Moving OUT and the last move was IN
+		currentPosition -= calibration->backlash;
 		}
-	else // Moving in
+	if (deltaSteps < 0 && !calibration->lastDirectionIn)
 		{
-		ChangeState(MovingIn);
-		Motor::MoveToPosition(targetPosition);
+		// Moving IN and the last direction was OUT
+		currentPosition += calibration->backlash;
 		}
-	}
-
-const bool BacklashCompensatingMotor::IsMoving()
-	{
-	return backlashState != Stopped || Motor::IsMoving();
-	}
-
-void BacklashCompensatingMotor::HardStop()
-	{
-	//ChangeState(Stopped);
-	Motor::HardStop();
-	}
-
-void BacklashCompensatingMotor::Loop()
-	{
-	Motor::Loop();
-	switch (backlashState)
-		{
-		case MovingIn:
-			MovingInState();
-			break;
-		case MovingOut:
-			MovingOutState();
-			break;
-		case Compensating:
-			CompensatingState();
-			break;
-		case Stopped:
-		default:
-			break;
-		}
-
-	}
-
-void BacklashCompensatingMotor::ChangeState(BacklashState newState)
-	{
-	//Serial.print("Backlash ");
-	//Serial.print(backlashState);
-	//Serial.print("->");
-	//Serial.println(newState);
-	backlashState = newState;
-	}
-
-void BacklashCompensatingMotor::MovingInState()
-	{
-	if (!Motor::IsMoving())
-		ChangeState(Stopped);
-	}
-
-void BacklashCompensatingMotor::MovingOutState()
-	{
-	if (Motor::IsMoving())
-		return;
-	if (calibration->backlash == 0)
-		{
-		ChangeState(Stopped);
-		return;
-		}
-	ChangeState(Compensating);
-	uint32_t targetPosition = CurrentPosition() - calibration->backlash;
+	Motor::SetCurrentPosition(currentPosition);
 	Motor::MoveToPosition(targetPosition);
+	calibration->lastDirectionIn = (deltaSteps < 0);
 	}
 
-void BacklashCompensatingMotor::CompensatingState()
-	{
-	if (Motor::IsMoving())
-		return;
-	ChangeState(Stopped);
-	}
+

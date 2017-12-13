@@ -9,18 +9,21 @@ PersistentSettings::PersistentSettings()
 	{
 	focuser = {
 		M1_MAX_POSITION,	// maxPosition
-		M1_MAX_POSITION,	// currentPosition
+		M1_MIDPOINT,		// currentPosition
 		M1_RAMP_TIME,		// Ramp time (seconds)
 		M1_MAX_SPEED		// Max speed (steps per sec)
 		};
 	rotator = {
 		M2_MAX_POSITION,	// maxPosition
-		M2_MAX_POSITION,	// currentPosition
+		M2_MIDPOINT,		// currentPosition
 		M2_RAMP_TIME,		// Ramp time (seconds)
 		M2_MAX_SPEED		// Max speed (steps per sec)
 		};
 	calibration.backlash = 0;
 	calibration.status = Uncalibrated;
+	calibration.lowThreshold = FSR_SOFT_THRESHOLD;
+	calibration.highThreshold = FSR_HARD_THRESHOLD;
+	calibration.slowSpeed = CALIBRATE_SLOW_MOTION;
 	}
 
 /*

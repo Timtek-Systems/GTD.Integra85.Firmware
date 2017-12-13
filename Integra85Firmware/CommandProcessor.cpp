@@ -33,7 +33,9 @@ Response CommandProcessor::HandleCommand(Command& command)
 		{
 		if (command.Verb == "MI") return HandleMI(command);	// Move motor in
 		if (command.Verb == "MO") return HandleMO(command);	// Move motor out
-		if (command.Verb == "RW") return HandleAW(command);	// Set limit of travel
+		if (command.Verb == "AW") return HandleAW(command);	// Set limit of travel
+		if (command.Verb == "BR") return HandleBR(command);	// Set limit of travel
+		if (command.Verb == "BW") return HandleBW(command);	// Set limit of travel
 		if (command.Verb == "CS") return HandleCS(command);	// Calibration start
 		if (command.Verb == "CR") return HandleCR(command);	// Read calibration state
 		if (command.Verb == "CE") return HandleCE(command);	// Abort calibration
@@ -44,6 +46,7 @@ Response CommandProcessor::HandleCommand(Command& command)
 		if (command.Verb == "PR") return HandlePR(command);	// Position read
 		if (command.Verb == "PW") return HandlePW(command);	// Position write (sync)
 		if (command.Verb == "RR") return HandleRR(command);	// Range Read (get limit of travel)
+		if (command.Verb == "RW") return HandleRW(command);	// Range Write (set limit of travel)
 		if (command.Verb == "VR") return HandleVR(command);	// Read maximum motor speed
 		if (command.Verb == "VW") return HandleVW(command);	// Read maximum motor speed
 
@@ -64,7 +67,7 @@ Response CommandProcessor::HandleMI(Command& command)
 	{
 	// Commands are in whole steps, motors operate in microsteps, so we must convert.
 	auto motor = GetMotor(command);
-	auto microStepsToMove = command.StepPosition * MICROSTEPS_PER_STEP;
+	auto microStepsToMove = StepsToMicrosteps(command.StepPosition);
 	auto targetPosition = motor->CurrentPosition() - microStepsToMove;
 	if (targetPosition < 0)
 		return Response::Error();
@@ -76,7 +79,7 @@ Response CommandProcessor::HandleMO(Command& command)
 	{
 	// Commands are in whole steps, motors operate in microsteps, so we must convert.
 	auto motor = GetMotor(command);
-	auto microStepsToMove = command.StepPosition * MICROSTEPS_PER_STEP;
+	auto microStepsToMove = StepsToMicrosteps(command.StepPosition);
 	auto targetPosition = motor->CurrentPosition() + microStepsToMove;
 	if (targetPosition > motor->LimitOfTravel())
 		return Response::Error();
@@ -210,14 +213,14 @@ Response CommandProcessor::HandleZD(Command & command)
 Response CommandProcessor::HandlePR(Command & command)
 	{
 	auto motor = GetMotor(command);
-	auto position = motor->CurrentPosition() / MICROSTEPS_PER_STEP;
+	auto position = MicrostepsToSteps(motor->CurrentPosition());
 	auto response = Response::FromPosition(command, position);
 	return response;
 	}
 
 Response CommandProcessor::HandlePW(Command & command)
 {
-	auto microsteps = command.StepPosition * MICROSTEPS_PER_STEP;
+	auto microsteps = StepsToMicrosteps(command.StepPosition);
 	auto motor = GetMotor(command);
 	motor->SetCurrentPosition(microsteps);
 	return Response::FromSuccessfulCommand(command);
@@ -225,7 +228,7 @@ Response CommandProcessor::HandlePW(Command & command)
 
 Response CommandProcessor::HandleRW(Command & command)
 {
-	auto microsteps = command.StepPosition * MICROSTEPS_PER_STEP;
+	auto microsteps = StepsToMicrosteps(command.StepPosition);
 	auto motor = GetMotor(command);
 	motor->SetLimitOfTravel(microsteps);
 	return Response::FromSuccessfulCommand(command);
@@ -234,7 +237,7 @@ Response CommandProcessor::HandleRW(Command & command)
 Response CommandProcessor::HandleRR(Command & command)
 	{
 	auto motor = GetMotor(command);
-	auto range = motor->LimitOfTravel() / MICROSTEPS_PER_STEP;
+	auto range = MicrostepsToSteps(motor->LimitOfTravel());
 	return Response::FromPosition(command, range);
 	}
 
@@ -253,16 +256,17 @@ Response CommandProcessor::HandleVR(Command & command)
 {
 	auto motor = GetMotor(command);
 	auto maxSpeed = motor->MaximumSpeed();
-	return Response::FromPosition(command, maxSpeed);
+	return Response::FromPosition(command, MicrostepsToSteps(maxSpeed));
 }
 
 Response CommandProcessor::HandleVW(Command & command)
 {
 	auto motor = GetMotor(command);
-	uint16_t speed = command.StepPosition;
+	uint16_t speed = StepsToMicrosteps(command.StepPosition);
 	if (speed < motor->MinimumSpeed())
 		return Response::Error();
-	motor->SetMaximumSpeed(command.StepPosition);
+	motor->SetMaximumSpeed(speed);
+	return Response::FromSuccessfulCommand(command);
 }
 
 Response CommandProcessor::HandleBR(Command & command)
@@ -270,7 +274,7 @@ Response CommandProcessor::HandleBR(Command & command)
 	if (command.TargetDevice != '1')
 		return Response::Error();
 	auto backlash = settings->calibration.backlash;
-	return Response::FromPosition(command, backlash);
+	return Response::FromPosition(command, MicrostepsToSteps(backlash));
 }
 
 Response CommandProcessor::HandleBW(Command & command)
@@ -278,10 +282,11 @@ Response CommandProcessor::HandleBW(Command & command)
 	if (command.TargetDevice != '1')
 		return Response::Error();
 	auto motor = GetMotor(command);
-	auto backlash = command.StepPosition;
+	auto backlash = StepsToMicrosteps(command.StepPosition);
 	if (backlash > (motor->LimitOfTravel() / 2))
 		return Response::Error();
 	settings->calibration.backlash = backlash;
+	return Response::FromSuccessfulCommand(command);
 }
 
 Response CommandProcessor::HandleX(Command & command)
@@ -291,4 +296,14 @@ Response CommandProcessor::HandleX(Command & command)
 	if (rotator->IsMoving())
 		return Response::FromInteger(command, 2);
 	return Response::FromInteger(command, 0);
+	}
+
+inline uint32_t CommandProcessor::MicrostepsToSteps(uint32_t microsteps)
+	{
+	return microsteps / MICROSTEPS_PER_STEP;
+	}
+
+inline uint32_t CommandProcessor::StepsToMicrosteps(uint32_t wholesteps)
+	{
+	return wholesteps * MICROSTEPS_PER_STEP;
 	}

@@ -24,10 +24,11 @@ enum CalibrationResult
 struct Calibration
 	{
 	CalibrationResult status = Uncalibrated;
-	uint16_t backlash = 0;
+	uint32_t backlash = 0;							// Backlash amoutn in microsteps
 	uint16_t lowThreshold = FSR_SOFT_THRESHOLD;
 	uint16_t highThreshold = FSR_HARD_THRESHOLD;
 	uint16_t slowSpeed = CALIBRATE_SLOW_MOTION;
+	bool lastDirectionIn = false;
 	};
 
 class ICalibrationState;

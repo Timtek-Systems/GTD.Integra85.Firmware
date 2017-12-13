@@ -15,15 +15,20 @@ void FindBacklashCalibrationState::Loop(CalibrationStateMachine & machine)
 	{
 	auto sensorValue = machine.sensor->AverageValue();
 	auto position = machine.stepper->CurrentPosition();
-	if (sensorValue <= FSR_SOFT_THRESHOLD && softLimitPosition == 0)
+	if (sensorValue <= machine.status->lowThreshold && softLimitPosition == 0)
 		{
 		softLimitPosition = position;
-		}
-	if (position >= CALIBRATE_SAFE_DISTANCE)
-		{
 		machine.stepper->HardStop();
 		machine.calibrationDistanceMovingOut = softLimitPosition;
 		machine.ChangeState(new FindMidpointCalibrationState());
+		}
+	if (position >= CALIBRATE_SAFE_DISTANCE)
+		{
+		// If we get here without detecting the soft limit again,
+		// then we've failed.
+		machine.stepper->HardStop();
+		machine.status->status = Cancelled;
+		machine.ChangeState(new IdleCalibrationState());
 		}
 	}
 

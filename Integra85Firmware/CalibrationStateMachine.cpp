@@ -73,14 +73,13 @@ void CalibrationStateMachine::ChangeState(ICalibrationState *newState)
 void CalibrationStateMachine::CommitCalibration()
 	{
 	int backlash =  calibrationDistanceMovingOut - calibrationDistanceMovingIn;
-	// Backlash should be positive. If it's not, something is wrong.
+	// Product owner requested that a value of +50 be used if
+	// the measured backlash is negative.
 	if (backlash < 0)
 		{
-		backlash = 0;
+		backlash = 50;
 		}
-
 	status->backlash = backlash;	// Note: in microsteps
-	//status->status = Calibrated;
 	}
 
 void CalibrationStateMachine::CalibrationComplete()
