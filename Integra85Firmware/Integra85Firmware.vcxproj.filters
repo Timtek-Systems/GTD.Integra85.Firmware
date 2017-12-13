@@ -26,6 +26,9 @@
     <None Include="Calibration State Machine.cd">
       <Filter>Diagrams</Filter>
     </None>
+    <None Include="Command Processor.cd">
+      <Filter>Diagrams</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.Integra85Firmware.vsarduino.h">
@@ -55,7 +58,16 @@
     <ClInclude Include="CalibrationStateMachine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ISingleton.h">
+    <ClInclude Include="CommandProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PersistentSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BacklashCompensatingMotor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TemperatureSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -64,9 +76,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CounterTimer1StepGenerator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MovingAverage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ForceSensitiveResistor.cpp">
@@ -79,9 +88,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FindHomeCalibrationState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BacklOutSlowlyCalibrationState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DelayBaseCalibrationState.cpp">
@@ -103,6 +109,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FindMidpointCalibrationState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PersistentSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Response.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BacklashCompensatingMotor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BacklOutCalibrationState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TemperatureSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

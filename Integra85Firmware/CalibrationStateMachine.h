@@ -13,24 +13,54 @@
 #include "Motor.h"
 #include "ForceSensitiveResistor.h"
 
+enum CalibrationResult
+	{
+	Uncalibrated = 0,
+	Calibrated = 1,
+	InProgress = 2,
+	Cancelled = 3
+	};
+
+struct Calibration
+	{
+	CalibrationResult status = Uncalibrated;
+	uint32_t backlash = 0;							// Backlash amoutn in microsteps
+	uint16_t lowThreshold = FSR_SOFT_THRESHOLD;
+	uint16_t highThreshold = FSR_HARD_THRESHOLD;
+	uint16_t slowSpeed = CALIBRATE_SLOW_MOTION;
+	bool lastDirectionIn = false;
+	};
+
 class ICalibrationState;
 
 class CalibrationStateMachine
 	{
 	public:
-		CalibrationStateMachine(Motor *motor, ForceSensitiveResistor *limitSensor);
+		CalibrationStateMachine(Motor *motor, ForceSensitiveResistor *limitSensor, Calibration& status);
 		void Loop();
-		void ChangeState(ICalibrationState& newState);
-		void CalibrationComplete();
+		void StartCalibration();
+		void StopCalibration();
+		void SetCalibrated();
+		void SetUncalibrated();
+		bool InProgress();
 	private:
 		Motor *stepper;
 		ForceSensitiveResistor *sensor;
+		Calibration *status;
 		ICalibrationState *currentState;
 		uint32_t calibrationDistanceMovingIn, calibrationDistanceMovingOut;
-		uint32_t backlashMeasurement;
+		unsigned long startTime;
+		void ChangeState(ICalibrationState *newState);
+		void CommitCalibration();
+		void CalibrationComplete();
+		void StopCalibrationIfTimedOut();
+		friend class IdleCalibrationState;
 		friend class FindHomeCalibrationState;
+		friend class DelayAfterFindHomeCalibrationState;
 		friend class BackOutCalibrationState;
+		friend class DelayAfterBackOutCalibrationState;
 		friend class FindSoftLimitCalibrationState;
+		friend class DelayAfterFindSoftLimitCalibrationState;
 		friend class FindBacklashCalibrationState;
 		friend class FindMidpointCalibrationState;
 	};
@@ -41,40 +71,33 @@ class ICalibrationState
 		virtual void Loop(CalibrationStateMachine & machine) {};
 		virtual void OnExit(CalibrationStateMachine& machine) {};
 		virtual void OnEnter(CalibrationStateMachine& machine) {};
-		char* StateName = "anon";
 		virtual ~ICalibrationState() {};
+		// State maching input events
+		virtual void StartCalibration(CalibrationStateMachine& machine) {};
 	};
 
 class IdleCalibrationState : public ICalibrationState
 	{
 	public:
-		static ICalibrationState & GetInstance();
 		// Inherited via ICalibrationState
 		virtual void Loop(CalibrationStateMachine & machine) final;
-	private:
-		IdleCalibrationState();
+		virtual void StartCalibration(CalibrationStateMachine & machine) final;
 	};
 
 class FindHomeCalibrationState : public ICalibrationState
 	{
 	public:
-		static ICalibrationState & GetInstance();
 		// Inherited via ICalibrationState
 		virtual void Loop(CalibrationStateMachine & machine) final;
 		virtual void OnEnter(CalibrationStateMachine& machine) final;
-	private:
-		FindHomeCalibrationState();
 	};
 
 class BackOutCalibrationState : public ICalibrationState
 	{
 	public:
-		static ICalibrationState & GetInstance();
 		// Inherited via ICalibrationState
 		virtual void Loop(CalibrationStateMachine & machine) final;
 		virtual void OnEnter(CalibrationStateMachine& machine) final;
-	private:
-		BackOutCalibrationState();
 	};
 
 class DelayBaseCalibrationState : public ICalibrationState
@@ -91,67 +114,54 @@ class DelayBaseCalibrationState : public ICalibrationState
 class DelayAfterFindHomeCalibrationState : public DelayBaseCalibrationState
 	{
 	public:
-		static ICalibrationState & GetInstance();
+		DelayAfterFindHomeCalibrationState();
 	protected:
 		virtual void TransitionToNextState(CalibrationStateMachine& machine) final;
-	private:
-		DelayAfterFindHomeCalibrationState();
 	};
 
 class DelayAfterBackOutCalibrationState : public DelayBaseCalibrationState
 	{
 	public:
-		static ICalibrationState & GetInstance();
+		DelayAfterBackOutCalibrationState();
 	protected:
 		virtual void TransitionToNextState(CalibrationStateMachine& machine) final;
-	private:
-		DelayAfterBackOutCalibrationState();
 	};
 
 class DelayAfterFindSoftLimitCalibrationState : public DelayBaseCalibrationState
 	{
 	public:
-		static ICalibrationState & GetInstance();
+		DelayAfterFindSoftLimitCalibrationState();
 	protected:
 		virtual void TransitionToNextState(CalibrationStateMachine& machine) final;
-	private:
-		DelayAfterFindSoftLimitCalibrationState();
 	};
 
 
 class FindSoftLimitCalibrationState : public ICalibrationState
 	{
 	public:
-		static ICalibrationState & GetInstance();
 		// Inherited via ICalibrationState
 		virtual void Loop(CalibrationStateMachine & machine) final;
 		virtual void OnEnter(CalibrationStateMachine& machine) final;
 	private:
 		uint32_t softLimitPosition;
-		FindSoftLimitCalibrationState();
 	};
 
 class FindBacklashCalibrationState : public ICalibrationState
 	{
 	public:
-		static ICalibrationState & GetInstance();
 		// Inherited via ICalibrationState
 		virtual void Loop(CalibrationStateMachine & machine) final;
 		virtual void OnEnter(CalibrationStateMachine& machine) final;
 	private:
 		uint32_t softLimitPosition;
-		FindBacklashCalibrationState();
 	};
 
 class FindMidpointCalibrationState : public ICalibrationState
 	{
 	public:
-		static ICalibrationState & GetInstance();
 		// Inherited via ICalibrationState
 		virtual void Loop(CalibrationStateMachine & machine) final;
 		virtual void OnEnter(CalibrationStateMachine& machine) final;
-	private:
-		FindMidpointCalibrationState();
 	};
 
 

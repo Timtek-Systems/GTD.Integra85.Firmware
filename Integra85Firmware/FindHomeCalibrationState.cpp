@@ -6,20 +6,14 @@
 	of the motor is kept at the midpoint, to prevent it from exceeding safety limits.
 */
 
-ICalibrationState & FindHomeCalibrationState::GetInstance()
-	{
-	static FindHomeCalibrationState instance;
-	return instance;
-	}
-
 void FindHomeCalibrationState::Loop(CalibrationStateMachine & machine)
 	{
-	auto sensorValue = machine.sensor->MovingAverage();
+	auto sensorValue = machine.sensor->AverageValue();
 	if (sensorValue >= FSR_HARD_THRESHOLD)
 		{
 		machine.stepper->HardStop();
 		machine.stepper->SetCurrentPosition(0);	// We are now at the "hard stop" position.
-		machine.ChangeState(DelayAfterFindHomeCalibrationState::GetInstance());
+		machine.ChangeState(new DelayAfterFindHomeCalibrationState());
 		}
 	else
 		{
@@ -29,11 +23,8 @@ void FindHomeCalibrationState::Loop(CalibrationStateMachine & machine)
 
 void FindHomeCalibrationState::OnEnter(CalibrationStateMachine & machine)
 	{
+	machine.startTime = millis();
+	machine.status->backlash = 0;
 	machine.stepper->SetCurrentPosition(machine.stepper->MidpointPosition());
 	machine.stepper->MoveToPosition(0);
-	}
-
-FindHomeCalibrationState::FindHomeCalibrationState()
-	{
-	StateName = "FindHome";
 	}

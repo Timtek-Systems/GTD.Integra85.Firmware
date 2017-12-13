@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CommandProcessor">
+    <Position X="6.75" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAgIAAAAADAAAQBGAKAIMBACAAACAAAACAIAAAgA=</HashCode>
+      <FileName>CommandProcessor.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="calibrator" />
+      <Field Name="focuser" />
+      <Field Name="rotator" />
+      <Field Name="settings" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CalibrationStateMachine">
+    <Position X="9.5" Y="4" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAQBAAAIAACABAQAIAAgAACAAAQAAgAAAAAAAgAAAAg=</HashCode>
+      <FileName>CalibrationStateMachine.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="stepper" />
+      <Field Name="status" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Motor">
+    <Position X="3" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAEEAKIAAAAIIAyAACgIDQBAASAag0AIAFAAAAEIAA=</HashCode>
+      <FileName>Motor.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="configuration" />
+    </ShowAsAssociation>
+  </Class>
+  <Struct Name="Command">
+    <Position X="0.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AIAAAEAAAAAAAABAAAgAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CommandProcessor.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Response">
+    <Position X="0.5" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAARAAAAAAAAAQAAAAAAIAAAAAIAEAAAA=</HashCode>
+      <FileName>CommandProcessor.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="PersistentSettings">
+    <Position X="9.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAgYIAAAAAAAAMQAAAQAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>PersistentSettings.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="calibration" />
+      <Field Name="rotator" />
+    </ShowAsAssociation>
+  </Struct>
+  <Struct Name="Calibration">
+    <Position X="12.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CalibrationStateMachine.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="status" />
+    </ShowAsAssociation>
+  </Struct>
+  <Struct Name="MotorSettings">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAwAAAAAAAACAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Motor.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="CalibrationResult">
+    <Position X="14.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAEAAAAAAAAAAAAAAAABACAAA=</HashCode>
+      <FileName>CalibrationStateMachine.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

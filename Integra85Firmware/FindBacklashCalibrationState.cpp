@@ -7,40 +7,33 @@ is monitored until it drops below the soft limit threshold, at which point the p
 Backlash can then be computed.
 */
 
-ICalibrationState & FindBacklashCalibrationState::GetInstance()
-	{
-	static FindBacklashCalibrationState instance;
-	return instance;
-	}
-
 /*
 Move in until the FSR reaches the soft threshold, and record that position.
 Continue to move in until the hard stop is reached.
 */
 void FindBacklashCalibrationState::Loop(CalibrationStateMachine & machine)
 	{
-	auto sensorValue = machine.sensor->MovingAverage();
+	auto sensorValue = machine.sensor->AverageValue();
 	auto position = machine.stepper->CurrentPosition();
-	if (sensorValue <= FSR_SOFT_THRESHOLD && softLimitPosition == 0)
+	if (sensorValue <= machine.status->lowThreshold && softLimitPosition == 0)
 		{
 		softLimitPosition = position;
-		}
-	if (position >= 100000)
-		{
 		machine.stepper->HardStop();
 		machine.calibrationDistanceMovingOut = softLimitPosition;
-		machine.stepper->SetCurrentPosition(0);	// We are now at the "hard stop" position.
-		machine.ChangeState(FindMidpointCalibrationState::GetInstance());
+		machine.ChangeState(new FindMidpointCalibrationState());
+		}
+	if (position >= CALIBRATE_SAFE_DISTANCE)
+		{
+		// If we get here without detecting the soft limit again,
+		// then we've failed.
+		machine.stepper->HardStop();
+		machine.status->status = Cancelled;
+		machine.ChangeState(new IdleCalibrationState());
 		}
 	}
 
 void FindBacklashCalibrationState::OnEnter(CalibrationStateMachine & machine)
 	{
 	softLimitPosition = 0;
-	machine.stepper->MoveAtVelocity(+2880);
-	}
-
-FindBacklashCalibrationState::FindBacklashCalibrationState()
-	{
-	StateName = "FindBacklash";
+	machine.stepper->MoveAtVelocity(machine.status->slowSpeed);
 	}
