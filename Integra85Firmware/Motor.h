@@ -40,8 +40,8 @@ class Motor : public IStepSequencer
 		void SetMaximumSpeed(uint16_t speed);
 		const float CurrentVelocity();
 		virtual const int32_t CurrentPosition();
-		const uint32_t MidpointPosition();
-		const uint32_t LimitOfTravel();
+		const int32_t MidpointPosition();
+		const int32_t LimitOfTravel();
 		const uint16_t MaximumSpeed();
 		const uint16_t MinimumSpeed();
 		virtual const bool IsMoving();
