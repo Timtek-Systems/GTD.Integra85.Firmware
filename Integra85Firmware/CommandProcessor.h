@@ -19,7 +19,7 @@ struct Command
 	{
 	String Verb;
 	char TargetDevice;
-	uint32_t StepPosition;	// Target step position for a move command
+	int32_t StepPosition;	// Target step position for a move command
 	bool IsMotorCommand();
 	bool IsSystemCommand();
 	};
@@ -58,6 +58,8 @@ class CommandProcessor
 	public:
 		CommandProcessor(Motor& focuser, Motor& rotator, CalibrationStateMachine& calibrator, PersistentSettings& settings, TemperatureSensor& temperature, ForceSensitiveResistor& fsr);
 		Response HandleCommand(Command& command);
+		static int32_t MicrostepsToSteps(int32_t microsteps);
+		static int32_t StepsToMicrosteps(int32_t wholesteps);
 
 	private:
 		Motor * GetMotor(Command& command);		// Gets the motor addressed by the command
@@ -87,8 +89,6 @@ class CommandProcessor
 		Response HandleZW(Command & command);	// EEPROM write (save settings)
 		Response HandleZR(Command & command);	// EEPROM read (load settings)
 		Response HandleZD(Command & command);	// Reset to factory settings (clears both EEPROM and working settings)
-		uint32_t MicrostepsToSteps(uint32_t microsteps);
-		uint32_t StepsToMicrosteps(uint32_t wholesteps);
 		Motor *focuser;
 		Motor *rotator;
 		CalibrationStateMachine *calibrator;
@@ -98,5 +98,11 @@ class CommandProcessor
 	};
 
 extern Response DispatchCommand(Command& command);
+
+void RotatorMoveFullOut();
+
+void FocuserMoveFullIn();
+
+void RotatorMoveFullIn();
 
 #endif
