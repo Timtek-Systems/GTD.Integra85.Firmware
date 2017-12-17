@@ -298,12 +298,12 @@ Response CommandProcessor::HandleX(Command & command)
 	return Response::FromInteger(command, 0);
 	}
 
-inline uint32_t CommandProcessor::MicrostepsToSteps(uint32_t microsteps)
+int32_t CommandProcessor::MicrostepsToSteps(int32_t microsteps)
 	{
 	return microsteps / MICROSTEPS_PER_STEP;
 	}
 
-inline uint32_t CommandProcessor::StepsToMicrosteps(uint32_t wholesteps)
+int32_t CommandProcessor::StepsToMicrosteps(int32_t wholesteps)
 	{
 	return wholesteps * MICROSTEPS_PER_STEP;
 	}
