@@ -64,9 +64,7 @@ Our `Motor` class provides the `IStepSequencer` implementation and allows for ac
 and deceleration. `Motor` also keeps track of the current step position and enforces limits
 of travel on the motors.
 
-Derived from `Motor` is `BacklashCompensatingMotor` which performs backlash compensation
-when moving in the out direction. All moves therefore finish in the inward direction. This
-class is used only for the focuser motor.
+Derived from `Motor` is `BacklashCompensatingMotor` which performs backlash compensation by adding the backlash amount whenever the motor direction changes. This process is hidden from the client. Thus, if backlash is measured to be 100 steps, the last move was outwards and the client requests a move inwards of 1000 steps, then the reported position will decrease by 1000 but the motor will actually move 1,100 steps.
 
 ### Acceleration
 
@@ -74,8 +72,8 @@ The `Motor` class implements acceleration and deceleration based on the equation
 uniform acceleration, v = u + at. This reduces the risk of stalling, especially when
 moving heavy loads.
 
-The `ComputeAcceleratedVelocity` method should be called once per Arduino main loop
-to recompute the motor velocity.
+The `ComputeAcceleratedVelocity` method is called once per Arduino main loop
+to recompute the motor velocity and acceleration curves.
 
 The "Ramp Time" (the time taken to accelerate from rest to maximum speed)
 is configurable by the user. Ramp time is specified in milliseconds.
@@ -86,7 +84,7 @@ more massive loads this can be increased.
 
 The Integra 85 uses a worm and worm wheel gearing arrangement to drive both the focuser
 and rotator mechanism. This arrangement provides a naturally stable system at rest
-which means that holding torque in the stepper motors in unnecessary. Therefore,  the step
+which means that holding torque in the stepper motors is unnecessary. Therefore,  the step
 drivers are disabled once motion has ceased. This reduces power consuption and keeps the
 motors and step drivers cool when not actively driving the mechanism.
 
@@ -138,7 +136,7 @@ via the serial port or Bluetooth adapter to the client application.
 
 ### Command Grammar
 
-Commands have the form: <kbd>@</kbd> `Verb` `Device`<kbd>,</kbd> `Parameter`<kbd>RETURN</kbd><kbd>LINE FEED</kbd>.
+Commands have the form: <kbd>@</kbd> `Verb` `Device`<kbd>,</kbd> `Parameter` <kbd>&lt;CR&gt;</kbd><kbd>&lt;LF&gt;</kbd>.
 
 - <kbd>@</kbd> is a literal character that marks the start of a new command and clears the receive buffer. Use of the <kbd>@</kbd> initiator is optional, but recommended.
 - `Verb` is the command verb, which normally consists of two characters. Single character verbs are also possible but in this case the entire command is a single character.
@@ -151,7 +149,7 @@ Only one is required. If both are present then they can be in any order.
 
 <example>Example: `@MI1,1000`.</example>
 
-If the parameter field is not required then it can be omitted. For example, the following are all equivalent:
+If the parameter field is not required for a command, then it can be omitted or, if specified, it will be ignored. For example, the following are all equivalent:
 `@PR1`, `@PR1,`, `@PR1,1000`
 
 ### Errors
