@@ -165,12 +165,12 @@ const int32_t Motor::CurrentPosition()
 	return configuration->currentPosition;
 	}
 
-const uint32_t Motor::MidpointPosition()
+const int32_t Motor::MidpointPosition()
 	{
 	return configuration->maxPosition / 2;
 	}
 
-const uint32_t Motor::LimitOfTravel()
+const int32_t Motor::LimitOfTravel()
 	{
 	return configuration->maxPosition;
 	}

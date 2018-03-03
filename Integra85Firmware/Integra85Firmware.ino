@@ -106,10 +106,15 @@ Response DispatchCommand(Command& command)
 	return response;
 	}
 
-Response DispatchCommand(String verb, char targetDevice, uint32_t stepPosition)
+Response DispatchCommand(String verb, char targetDevice, int32_t stepPosition)
 {
-	auto command = Command{ verb,targetDevice,stepPosition };
-	return DispatchCommand(command);
+	//BUG: suspected faulty initializer, copy the ovserload below.
+	//auto command = Command{ verb,targetDevice,stepPosition };
+	Command command;
+	command.StepPosition = stepPosition;
+	command.TargetDevice = targetDevice;
+	command.Verb = verb;
+	return commandProcessor.HandleCommand(command);
 }
 
 Response DispatchCommand(char *buffer, unsigned int charCount)
@@ -188,19 +193,23 @@ void HandleBluetoothCommunications()
 */
 void HandleShortCommand(char rx)
 {
+	auto current = focuserMotor.CurrentPosition();
+	auto limit = focuserMotor.LimitOfTravel();
+	auto delta = limit - current;
+	int i = 0;
 	switch (rx)
 	{
 	case 0x01:	// M1 Out
-		DispatchCommand("MO", '1', focuserMotor.LimitOfTravel() - focuserMotor.CurrentPosition());
+		FocuserMoveFullOut();
 		break;
 	case 0x02:	// M2 Out
-		DispatchCommand("MO", '2', rotatorMotor.LimitOfTravel() - rotatorMotor.CurrentPosition());
+		RotatorMoveFullOut();
 		break;
 	case 0x03:	// M1 In
-		DispatchCommand("MI", '1', 0);
+		FocuserMoveFullIn();
 		break;
 	case 0x04:	// M2 In
-		DispatchCommand("MI", '2', 0);
+		RotatorMoveFullIn();
 		break;
 	case 0x05:	// All stop
 		DispatchCommand("SW", '1', 0);
@@ -210,6 +219,33 @@ void HandleShortCommand(char rx)
 		break;
 	}
 }
+
+void RotatorMoveFullIn()
+{
+	auto steps = CommandProcessor::MicrostepsToSteps(rotatorMotor.CurrentPosition());
+	DispatchCommand("MI", '2', steps);
+}
+
+void FocuserMoveFullIn()
+{
+	auto steps = CommandProcessor::MicrostepsToSteps(focuserMotor.CurrentPosition());
+	DispatchCommand("MI", '1', steps);
+}
+
+void RotatorMoveFullOut()
+{
+	auto microsteps = rotatorMotor.LimitOfTravel() - rotatorMotor.CurrentPosition();
+	auto steps = commandProcessor.MicrostepsToSteps(microsteps);
+	DispatchCommand("MO", '2', steps);
+}
+
+void FocuserMoveFullOut(void)
+{
+	auto microsteps = focuserMotor.LimitOfTravel() - focuserMotor.CurrentPosition();
+	auto steps = commandProcessor.MicrostepsToSteps(microsteps);
+	DispatchCommand("MO", '1', steps);
+}
+
 
 
 
