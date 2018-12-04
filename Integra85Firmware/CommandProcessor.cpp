@@ -53,12 +53,13 @@ Response CommandProcessor::HandleCommand(Command& command)
 		}
 	if (command.IsSystemCommand())
 		{
-		if (command.Verb == "ZW") return HandleZW(command);	// Write settings to persistent storage
+		if (command.Verb == "ER") return HandleER(command);	// Read force-sensitive resistor
+		if (command.Verb == "FR") return HandleFR(command);	// Read firmware version
+		if (command.Verb == "TR") return HandleTR(command);	// Read temperature probe
+		if (command.Verb == "X") return HandleX(command);	// Get movement status
 		if (command.Verb == "ZD") return HandleZD(command);	// Reset to factory settings (load defaults).
 		if (command.Verb == "ZR") return HandleZR(command);	// Load settings from persistent storage
-		if (command.Verb == "TR") return HandleTR(command);	// Read temperature probe
-		if (command.Verb == "FR") return HandleFR(command);	// Read firmware version
-		if (command.Verb == "X") return HandleX(command);	// Get movement status
+		if (command.Verb == "ZW") return HandleZW(command);	// Write settings to persistent storage
 		}
 	return Response::Error();
 	}
