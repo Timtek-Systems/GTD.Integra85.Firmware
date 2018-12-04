@@ -215,5 +215,16 @@ initial `@` character is always included.
 - OneWire - used for low-level access to the temperature probe.
 - DallasTemperature - intermediate level interfacing to the temperature probe
 
+## Revision Notes
+
+### Release 2.0
+
+First version by Tigra Astronomy. Implements almost all of the commands from release 1.0 but with completely re-written firmware.
+
+### Release 2.1
+
+Added the `ER` command (Read force-sensitive resistor value). This command was actually implemented
+in the previous version but not wired into the command processor, so there was no way to invoke it.
+
   [tigra]:   http://tigra-astronomy.com        "Tigra Astronomy"
   [gtd]:     http://www.geminitelescope.com/   "Gemini Telescope Design"
