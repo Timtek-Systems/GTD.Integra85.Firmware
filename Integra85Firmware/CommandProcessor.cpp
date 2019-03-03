@@ -235,16 +235,22 @@ Response CommandProcessor::HandlePW(Command & command)
 
 Response CommandProcessor::HandleRF(Command& command)
 {
+	if (command.TargetDevice != '1')
+		return Response::Error();
 	return Response::FromInteger(command, fsr->AverageValue());
 }
 
 Response CommandProcessor::HandleRL(Command& command) 
 	{
+	if (command.TargetDevice != '1')
+		return Response::Error();
 	return Response::FromInteger(command, settings->calibration.highThreshold);
 	}
 
 Response CommandProcessor::HandleRl(Command& command) 
 	{
+	if (command.TargetDevice != '1')
+		return Response::Error();
 	return Response::FromInteger(command, settings->calibration.lowThreshold);
 	}
 

@@ -190,6 +190,9 @@ CWm,n   | CW#     |    0 |      1 | auto    | Force the calibration state to 0=U
 Clm,n   | Cl#     |    1 |   1023 |     300 | Set the touch sensor "first contact" threshold
 CLm,n   | CL#     |    1 |   1023 |     600 | Set the touch sensor "hard stop" threshold
 Cvm,n   | CV#     |  250 |  65535 |    2880 | Set calibration slow motion motor speed
+RFm     | RFnnnn# |    0 |   1023 |         | Read touch sensor current value (moving average)
+Rlm     | Rlnnnn# |    0 |   1023 |         | Read touch sensor "first contact" threshold
+RLm     | RLnnnn# |    0 |   1023 |         | Read touch sensor "hard stop" threshold
 --------|---------|------|--------|---------|-----------------------------------------------------
 System-wide commands
 --------|---------|------|--------|---------|-----------------------------------------------------
