@@ -43,8 +43,14 @@ Response CommandProcessor::HandleCommand(Command& command)
 		if (command.Verb == "CL") return HandleCL(command);	// Set FSR high threshold
 		if (command.Verb == "Cv") return HandleCv(command);	// Set calibration slow speed
 		if (command.Verb == "SW") return HandleSW(command);	// Stop motor
+		if (command.Verb == "RF") return HandleRF(command);	// Read FSR value (actually a moving average value)
+		if (command.Verb == "Rl") return HandleRl(command);	// Read FSR low threshold (soft limit)
+		if (command.Verb == "RL") return HandleRL(command);	// Read FSR high threshold (hard limit)
 		if (command.Verb == "PR") return HandlePR(command);	// Position read
 		if (command.Verb == "PW") return HandlePW(command);	// Position write (sync)
+		if (command.Verb == "Rl") return HandleRF(command);	// Read FSR current value
+		if (command.Verb == "Rl") return HandleRl(command);	// Read FSR low threshold
+		if (command.Verb == "RL") return HandleRL(command);	// Read FSR high threshold
 		if (command.Verb == "RR") return HandleRR(command);	// Range Read (get limit of travel)
 		if (command.Verb == "RW") return HandleRW(command);	// Range Write (set limit of travel)
 		if (command.Verb == "VR") return HandleVR(command);	// Read maximum motor speed
@@ -226,6 +232,21 @@ Response CommandProcessor::HandlePW(Command & command)
 	motor->SetCurrentPosition(microsteps);
 	return Response::FromSuccessfulCommand(command);
 }
+
+Response CommandProcessor::HandleRF(Command& command)
+{
+	return Response::FromInteger(command, fsr->AverageValue());
+}
+
+Response CommandProcessor::HandleRL(Command& command) 
+	{
+	return Response::FromInteger(command, settings->calibration.highThreshold);
+	}
+
+Response CommandProcessor::HandleRl(Command& command) 
+	{
+	return Response::FromInteger(command, settings->calibration.lowThreshold);
+	}
 
 Response CommandProcessor::HandleRW(Command & command)
 {

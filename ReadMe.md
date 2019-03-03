@@ -226,5 +226,14 @@ First version by Tigra Astronomy. Implements almost all of the commands from rel
 Added the `ER` command (Read force-sensitive resistor value). This command was actually implemented
 in the previous version but not wired into the command processor, so there was no way to invoke it.
 
+### Release 2.2
+
+Added code to prevent the focuser from travelling inwards beyond the safe limit of travel.
+
+Added commands:
+ - RF - Read the current value of the force sensitive resistor (integer)
+ - RL - Read the current FSR high (hard limit) threshold
+ - Rl - Read the FSR low (soft limit) threshold
+
   [tigra]:   http://tigra-astronomy.com        "Tigra Astronomy"
   [gtd]:     http://www.geminitelescope.com/   "Gemini Telescope Design"

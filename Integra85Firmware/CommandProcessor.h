@@ -79,6 +79,9 @@ class CommandProcessor
 		Response HandleMO(Command & command);	// Move motor out
 		Response HandlePR(Command & command);	// Step position read
 		Response HandlePW(Command & command);	// Step position write (sync)
+		Response HandleRF(Command & command);	// Read FSR current value
+		Response HandleRl(Command & command);	// Read FSR low threshold
+		Response HandleRL(Command & command);	// Read FSR high threshold
 		Response HandleRR(Command & command);	// Range (limit of travel) read
 		Response HandleRW(Command & command);	// Range (limit of travel) write
 		Response HandleSW(Command & command);	// Stop write (motor emergency stop)
