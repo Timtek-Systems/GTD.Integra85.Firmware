@@ -1,6 +1,18 @@
 # Integra 85 Focusing Rotator from [Gemini Telescope Design][gtd]
 
-Firmware coded by Tim Long of [Tigra Astronomy][tigra]
+Firmware coded by Tim Long of Timtek Systems Limited
+
+## Dedicated to the memory of András Dán
+
+May 2023
+
+A little over a year ago, András Dán, proprietor of Gemini Telescope Design, was taken from us before his time.
+I have approached the family, requested and been granted permission to open-source this code.
+I hope this will serve as a tribute and memorial of someone who affected astronomy a great deal.
+
+The source code is licensed under the [Timtek MIT License][license].
+
+The remainder of this file will provide an overview fo the software architecture and design philosophy.
 
 ## Design Philosophy
 
@@ -240,3 +252,4 @@ Added commands:
 
   [tigra]:   http://tigra-astronomy.com        "Tigra Astronomy"
   [gtd]:     http://www.geminitelescope.com/   "Gemini Telescope Design"
+  [license]: https://timtek-systems.mit-license.org/ "Timtek MIT License"
