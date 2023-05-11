@@ -1,7 +1,7 @@
 #pragma once
 // Versioning
 #define FIRMWARE_MAJOR_VERSION		(2)
-#define FIRMWARE_MINOR_VERSION		(1)
+#define FIRMWARE_MINOR_VERSION		(2)
 
 // Analogue input channels
 #define TOUCH_SENSOR_CHANNEL		(0)

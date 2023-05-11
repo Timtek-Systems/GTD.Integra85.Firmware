@@ -190,6 +190,9 @@ CWm,n   | CW#     |    0 |      1 | auto    | Force the calibration state to 0=U
 Clm,n   | Cl#     |    1 |   1023 |     300 | Set the touch sensor "first contact" threshold
 CLm,n   | CL#     |    1 |   1023 |     600 | Set the touch sensor "hard stop" threshold
 Cvm,n   | CV#     |  250 |  65535 |    2880 | Set calibration slow motion motor speed
+RFm     | RFnnnn# |    0 |   1023 |         | Read touch sensor current value (moving average)
+Rlm     | Rlnnnn# |    0 |   1023 |         | Read touch sensor "first contact" threshold
+RLm     | RLnnnn# |    0 |   1023 |         | Read touch sensor "hard stop" threshold
 --------|---------|------|--------|---------|-----------------------------------------------------
 System-wide commands
 --------|---------|------|--------|---------|-----------------------------------------------------
@@ -225,6 +228,15 @@ First version by Tigra Astronomy. Implements almost all of the commands from rel
 
 Added the `ER` command (Read force-sensitive resistor value). This command was actually implemented
 in the previous version but not wired into the command processor, so there was no way to invoke it.
+
+### Release 2.2
+
+Added code to prevent the focuser from travelling inwards beyond the safe limit of travel.
+
+Added commands:
+ - RF - Read the current value of the force sensitive resistor (integer)
+ - RL - Read the current FSR high (hard limit) threshold
+ - Rl - Read the FSR low (soft limit) threshold
 
   [tigra]:   http://tigra-astronomy.com        "Tigra Astronomy"
   [gtd]:     http://www.geminitelescope.com/   "Gemini Telescope Design"
